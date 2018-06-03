@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".newFriend_Adding">
+
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="76dp"
+        android:layout_height="45dp"
+        android:layout_alignEnd="@+id/name"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="215dp"
+        android:text="Email"
+        android:textSize="22sp"
+        android:layout_alignRight="@+id/name" />
+
+    <TextView
+        android:id="@+id/contactNo"
+        android:layout_width="92dp"
+        android:layout_height="45dp"
+        android:layout_alignEnd="@+id/mail"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="162dp"
+        android:text="ContactNo."
+        android:textSize="22sp"
+        android:layout_alignRight="@+id/mail" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="84dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="109dp"
+        android:text="Name"
+        android:textSize="22sp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp" />
+
+    <EditText
+        android:id="@+id/Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Name"
+        android:layout_alignTop="@+id/mail"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Email"
+        android:layout_alignLeft="@+id/Name" />
+
+    <EditText
+        android:id="@+id/ContactNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Name"
+        android:layout_alignTop="@+id/contactNo"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Contact No."
+        android:layout_alignLeft="@+id/Name" />
+
+    <EditText
+        android:id="@+id/Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/name"
+        android:layout_marginEnd="56dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="56dp" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="163dp"
+        android:text="Add Friend" />
+
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="57dp"
+        android:layout_height="59dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="23dp"
+        android:background="@drawable/ic_home_black_24dp"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="23dp" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/mail"
+        android:text="Add Friend"
+        android:textSize="36sp"
+        android:layout_toRightOf="@+id/mail" />
+</RelativeLayout>
