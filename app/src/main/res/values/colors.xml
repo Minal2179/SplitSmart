@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#5BB290</color>
+    <color name="colorPrimaryDark">#3D5955</color>
     <color name="colorAccent">#ff4081</color>
     <color name="iron">#CCCCCC</color>
     <color name="splittrBlue">#2196F3</color>
     <color name="splittrTopGreen">#3b873b</color>
     <color name="splittrGreen">#4EAA3B</color>
-    <color name="white">#FFFFFF</color>
     <color name="veryLightGray">#F7F7F7</color>
     <color name="lightGray">#DEDEDE</color>
     <color name="gray">#808080</color>
     <color name="accent">#FFBB0F</color>
     <color name="owes">#F24646</color>
+    <color name="white">#FFFFFF</color>
+    <color name="bottom_navigation">#3A3F48</color>
+    <color name="bottom_text">#DFE1DF</color>
+    <color name="colorDarkGrey">#3A3F48</color>
+    <color name="colorGrey">#c3c3c3 </color>
 </resources>
