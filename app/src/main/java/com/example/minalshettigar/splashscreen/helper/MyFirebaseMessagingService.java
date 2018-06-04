@@ -45,10 +45,11 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.jeran.splittr.LandingActivity;
-import com.example.jeran.splittr.R;
+
+import com.example.minalshettigar.splashscreen.Dashboard;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.example.minalshettigar.splashscreen.R;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -93,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, LandingActivity.class);
+        Intent intent = new Intent(this, Dashboard.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // create a unique PendingIntent using an integer request code.
         final int requestCode = (int)System.currentTimeMillis() / 1000;

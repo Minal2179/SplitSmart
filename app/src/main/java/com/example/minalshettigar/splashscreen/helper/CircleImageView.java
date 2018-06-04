@@ -17,8 +17,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.support.v7.widget.AppCompatImageView;
+import com.example.minalshettigar.splashscreen.R;
 
-import com.example.jeran.splittr.R;
+
 
 public class CircleImageView extends AppCompatImageView {
 

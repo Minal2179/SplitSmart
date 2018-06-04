@@ -3,8 +3,9 @@ package com.example.minalshettigar.splashscreen.helper;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
+import com.example.minalshettigar.splashscreen.R;
 
-import com.example.jeran.splittr.R;
+
 
 public class ToastUtils
 {

@@ -103,7 +103,7 @@ public class AddFriends  extends Fragment  implements AdapterView.OnItemClickLis
     private void loadUsers() {
         JSONObject listUsersObject = new JSONObject();
         try {
-           // listUsersObject.put("email", LandingActivity.email);
+            //listUsersObject.put("email", Dashboard.email);
             listUsersObject.put("includeSelf", true);
         } catch (JSONException e) {
             Log.d("Splittr", e.toString());

@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import com.example.minalshettigar.splashscreen.R;
 
-import com.example.jeran.splittr.R;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
