@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Dashboard"></activity>
-        <activity android:name=".AddFriends" ></activity>
+
+        <activity android:name=".newFriend_Adding" ></activity>
 
         <service android:name=".helper.MyFirebaseMessagingService">
             <intent-filter>

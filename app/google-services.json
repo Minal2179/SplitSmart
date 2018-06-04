@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "221533574830",
+    "firebase_url": "https://splitsmart-70568.firebaseio.com",
+    "project_id": "splitsmart-70568",
+    "storage_bucket": "splitsmart-70568.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221533574830:android:66fb4d811325737b",
+        "android_client_info": {
+          "package_name": "com.example.minalshettigar.splashscreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221533574830-jjk7uqgsss36g0506n2tgblrcuc0isnv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.minalshettigar.splashscreen",
+            "certificate_hash": "dcadd6d40b6b764ed6a239c4a21b92f53f1c7a25"
+          }
+        },
+        {
+          "client_id": "221533574830-9s8l0mnpiv6nl9darb7obmhoqsd7u72h.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "221533574830-9s8l0mnpiv6nl9darb7obmhoqsd7u72h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe9XRpfgNXECexeY3GdJZQOJqZuyH_BT4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221533574830-9s8l0mnpiv6nl9darb7obmhoqsd7u72h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

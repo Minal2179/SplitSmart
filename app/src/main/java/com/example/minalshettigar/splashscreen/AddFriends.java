@@ -38,7 +38,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class AddFriends  extends Fragment implements AdapterView.OnItemClickListener
+public class AddFriends  extends Fragment  implements AdapterView.OnItemClickListener
 {
 
     private EditText searchQuery;
@@ -74,13 +74,13 @@ public class AddFriends  extends Fragment implements AdapterView.OnItemClickList
         setUpListView();
         loadUsers();
 
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Click action
-                Intent intent = new Intent(AddFriends.this, newFriend_Adding.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), newFriend_Adding.class);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -136,10 +136,10 @@ public class AddFriends  extends Fragment implements AdapterView.OnItemClickList
                         JSONObject addFriendData = new JSONObject();
 
                         try {
-                            addFriendData.put("email", LandingActivity.email);
+                           // addFriendData.put("email", LandingActivity.email);
                             addFriendData.put("friend", selectedFriendDataModel.getEmail());
                         } catch (JSONException e) {
-                            Log.d("Splittr", e.toString());
+                            Log.d("Splitsmart", e.toString());
                         }
 
                         if (InternetUtils.hasConnection(getActivity())) {

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Split Smart</string>
     <string name="tagline">Smart way to split bills</string>
+
+    <string name="addFriendHint">Enter friend name</string>
+    <string name="USER_EMAIL">email</string>
+    <string name="USER_NAME">name</string>
 </resources>
+
