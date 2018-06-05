@@ -61,11 +61,11 @@ public class UtilityMethods {
             tokenData.put("email", email);
             tokenData.put("gcmToken", token);
         } catch (JSONException e) {
-            Log.d("Splittr", e.toString());
+            Log.d("SplittSmart", e.toString());
         }
 
-        Log.d("Splittr", "URL => " + LinkUtils.SAVE_GCM_TOKEN_URL);
-        Log.d("Splittr", "Param => " + tokenData.toString());
+        Log.d("SplittSmart", "URL => " + LinkUtils.SAVE_GCM_TOKEN_URL);
+        Log.d("SplittSmart", "Param => " + tokenData.toString());
 
         final ResponseListener responseListener = new ResponseListener() {
             @Override
@@ -81,7 +81,7 @@ public class UtilityMethods {
                             ToastUtils.showToast(context, "Failed to register GCM Token to server. You may not receive the push notifications.", false);
                         }
                     } catch (JSONException jsonException) {
-                        Log.d("Splittr", jsonException.toString() + " Came from MyFirebaseInstanceIDService");
+                        Log.d("SplitSmart", jsonException.toString() + " Came from MyFirebaseInstanceIDService");
                     }
                 }
             }

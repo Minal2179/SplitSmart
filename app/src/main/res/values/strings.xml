@@ -7,5 +7,12 @@
     <string name="USER_NAME">name</string>
     <string name="GCM_TOKEN">GCM Token</string>
     <string name="default_notification_channel_id">default notification channel</string>
+    <string name="invitation_title">Join Splitsmart</string>
+    <string name="invitation_cta">Install!</string>
+    <string name="invitation_message">This app is terrific, give it a try!</string>
+    <string name="invitation_SplitSmart">http://example.com/offer/five_dollar_offer</string>
+
+
+
 </resources>
 

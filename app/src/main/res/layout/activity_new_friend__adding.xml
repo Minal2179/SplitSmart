@@ -8,29 +8,29 @@
     tools:context=".newFriend_Adding">
 
     <TextView
-        android:id="@+id/mail"
-        android:layout_width="76dp"
+        android:id="@+id/mailtext"
+        android:layout_width="85dp"
         android:layout_height="45dp"
         android:layout_alignEnd="@+id/name"
         android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/name"
         android:layout_marginTop="215dp"
         android:text="Email"
-        android:textSize="22sp"
-        android:layout_alignRight="@+id/name" />
+        android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/contactNo"
-        android:layout_width="92dp"
+        android:id="@+id/contactNotext"
+        android:layout_width="87dp"
         android:layout_height="45dp"
-        android:layout_alignEnd="@+id/mail"
+        android:layout_alignEnd="@+id/mailtext"
         android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/mailtext"
         android:layout_marginTop="162dp"
         android:text="ContactNo."
-        android:textSize="22sp"
-        android:layout_alignRight="@+id/mail" />
+        android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/nametext"
         android:layout_width="84dp"
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/Name"
-        android:layout_alignTop="@+id/mail"
+        android:layout_alignTop="@+id/mailtext"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Email"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/Name"
-        android:layout_alignTop="@+id/contactNo"
+        android:layout_alignTop="@+id/contactNotext"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Contact No."
@@ -88,7 +88,7 @@
 
 
     <Button
-        android:id="@+id/home"
+        android:id="@+id/addFriend"
         android:layout_width="57dp"
         android:layout_height="59dp"
         android:layout_alignParentBottom="true"
@@ -106,8 +106,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="13dp"
-        android:layout_toEndOf="@+id/mail"
+        android:layout_toEndOf="@+id/mailtext"
         android:text="Add Friend"
         android:textSize="36sp"
-        android:layout_toRightOf="@+id/mail" />
+        android:layout_toRightOf="@+id/mailtext" />
 </RelativeLayout>
