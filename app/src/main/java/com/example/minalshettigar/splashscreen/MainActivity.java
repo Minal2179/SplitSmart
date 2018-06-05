@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         textView.startAnimation(myanim);
         imageView.startAnimation(myanim);
 
-        final Intent intent = new Intent(this,Dashboard.class);
+        final Intent intent = new Intent(this,LoginActivity.class);
 
         Thread timer = new Thread(){
             public void run(){

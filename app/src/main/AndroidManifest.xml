@@ -16,7 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Dashboard"></activity>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".Dashboard" />
+        <activity android:name=".Friends" />
+        <activity android:name=".AddExpenses" />
+        <activity android:name=".ActivityList" />
+        <activity android:name=".UserSettings" />
 
         <activity android:name=".newFriend_Adding" ></activity>
 
