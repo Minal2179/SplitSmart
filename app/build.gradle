@@ -36,7 +36,8 @@ dependencies {
     compile 'com.google.http-client:google-http-client-android'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.firebase:firebase-messaging:17.0.0'
-
+    compile 'com.google.android.gms:play-services-drive:15.0.1'
+    compile 'com.google.android.gms:play-services-auth:15.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     implementation 'com.google.apis:google-api-services-vision:v1-rev16-1.22.0'
