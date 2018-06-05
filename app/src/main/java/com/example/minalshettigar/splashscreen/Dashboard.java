@@ -12,10 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class Dashboard extends AppCompatActivity {
 
     private static final String TAG = "DashboardActivity";
+    private FirebaseAuth mAuth;
 
 //    private SectionsPageAdapter mSectionsPageAdapter;
 //
@@ -39,8 +43,13 @@ public class Dashboard extends AppCompatActivity {
 //        tabLayout.getTabAt(0).setIcon(R.drawable.ic_notification);
 //        tabLayout.getTabAt(1).setIcon(R.drawable.ic_autorenew);
 
+        Intent myintent = getIntent();
+        mAuth= FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+
         TextView title = (TextView) findViewById(R.id.activityTitlemain);
-        title.setText("This is Dashboard Activity");
+        title.setText(user.getEmail());
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);

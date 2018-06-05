@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#5BB290</color>
     <color name="colorPrimaryDark">#3D5955</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorAccent">#618D84</color>
     <color name="iron">#CCCCCC</color>
     <color name="splittrBlue">#2196F3</color>
     <color name="splittrTopGreen">#3b873b</color>
@@ -17,4 +17,7 @@
     <color name="bottom_text">#DFE1DF</color>
     <color name="colorDarkGrey">#3A3F48</color>
     <color name="colorGrey">#c3c3c3 </color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
 </resources>
