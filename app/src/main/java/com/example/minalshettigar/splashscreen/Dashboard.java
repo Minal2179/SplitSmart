@@ -71,7 +71,7 @@ public class Dashboard extends AppCompatActivity {
                         break;
 
                     case R.id.action_friends:
-                        Intent intent1 = new Intent(Dashboard.this, Friends.class);
+                        Intent intent1 = new Intent(Dashboard.this, AddFriends.class);
                         startActivity(intent1);
                         break;
 

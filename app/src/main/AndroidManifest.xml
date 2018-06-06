@@ -17,13 +17,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"/>
+        <activity android:name=".AddFriends"/>
         <activity android:name=".Dashboard" />
-        <activity android:name=".Friends" />
         <activity android:name=".AddExpenses" />
         <activity android:name=".ActivityList" />
         <activity android:name=".UserSettings" />
 
-        <activity android:name=".newFriend_Adding" ></activity>
+        <activity android:name=".newFriend_Adding" />
+        <activity android:name=".friends_detail" />
 
         <service android:name=".helper.MyFirebaseMessagingService">
             <intent-filter>

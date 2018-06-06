@@ -44,7 +44,7 @@ public class ActivityList extends AppCompatActivity {
                         break;
 
                     case R.id.action_friends:
-                        Intent intent1 = new Intent(ActivityList.this, Friends.class);
+                        Intent intent1 = new Intent(ActivityList.this, AddFriends.class);
                         startActivity(intent1);
                         break;
 

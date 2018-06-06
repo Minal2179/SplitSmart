@@ -44,7 +44,7 @@ public class UserSettings extends AppCompatActivity {
                         break;
 
                     case R.id.action_friends:
-                        Intent intent1 = new Intent(UserSettings.this, Friends.class);
+                        Intent intent1 = new Intent(UserSettings.this, AddFriends.class);
                         startActivity(intent1);
                         break;
 
