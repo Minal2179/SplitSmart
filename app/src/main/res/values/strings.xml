@@ -19,7 +19,6 @@
     <string name="disconnect">Disconnect</string>
 
 
-
     <!-- Strings related to login -->
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
@@ -53,6 +52,13 @@
     <string name="invitation_SplitSmart">http://example.com/offer/five_dollar_offer</string>
 
 
+    <string-array name="settings">
+        <item>Home</item>
+        <item>My Profile</item>
+        <item>Invite Friends</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
 
 </resources>
 
