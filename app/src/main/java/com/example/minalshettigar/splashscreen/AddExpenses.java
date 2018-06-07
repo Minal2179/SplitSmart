@@ -1,20 +1,29 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.minalshettigar.splashscreen.helper.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AddExpenses extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private static final int ACTIVITY_NUM = 2;
+    private static final int VERIFY_PERMISSIONS_REQUEST = 1;
+
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +35,9 @@ public class AddExpenses extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         TextView title = (TextView) findViewById(R.id.activityTitle2);
         title.setText("This is Add Expenses");
+
+        // TODO: Check if camera/photo gallery permissions are granted
+        setupViewPager();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -97,6 +109,44 @@ public class AddExpenses extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    /*
+     * return the current tab number
+     * 0 = GalleryFragment
+     * 1 = PhotoFragment
+     * 2 = ManualFragment
+     * @return
+     */
+    public int getCurrentTabNumber() {
+        return mViewPager.getCurrentItem();
+    }
+
+    /*
+     * setup viewpager for managing the tabs
+     */
+    private void setupViewPager() {
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(new GalleryFragment());
+        adapter.addFragment(new PhotoFragment());
+        adapter.addFragment(new ManualFragment());
+
+
+        mViewPager = (ViewPager) findViewById(R.id.viewpager_container);
+        mViewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsBottom);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
+        tabLayout.getTabAt(1).setText(getString(R.string.photo));
+        tabLayout.getTabAt(2).setText(getString(R.string.manual));
+
+    }
+
+    public int getTask() {
+        return getIntent().getFlags();
     }
 
 }
