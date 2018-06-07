@@ -19,14 +19,13 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/topBar">
+            android:layout_height="50dp">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
 
             </android.support.design.widget.AppBarLayout>
@@ -34,46 +33,67 @@
         </RelativeLayout>
 
 
-
-
         <RelativeLayout
-            android:layout_below="@+id/topBar"
-            android:layout_above="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:layout_above="@+id/bottomBar"
+            android:layout_below="@+id/topBar">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:id="@+id/textView"
+                android:layout_width="393dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Settings"
                 android:textSize="30sp"
-                android:id="@+id/activityTitle4"
-                android:textAlignment="center"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="5dp" />
+
+            <ListView
+                android:id="@+id/settingList"
+                android:layout_width="395dp"
+                android:layout_height="503dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="56dp"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="57dp"
+                android:layout_alignParentLeft="true" />
+
+            <Button
+                android:id="@+id/back"
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/settingList"
+                android:layout_alignEnd="@+id/textView"
+                android:layout_marginBottom="-56dp"
+                android:src="@drawable/cross"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="340dp"
+                tools:layout_editor_absoluteY="5dp"
+                android:layout_alignRight="@+id/textView" />
 
         </RelativeLayout>
 
 
-
-
-
         <RelativeLayout
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/bottomBar"
             android:layout_alignParentBottom="true">
 
             <android.support.design.widget.BottomNavigationView
+                android:id="@+id/bottomNavView_Bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/bottomNavView_Bar"
                 android:background="@drawable/white_grey_border_top"
                 app:menu="@menu/bottom_navigation_menu">
 
 
             </android.support.design.widget.BottomNavigationView>
         </RelativeLayout>
-
 
 
     </RelativeLayout>
