@@ -9,12 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserSettings extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    ListView settingList;
+    Button back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,9 +30,10 @@ public class UserSettings extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        settingList = (ListView)findViewById(R.id.settingList);
+        back = (Button) findViewById(R.id.back);
 
-        TextView title = (TextView) findViewById(R.id.activityTitle4);
-        title.setText("This is Settings Activity");
+
         mAuth = FirebaseAuth.getInstance();
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -33,6 +41,38 @@ public class UserSettings extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(4);
         menuItem.setChecked(true);
 
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.settings, android.R.layout.simple_list_item_1);
+        settingList.setAdapter(adapter);
+        settingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position ==0){
+
+                    Intent intent = new Intent(UserSettings.this,Dashboard.class);
+                    startActivity(intent);
+
+                }else if(position == 1){
+
+                    Intent intent = new Intent(UserSettings.this,Profile_edit_options.class);
+                    startActivity(intent);
+
+                }else if(position ==2){
+
+                    Intent intent = new Intent(UserSettings.this,Invite_new_people.class);
+                    startActivity(intent);
+
+                }else if(position==3){
+
+                    Intent intent = new Intent(UserSettings.this,Notification_settings.class);
+                    startActivity(intent);
+                }else{
+
+
+
+                }
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
