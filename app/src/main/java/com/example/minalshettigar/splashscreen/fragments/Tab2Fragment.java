@@ -76,6 +76,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private ImageView imageView;
     //Db Reference
     DatabaseReference userDb;
+    String userid;
     String currentUserId;
 
     @Nullable
@@ -104,6 +105,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
+        userid = mAuth.getCurrentUser().getUid();
         userDb= FirebaseDatabase.getInstance().getReference("users");
         // [END initialize_auth]
 
@@ -139,7 +141,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
             UserDbFormat udm=new UserDbFormat(useremail ,useremail,username,usercontact);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
-            userDb.child(id).setValue(udm);
+            userDb.child(userid).setValue(udm);
         }
 
 

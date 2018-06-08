@@ -5,15 +5,19 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.Manifest;
 
 import com.example.minalshettigar.splashscreen.helper.PermissionUtils;
 
 public class PhotoFragment extends Fragment {
+    private static final String TAG = "PhotoFragment";
 
     // Constants
     private static final int GALLERY_FRAGMENT_NUM = 0;
@@ -32,6 +36,7 @@ public class PhotoFragment extends Fragment {
             public void onClick(View v) {
                 if (((AddExpenses)getActivity()).getCurrentTabNumber() == PHOTO_FRAGMENT_NUM) {
                     // TODO: CHECK CAMERA PERMISSIONS
+
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
                 }
@@ -44,12 +49,32 @@ public class PhotoFragment extends Fragment {
         return view;
     }
 
+    private boolean isRootTask(){
+        if(((AddExpenses)getActivity()).getTask() == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_REQUEST_CODE) {
             // TODO navigate to next screen for adding expense
+        }
+    }
+
+    private void requestCameraPermission() {
+        Log.d(TAG, "Camera permission not granted, request permission");
+
+        final String[] permissions = new String[]{Manifest.permission.CAMERA};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(getActivity(), permissions, CAMERA_REQUEST_CODE);
+            return;
         }
     }
 }

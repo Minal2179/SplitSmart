@@ -1,15 +1,19 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,9 +22,18 @@ import com.example.minalshettigar.splashscreen.helper.SectionsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AddExpenses extends AppCompatActivity {
+
+    private static final String TAG = "AddExpensesActivity";
+
     private FirebaseAuth mAuth;
     private static final int ACTIVITY_NUM = 2;
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
+
+    public static final String[] PERMISSIONS = {
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
 
     private ViewPager mViewPager;
 
@@ -37,7 +50,13 @@ public class AddExpenses extends AppCompatActivity {
         title.setText("This is Add Expenses");
 
         // TODO: Check if camera/photo gallery permissions are granted
-        setupViewPager();
+        if (checkPermissionsArray(PERMISSIONS)) {
+            Log.d(TAG, "permission granted, set up view pager");
+            setupViewPager();
+        }
+        else {
+            verifyPermissions(PERMISSIONS);
+        }
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -149,4 +168,54 @@ public class AddExpenses extends AppCompatActivity {
         return getIntent().getFlags();
     }
 
+    /**
+     * verifiy all the permissions passed to the array
+     * @param permissions
+     */
+    public void verifyPermissions(String[] permissions){
+        Log.d(TAG, "verifyPermissions: verifying permissions.");
+
+        ActivityCompat.requestPermissions(
+                AddExpenses.this,
+                permissions,
+                VERIFY_PERMISSIONS_REQUEST
+        );
+    }
+
+    /**
+     * Check an array of permissions
+     * @param permissions
+     * @return
+     */
+    public boolean checkPermissionsArray(String[] permissions){
+        Log.d(TAG, "checkPermissionsArray: checking permissions array.");
+
+        for(int i = 0; i< permissions.length; i++){
+            String check = permissions[i];
+            if(!checkPermissions(check)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check a single permission is it has been verified
+     * @param permission
+     * @return
+     */
+    public boolean checkPermissions(String permission){
+        Log.d(TAG, "checkPermissions: checking permission: " + permission);
+
+        int permissionRequest = ActivityCompat.checkSelfPermission(AddExpenses.this, permission);
+
+        if(permissionRequest != PackageManager.PERMISSION_GRANTED){
+            Log.d(TAG, "checkPermissions: \n Permission was not granted for: " + permission);
+            return false;
+        }
+        else{
+            Log.d(TAG, "checkPermissions: \n Permission was granted for: " + permission);
+            return true;
+        }
+    }
 }
