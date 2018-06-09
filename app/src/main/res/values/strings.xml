@@ -71,5 +71,14 @@
     <string name="string_item_name">Item Name</string>
     <string name="string_0_00">$0.00</string>
 
+    <string-array name="category_array">
+        <item>Shopping</item>
+        <item>Food</item>
+        <item>Rent</item>
+        <item>Grocery</item>
+        <item>travel</item>
+        <item>Miscellaneous</item>
+    </string-array>
+
 </resources>
 
