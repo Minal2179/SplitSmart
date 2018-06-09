@@ -204,7 +204,7 @@ public class AddExpenses extends AppCompatActivity {
 
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
-        adapter.addFragment(new ManualFragment());
+        //adapter.addFragment(new ManualFragment());
 
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager_container);
