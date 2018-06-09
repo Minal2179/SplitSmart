@@ -54,12 +54,15 @@ public class AddExpenseNext extends AppCompatActivity {
         textView.setText("TESTING: DETECTED TEXT SHOULD BE SHOWN HERE");
 
         // get img info from AddExpenses Activity
-
         intent = getIntent();
         if (intent.hasExtra(getString(R.string.selected_image))) {
             imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+            bitmap = getBitmap(imgUrl);
         }
-        bitmap = getBitmap(imgUrl);
+        else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
+            bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
+        }
+
 
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 
