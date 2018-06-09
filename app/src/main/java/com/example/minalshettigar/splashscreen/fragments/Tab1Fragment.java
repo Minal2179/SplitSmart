@@ -1,6 +1,7 @@
 package com.example.minalshettigar.splashscreen.fragments;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,11 +25,15 @@ import com.example.minalshettigar.splashscreen.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import static android.content.Intent.getIntent;
 
 
 public class Tab1Fragment extends Fragment implements View.OnClickListener {
@@ -47,11 +52,13 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
     private Boolean flag=false;
 
-    // [START declare_auth]
+
     private FirebaseAuth mAuth;
     /** Activity callback **/
     private ActivityCallback mCallback;
     private BaseActivityCallback mBaseCallback;
+    //constants
+    private static final int ERROR_DIALOG_REQUEST = 9001;
 
 
     @Nullable
@@ -79,11 +86,17 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
-
         // [START initialize_auth]
         return view;
     }
 
+    /*
+       ----------------------------- Firebase setup ---------------------------------
+    */
+
+
+
+    //Fragment related Functions
     public static Tab1Fragment newInstance() {
         return new Tab1Fragment();
     }
@@ -232,7 +245,9 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.email_sign_in_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            if(servicesOK()){
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            }
         } else if (i == R.id.sign_out_button) {
             if(flag){
                 mCallback.googleSignOut();
@@ -254,4 +269,28 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
     private void showProgress(boolean show) {
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
+    public boolean servicesOK(){
+        Log.d(TAG, "servicesOK: Checking Google Services.");
+
+        int isAvailable = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+
+        if(isAvailable == ConnectionResult.SUCCESS){
+            //everything is ok and the user can make mapping requests
+            Log.d(TAG, "servicesOK: Play Services is OK");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(isAvailable)){
+            //an error occured, but it's resolvable
+            Log.d(TAG, "servicesOK: an error occured, but it's resolvable.");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), isAvailable, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }
+        else{
+            Toast.makeText(getContext(), "Can't connect to mapping services", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
+    }
+
 }

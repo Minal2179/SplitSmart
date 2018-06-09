@@ -28,6 +28,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import static android.content.Intent.getIntent;
 
 public class LoginActivity extends BaseActivity implements ActivityCallback {
     private static final String TAG = "EmailPassword";
@@ -36,7 +41,9 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
     private TextView mStatusTextView;
     private TextView mDetailTextView;
     private Boolean flag=false;
-    // [START declare_auth]
+
+    //Firebase
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private SectionsPageAdapter mSectionsPageAdapter;
@@ -78,9 +85,49 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
+        setupFirebaseAuth();
         // [END initialize_auth]
     }
 
+
+
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: started.");
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(LoginActivity.this, newFriend_Adding.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    //check for extras from FCM
+                    if (getIntent().getExtras() != null) {
+                        Log.d(TAG, "initFCM: found intent extras: " + getIntent().getExtras().toString());
+                        for (String key : getIntent().getExtras().keySet()) {
+                            Object value = getIntent().getExtras().get(key);
+                            Log.d(TAG, "initFCM: Key: " + key + " Value: " + value);
+                        }
+                        String data = getIntent().getStringExtra("data");
+                        Log.d(TAG, "initFCM: data: " + data);
+                    }
+                    startActivity(intent);
+                    finish();
+
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+    }
     @Override
     public void changeStatusText() {
         mStatusTextView.setText(R.string.auth_failed);

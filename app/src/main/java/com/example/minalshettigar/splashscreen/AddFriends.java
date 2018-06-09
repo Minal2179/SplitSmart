@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.widget.TextView;
 import android.widget.BaseAdapter;
 import android.widget.AdapterView;
@@ -33,16 +35,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-public class AddFriends  extends AppCompatActivity
-{
+public class AddFriends extends AppCompatActivity {
 
     private EditText searchQuery;
     private ListView listViewfriendsResult;
     String currentUserId;
-    List<UsersDataModel>friendlist;
+    List<UsersDataModel> friendlist;
 
 
-
+    //Db Reference
+    DatabaseReference userDb;
     DatabaseReference dbFriendsRef;
     private FirebaseAuth mAuth;
 
@@ -79,7 +81,7 @@ public class AddFriends  extends AppCompatActivity
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_dashboard:
                         Intent intent0 = new Intent(AddFriends.this, Dashboard.class);
                         startActivity(intent0);
@@ -110,11 +112,13 @@ public class AddFriends  extends AppCompatActivity
             }
         });
 
-
         dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
 
-        friendlist=new ArrayList<>();
-        listViewfriendsResult=(ListView)findViewById(R.id.listViewfriendsresult) ;
+//        dbFriendsRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friend");
+//        userDb = FirebaseDatabase.getInstance().getReference("users");
+
+        friendlist = new ArrayList<>();
+        listViewfriendsResult = (ListView) findViewById(R.id.listViewfriendsresult);
 
         //on click listViewItem
 
@@ -126,15 +130,15 @@ public class AddFriends  extends AppCompatActivity
 
                 String Name = ((TextView) myView.findViewById(R.id.textViewName)).getText().toString();
                 String email = ((TextView) myView.findViewById(R.id.textViewEmail)).getText().toString();
-                Intent intent = new Intent(getApplicationContext(),friends_detail.class);
-                intent.putExtra("frndname",Name);
-                intent.putExtra("frndemail",email);
+                Intent intent = new Intent(getApplicationContext(), friends_detail.class);
+                intent.putExtra("frndname", Name);
+                intent.putExtra("frndemail", email);
                 startActivity(intent);
 
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +147,6 @@ public class AddFriends  extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
 
 
     }
@@ -157,13 +160,16 @@ public class AddFriends  extends AppCompatActivity
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         dbFriendsRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Toast.makeText(AddFriends.this, "inside Method.",
                         Toast.LENGTH_SHORT).show();
-                friendlist.clear();
-                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
-                {
+                //friendlist.clear();
+                for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
+//                    DataSnapshot frndSnap = userSnap.child("friend");
+//                    System.out.println("MINAL SAYS"+userSnap.getKey().toLowerCase() + frndSnap.getValue());
+//                   if(frndSnap.hasChild("shailesh")){
+//                       System.out.println("MINAL SAYS WONT BE PRINTED"+userSnap.getKey().toLowerCase());
+//                   }
                     UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
 
                     if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
@@ -179,7 +185,7 @@ public class AddFriends  extends AppCompatActivity
                     }
                 }
 
-                addedFriendsList adapter=new addedFriendsList(AddFriends.this,friendlist);
+                addedFriendsList adapter = new addedFriendsList(AddFriends.this, friendlist);
                 listViewfriendsResult.setAdapter(adapter);
 
             }

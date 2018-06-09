@@ -22,19 +22,32 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.example.minalshettigar.splashscreen.helper.MessageModel;
+import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
 
 
 public class newFriend_Adding extends AppCompatActivity
 {
+    private static final String TAG = "newFriend_Adding";
     private EditText name;
     private EditText contactNo;
     private EditText Email;
@@ -42,7 +55,13 @@ public class newFriend_Adding extends AppCompatActivity
     private String currentUserId;
     static final int PICK_CONTACT_REQUEST = 1;
     DatabaseReference addfrnddb;
+    DatabaseReference userDb;
     private FirebaseAuth mAuth;
+    String userId;
+    //vars
+    private String mUserId;
+    private ArrayList<UserDbFormat> mUsers;
+
 
 
     @Override
@@ -92,15 +111,16 @@ public class newFriend_Adding extends AppCompatActivity
                         startActivity(intent4);
                         break;
                 }
-
-
                 return false;
             }
         });
 
 
         addfrnddb=FirebaseDatabase.getInstance().getReference("friendships");
+        userDb = FirebaseDatabase.getInstance().getReference("users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         findViewById(R.id.Name).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,38 +143,61 @@ public class newFriend_Adding extends AppCompatActivity
 
                // System.out.println("Hi");
                 addfriendInDB();
+
+                initFCM();
+
             }
         });
 
 
 
-
-
     }
 
-private void addfriendInDB()
-{
+    private void addfriendInDB()
+    {
+    
+        String frnd_name=name.getText().toString().trim();
+        final String frnd_email=Email.getText().toString().trim();
+        
+            //Log.d("inside db Method", "addfriendInDB: ");
+        if(!TextUtils.isEmpty(frnd_email))
+        {
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String strDate = dateFormat.format(date);
+            UsersDataModel udm=new UsersDataModel(currentUserId,frnd_email,frnd_name,strDate,strDate);
 
-String frndName=name.getText().toString().trim();
-String frndemail=Email.getText().toString().trim();
+            String id=addfrnddb.push().getKey();
+            Log.d("printing vale of id", "addfriendInDB: "+id);
+            addfrnddb.child(id).setValue(udm);
 
-    //Log.d("inside db Method", "addfriendInDB: ");
+        }
 
-if(!TextUtils.isEmpty(frndemail))
-{
-    Date date = Calendar.getInstance().getTime();
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-    String strDate = dateFormat.format(date);
-    UsersDataModel udm=new UsersDataModel(currentUserId,frndemail,frndName,strDate,strDate);
-    String id=addfrnddb.push().getKey();
-    Log.d("printing vale of id", "addfriendInDB: "+id);
-    addfrnddb.child(id).setValue(udm);
-}
+        DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
 
+        if(!name.getText().toString().equals("")){
 
+            Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
+            //create the new message
+            MessageModel message = new MessageModel();
+            message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            message.setMessage(frnd_email);
+            message.setTimestamp(getTimestamp());
 
+            //insert the new message
+            msgreference
+                    .child(getString(R.string.dbnode_messages))
+                    .child(frnd_email.replace(".",""))
+                    .child(Objects.requireNonNull(msgreference.push().getKey()))
+                    .setValue(message);
 
-}
+            Toast.makeText(this, "message sent", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "enter a message", Toast.LENGTH_SHORT).show();
+        }
+    
+    }
+
     @Override
     protected void onActivityResult ( int requestCode, int resultCode, Intent intent){
         switch (requestCode) {
@@ -204,5 +247,32 @@ if(!TextUtils.isEmpty(frndemail))
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void sendRegistrationToServer(String token) {
+        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(getString(R.string.field_messaging_token))
+                .setValue(token);
+    }
+
+
+    private void initFCM(){
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "initFCM: token: " + token);
+        sendRegistrationToServer(token);
+
+    }
+
+    /**
+     * Return the current timestamp in the form of a string
+     * @return
+     */
+    private String getTimestamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        return sdf.format(new Date());
     }
 }
