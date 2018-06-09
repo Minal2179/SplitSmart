@@ -2,6 +2,7 @@ package com.example.minalshettigar.splashscreen;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -16,6 +17,8 @@ import android.Manifest;
 
 import com.example.minalshettigar.splashscreen.helper.PermissionUtils;
 
+import java.util.ArrayList;
+
 public class PhotoFragment extends Fragment {
     private static final String TAG = "PhotoFragment";
 
@@ -24,6 +27,7 @@ public class PhotoFragment extends Fragment {
     private static final int PHOTO_FRAGMENT_NUM = 1;
     private static final int MANUAL_FRAGMENT_NUM = 2;
     private static final int CAMERA_REQUEST_CODE = 5;
+
 
     @Nullable
     @Override
@@ -63,7 +67,14 @@ public class PhotoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_REQUEST_CODE) {
-            // TODO navigate to next screen for adding expense
+            Bitmap bitmap;
+            bitmap = (Bitmap) data.getExtras().get("data");
+
+            if (isRootTask()) {
+                Intent intent = new Intent(getActivity(), AddExpenseNext.class);
+                intent.putExtra(getString(R.string.selected_bitmap), bitmap);
+                startActivity(intent);
+            }
         }
     }
 
