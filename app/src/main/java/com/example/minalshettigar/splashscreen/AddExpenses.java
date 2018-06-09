@@ -16,16 +16,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.minalshettigar.splashscreen.helper.SectionsPagerAdapter;
+import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddExpenses extends AppCompatActivity {
 
     private static final String TAG = "AddExpensesActivity";
 
-    private FirebaseAuth mAuth;
     private static final int ACTIVITY_NUM = 2;
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
 
@@ -37,6 +46,15 @@ public class AddExpenses extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    List<UsersDataModel> friendList;
+    List<UsersDataModel> selectedFriendList;
+    ListView listViewSelectedFriends;
+    ListView listViewFriends;
+    String currentUserId;
+
+    DatabaseReference dbFriendsRef;
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +63,6 @@ public class AddExpenses extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        mAuth = FirebaseAuth.getInstance();
         TextView title = (TextView) findViewById(R.id.activityTitle2);
         title.setText("This is Add Expenses");
 
@@ -57,6 +74,45 @@ public class AddExpenses extends AppCompatActivity {
         else {
             verifyPermissions(PERMISSIONS);
         }
+
+        mAuth = FirebaseAuth.getInstance();
+        dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
+
+        friendList = new ArrayList<>();
+        selectedFriendList = new ArrayList<>();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        dbFriendsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                friendList.clear();
+                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
+                {
+                    UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
+
+                    if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
+                    {
+                        UsersDataModel udm1=new UsersDataModel();
+                        udm1.setFriendId(udm.getFriendId());
+                        udm1.setUserId(udm.getUserId());
+                        udm1.setFrndName(udm.getFrndName());
+                        udm1.setPic(udm.getPic());
+
+                        friendList.add(udm1);
+
+                    }
+                }
+
+                addedFriendsList adapter=new addedFriendsList(AddExpenses.this, friendList);
+                listViewFriends.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
