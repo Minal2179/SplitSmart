@@ -39,9 +39,11 @@ public class newFriend_Adding extends AppCompatActivity
     private EditText contactNo;
     private EditText Email;
     private Button btnAddFriend;
+
     private String currentUserId;
     static final int PICK_CONTACT_REQUEST = 1;
     DatabaseReference addfrnddb;
+    DatabaseReference adduserfrnddb;
     private FirebaseAuth mAuth;
 
 
@@ -100,6 +102,7 @@ public class newFriend_Adding extends AppCompatActivity
 
 
         addfrnddb=FirebaseDatabase.getInstance().getReference("friendships");
+       adduserfrnddb=FirebaseDatabase.getInstance().getReference("user_friends");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         findViewById(R.id.Name).setOnClickListener(new View.OnClickListener() {
@@ -147,8 +150,14 @@ if(!TextUtils.isEmpty(frndemail))
     String strDate = dateFormat.format(date);
     UsersDataModel udm=new UsersDataModel(currentUserId,frndemail,frndName,strDate,strDate);
     String id=addfrnddb.push().getKey();
+    //String email=
     Log.d("printing vale of id", "addfriendInDB: "+id);
     addfrnddb.child(id).setValue(udm);
+
+    adduserfrnddb.child(currentUserId.replace(".","")).child("friends").child(frndemail.replace(".","")).setValue(0);
+
+
+
 }
 
 

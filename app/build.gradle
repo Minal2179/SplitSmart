@@ -53,6 +53,11 @@ dependencies {
     //Dex file fix
     implementation 'com.android.support:multidex:1.0.3'
 
+    // Universal image loader
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    // text recognition api
+    implementation 'com.google.android.gms:play-services-vision:15.0.0'
 
 
 }
