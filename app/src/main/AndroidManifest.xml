@@ -35,6 +35,8 @@
         <activity android:name=".newFriend_Adding" />
         <activity android:name=".friends_detail" />
 
+        <activity android:name=".AddExpenseNext" />
+
         <service android:name=".helper.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

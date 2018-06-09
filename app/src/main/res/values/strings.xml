@@ -70,6 +70,14 @@
     <string name="string_save_and_finish">Save and Finish</string>
     <string name="string_item_name">Item Name</string>
     <string name="string_0_00">$0.00</string>
+    <string name="selected_image">selected_image</string>
+
+    <!-- Strings for ocrlibrary -->
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Storage doesn\'t available</string>
+    <string name="title_activity_ocr">Ocr Capture Activity</string>
 
 </resources>
 
