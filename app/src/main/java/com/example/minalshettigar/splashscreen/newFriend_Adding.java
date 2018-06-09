@@ -180,7 +180,7 @@ public class newFriend_Adding extends AppCompatActivity
             Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
             //create the new message
             MessageModel message = new MessageModel();
-            message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+            message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
             message.setMessage(frnd_email);
             message.setTimestamp(getTimestamp());
 

@@ -111,6 +111,11 @@ public class Dashboard extends AppCompatActivity {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
                 .child(getString(R.string.field_messaging_token))
                 .setValue(token);
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                .child(getString(R.string.field_user_name))
+                .setValue(mAuth.getCurrentUser().getDisplayName());
+
     }
 
 
