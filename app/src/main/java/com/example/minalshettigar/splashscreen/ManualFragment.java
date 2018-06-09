@@ -35,12 +35,14 @@ public class ManualFragment extends Fragment {
 
     Button buttonNewItem;
     Button buttonFinish;
+    Button buttonRemoveFriend;
 
+    List<UsersDataModel> selectedFriendList = new ArrayList<>();
     ListView listViewSelectedFriends;
     ListView listViewFriends;
     String currentUserId;
-
-    private double itemPrice;
+    String itemName;
+    double itemPrice;
 
 
     @Nullable
@@ -55,11 +57,21 @@ public class ManualFragment extends Fragment {
 
         buttonNewItem = (Button) view.findViewById(R.id.button_new_item);
         buttonFinish = (Button) view.findViewById(R.id.button_finish);
+        //buttonRemoveFriend = (Button) view.findViewById(R.id.button_remove_friend);
 
         buttonNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO save data to db
+                itemName = inputItem.getText().toString();
+                itemPrice = Double.parseDouble(inputPrice.getText().toString());
+
+                double splitPrice = splitCost(itemPrice, selectedFriendList.size());
+
+                for (int i = 0; i < selectedFriendList.size(); i++) {
+                    String friendId = selectedFriendList.get(i).getFriendId();
+
+                }
 
                 // clear form fields
                 inputItem.setText(null);
@@ -72,6 +84,9 @@ public class ManualFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO save data to db
+                itemName = inputItem.getText().toString();
+                itemPrice = Double.parseDouble(inputPrice.getText().toString());
+
 
                 // clear form fields
                 inputItem.setText(null);

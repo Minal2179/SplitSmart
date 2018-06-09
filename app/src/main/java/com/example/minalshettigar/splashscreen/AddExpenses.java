@@ -51,7 +51,6 @@ public class AddExpenses extends AppCompatActivity {
     ListView listViewSelectedFriends;
     ListView listViewFriends;
     String currentUserId;
-
     DatabaseReference dbFriendsRef;
     FirebaseAuth mAuth;
 
@@ -103,8 +102,8 @@ public class AddExpenses extends AppCompatActivity {
                     }
                 }
 
-                addedFriendsList adapter=new addedFriendsList(AddExpenses.this, friendList);
-                listViewFriends.setAdapter(adapter);
+                //addedFriendsList adapter = new addedFriendsList(AddExpenses.this, friendList);
+                //listViewFriends.setAdapter(adapter);
 
             }
 
@@ -273,5 +272,9 @@ public class AddExpenses extends AppCompatActivity {
             Log.d(TAG, "checkPermissions: \n Permission was granted for: " + permission);
             return true;
         }
+    }
+
+    public void addTransactionToDb(String userId, double amount) {
+
     }
 }
