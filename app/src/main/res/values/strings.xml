@@ -55,6 +55,7 @@
     <string name="dbnode_notification">notification</string>
     <string name="dbnode_messages">messages</string>
     <string name="dbnode_users">users</string>
+    <string name="dbnode_events">events</string>
 
     <!-- Firebase Database Fields -->
     <string name="field_message">message</string>

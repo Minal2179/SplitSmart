@@ -255,11 +255,18 @@ public class newFriend_Adding extends AppCompatActivity
         }else{
             Toast.makeText(this, "enter a message", Toast.LENGTH_SHORT).show();
         }
+        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+        eventRef
+                .child(mAuth.getCurrentUser().getEmail().replace(".",""))
+                .child(eventRef.push().getKey())
+                .setValue("You have successfully added "+frnd_name+" as your friend");
+        eventRef
+                .child(frnd_email.replace(".",""))
+                .child(eventRef.push().getKey())
+                .setValue("You are now friends with "+mAuth.getCurrentUser().getDisplayName());
 
     }
 
-    @Override
-}
     /*@Override
     protected void onActivityResult ( int requestCode, int resultCode, Intent intent){
         switch (requestCode) {
