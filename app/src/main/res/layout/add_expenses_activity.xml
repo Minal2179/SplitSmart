@@ -27,13 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-
             </android.support.design.widget.AppBarLayout>
 
         </RelativeLayout>
-
-
 
 
         <RelativeLayout
@@ -51,9 +47,11 @@
                 android:id="@+id/activityTitle2"
                 android:textAlignment="center"/>
 
+            <include layout="@layout/layout_center_viewpager" />
+
+            <include layout="@layout/layout_bottom_tabs" />
+
         </RelativeLayout>
-
-
 
 
 
@@ -73,8 +71,6 @@
 
             </android.support.design.widget.BottomNavigationView>
         </RelativeLayout>
-
-
 
     </RelativeLayout>
 

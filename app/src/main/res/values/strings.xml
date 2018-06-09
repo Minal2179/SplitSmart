@@ -60,5 +60,16 @@
         <item>Logout</item>
     </string-array>
 
+    <!-- Strings related to add expenses -->
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
+    <string name="manual">MANUAL LIST</string>
+    <string name="string_open_camera">OPEN CAMERA</string>
+    <string name="string_next">Next</string>
+    <string name="string_save_and_add_another_item">Save and Add Another Item</string>
+    <string name="string_save_and_finish">Save and Finish</string>
+    <string name="string_item_name">Item Name</string>
+    <string name="string_0_00">$0.00</string>
+
 </resources>
 
