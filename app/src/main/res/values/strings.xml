@@ -79,5 +79,14 @@
     <string name="low_storage_error">Storage doesn\'t available</string>
     <string name="title_activity_ocr">Ocr Capture Activity</string>
 
+    <string-array name="category_array">
+        <item>Shopping</item>
+        <item>Food</item>
+        <item>Rent</item>
+        <item>Grocery</item>
+        <item>travel</item>
+        <item>Miscellaneous</item>
+    </string-array>
+
 </resources>
 
