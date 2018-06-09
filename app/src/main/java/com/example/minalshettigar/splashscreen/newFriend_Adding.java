@@ -8,13 +8,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.provider.ContactsContract;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.MessageModel;
 import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
+import com.example.minalshettigar.splashscreen.helper.users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,20 +48,30 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class newFriend_Adding extends AppCompatActivity
 {
     private static final String TAG = "newFriend_Adding";
-    private EditText name;
+//    private EditText name;
+    private AutoCompleteTextView name;
     private EditText contactNo;
     private EditText Email;
     private Button btnAddFriend;
     private String currentUserId;
     static final int PICK_CONTACT_REQUEST = 1;
     DatabaseReference addfrnddb;
+    DatabaseReference adduserfrnddb;
     DatabaseReference userDb;
     private FirebaseAuth mAuth;
+    List<users>registeredUserList;
+    List<String>list;
+    //String personName;
+    HashMap<String,String>map;
+    DatabaseReference dbusersRef;
     String userId;
     //vars
     private String mUserId;
@@ -115,24 +130,65 @@ public class newFriend_Adding extends AppCompatActivity
             }
         });
 
+       // name=(EditText)findViewById(R.id.Name);
+        contactNo=(EditText)findViewById(R.id.ContactNo);
+        Email   =(EditText)findViewById(R.id.Email);
+        btnAddFriend=(Button)findViewById(R.id.addFriend);
 
         addfrnddb=FirebaseDatabase.getInstance().getReference("friendships");
         userDb = FirebaseDatabase.getInstance().getReference("users");
+       adduserfrnddb=FirebaseDatabase.getInstance().getReference("user_friends");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        dbusersRef= FirebaseDatabase.getInstance().getReference("users");
 
-        findViewById(R.id.Name).setOnClickListener(new View.OnClickListener() {
+        list=new ArrayList<String>();
+        map=new HashMap<String,String>();
+        registeredUserList=new ArrayList<users>();
+
+        ArrayAdapter<String> name_adapter=new ArrayAdapter<String>(this, android.R.layout.select_dialog_item,list);
+        name = (AutoCompleteTextView) findViewById(R.id.Name);
+        name.setThreshold(1);
+        name.setAdapter(name_adapter);
+
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("log", "before");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+                for(Map.Entry<String,String>entry:map.entrySet())
+                {
+
+                    if(entry.getKey().equalsIgnoreCase(s.toString()))
+                    {
+
+                        Email.setText(entry.getValue());
+                    }
+                }
+            }
+        });
+
+
+        /*findViewById(R.id.Name).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 startActivityForResult(pickContact, PICK_CONTACT_REQUEST);
             }
-        });
-        name=(EditText)findViewById(R.id.Name);
-        contactNo=(EditText)findViewById(R.id.ContactNo);
-        Email   =(EditText)findViewById(R.id.Email);
-        btnAddFriend=(Button)findViewById(R.id.addFriend);
+        });*/
+
 
 
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
@@ -155,10 +211,10 @@ public class newFriend_Adding extends AppCompatActivity
 
     private void addfriendInDB()
     {
-    
+
         String frnd_name=name.getText().toString().trim();
         final String frnd_email=Email.getText().toString().trim();
-        
+
             //Log.d("inside db Method", "addfriendInDB: ");
         if(!TextUtils.isEmpty(frnd_email))
         {
@@ -170,6 +226,10 @@ public class newFriend_Adding extends AppCompatActivity
             String id=addfrnddb.push().getKey();
             Log.d("printing vale of id", "addfriendInDB: "+id);
             addfrnddb.child(id).setValue(udm);
+            adduserfrnddb.child(currentUserId.replace(".","")).child("friends").child(frnd_email.replace(".","")).setValue("0");
+            adduserfrnddb.child(currentUserId.replace(".","")).child("myValue").setValue("0");
+
+
 
         }
 
@@ -195,10 +255,12 @@ public class newFriend_Adding extends AppCompatActivity
         }else{
             Toast.makeText(this, "enter a message", Toast.LENGTH_SHORT).show();
         }
-    
+
     }
 
     @Override
+}
+    /*@Override
     protected void onActivityResult ( int requestCode, int resultCode, Intent intent){
         switch (requestCode) {
             case PICK_CONTACT_REQUEST:
@@ -216,8 +278,46 @@ public class newFriend_Adding extends AppCompatActivity
                 break;
         }
     }
+*/
+
+    protected void onStart() {
+        super.onStart();
+        dbusersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(newFriend_Adding.this, "inside Method.",
+                        Toast.LENGTH_SHORT).show();
+                //friendlist.clear();
+                for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
+                    users udm = frndSnap.getValue(users.class);
+
+                    if (udm.getEmail() != null && !udm.getEmail().equalsIgnoreCase(currentUserId))
+                    {
+                        users udm1 = new users();
+                        udm1.setContact(udm.getContact());
+                        udm1.setEmail(udm.getEmail());
+                        udm1.setName(udm.getName());
+
+                        registeredUserList.add(udm1);
+
+                    }
+                }
+
+                for(users udm:registeredUserList)
+                {
+                    list.add(udm.getName());
+                    map.put(udm.getName(),udm.getEmail());
+                }
 
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

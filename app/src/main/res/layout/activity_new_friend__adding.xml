@@ -92,15 +92,20 @@
                 android:hint="Enter Contact No"
                 android:inputType="textPersonName" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/Name"
-                android:layout_width="237dp"
+                android:layout_width="235dp"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/ContactNo"
+                android:layout_alignStart="@+id/Email"
                 android:layout_alignTop="@+id/nametext"
                 android:ems="10"
                 android:hint="Enter Name"
-                android:inputType="textPersonName" />
+                android:text="">
+
+                <requestFocus />
+            </AutoCompleteTextView>
+
+
 
             <Button
                 android:id="@+id/addFriend"
@@ -110,8 +115,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="110dp"
                 android:text="Add Friend" />
-
-
 
 
             <TextView

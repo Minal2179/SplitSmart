@@ -120,13 +120,12 @@ public class AddFriends extends AppCompatActivity {
         friendlist = new ArrayList<>();
         listViewfriendsResult = (ListView) findViewById(R.id.listViewfriendsresult);
 
-        //on click listViewItem
+
 
         listViewfriendsResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View myView, int i, long l) {
-//
-//   Toast.makeText(getApplicationContext(),fruitNames[i],Toast.LENGTH_LONG).show();
+
 
                 String Name = ((TextView) myView.findViewById(R.id.textViewName)).getText().toString();
                 String email = ((TextView) myView.findViewById(R.id.textViewEmail)).getText().toString();

@@ -2,7 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.minalshettigar.splashscreen">
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
@@ -39,6 +47,10 @@
         <activity android:name=".newFriend_Adding" />
         <activity android:name=".friends_detail" />
 
+
+        <activity android:name=".AddExpenseNext" />
+        <activity android:name=".Profile_edit_options"/>
+        <activity android:name=".Invite_new_people"/>
 
     </application>
 

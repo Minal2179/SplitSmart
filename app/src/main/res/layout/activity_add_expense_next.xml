@@ -9,7 +9,7 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -27,9 +27,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
+
             </android.support.design.widget.AppBarLayout>
 
         </RelativeLayout>
+
+
 
 
         <RelativeLayout
@@ -44,14 +48,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
                 android:textSize="30sp"
-                android:id="@+id/activityTitle2"
+                android:id="@+id/activityTitle3"
                 android:textAlignment="center"/>
 
-            <include layout="@layout/layout_center_viewpager" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textDetected"
+                android:textSize="30sp"
+                android:textAlignment="center"/>
 
-            <include layout="@layout/layout_bottom_tabs" />
+            <!-- add a list view of all the items and prices, need to assign friends to items too -->
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ListView>
 
         </RelativeLayout>
+
+
 
 
 
@@ -72,8 +88,8 @@
             </android.support.design.widget.BottomNavigationView>
         </RelativeLayout>
 
+
+
     </RelativeLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>
