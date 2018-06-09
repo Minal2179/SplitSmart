@@ -58,6 +58,13 @@
                 android:textSize="30sp"
                 android:textAlignment="center"/>
 
+            <!-- add a list view of all the items and prices, need to assign friends to items too -->
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ListView>
+
         </RelativeLayout>
 
 

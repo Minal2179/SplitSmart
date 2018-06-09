@@ -12,9 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
 
+import com.example.minalshettigar.splashscreen.helper.ExpenseDataModel;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -24,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class AddExpenseNext extends AppCompatActivity {
 
@@ -41,6 +46,10 @@ public class AddExpenseNext extends AppCompatActivity {
     private Bitmap bitmap;
     private Intent intent;
 
+    ArrayList<ExpenseDataModel> expenseDataModels;
+    ListView listView;
+    private static CustomExpenseAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +61,23 @@ public class AddExpenseNext extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         TextView textView = (TextView) findViewById(R.id.textDetected);
         textView.setText("TESTING: DETECTED TEXT SHOULD BE SHOWN HERE");
+
+        listView = (ListView) findViewById(R.id.list);
+        expenseDataModels = new ArrayList<>();
+
+        // add parsed text info to expenseDataModels
+        expenseDataModels.add(new ExpenseDataModel("item1", 1.00));
+
+        adapter = new CustomExpenseAdapter(expenseDataModels, getApplicationContext());
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ExpenseDataModel expenseDataModel = expenseDataModels.get(position);
+                // assign friends
+
+            }
+        });
 
         // get img info from AddExpenses Activity
         intent = getIntent();
@@ -81,7 +107,12 @@ public class AddExpenseNext extends AppCompatActivity {
 
             }
 
-            textView.setText(sb.toString());
+            if (sb.length() > 0) {
+                textView.setText(sb.toString());
+            }
+            else {
+                textView.setText("Could not detect any text");
+            }
         }
 
 
