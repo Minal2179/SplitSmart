@@ -44,6 +44,8 @@
         <activity android:name=".AddExpenses" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ActivityList" />
         <activity android:name=".UserSettings" />
+        <activity android:name=".Notification_settings" />
+
 
         <activity android:name=".newFriend_Adding" />
         <activity android:name=".friends_detail" />
