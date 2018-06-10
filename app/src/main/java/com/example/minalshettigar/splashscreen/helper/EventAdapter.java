@@ -32,8 +32,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(context);
 
         //inflate the custom layout
-        View view = inflater.inflate(R.layout.activity_list_item_event, parent, false);
-
+        View view = inflater.inflate(R.layout.activity_list_item_event, null, false);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(lp);
         //return a new holder instance
         return new ViewHolder(view);
     }
@@ -41,11 +42,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: getItemCount" +getItemCount());
-        if(getItemCount() > 1){
-            holder.message.setText(mEvents.get(position).getMessage());
+        if(getItemCount() < 1){
+            holder.message.setText("There is no data to display");
+
         }
         else{
-            holder.message.setText("There is no data to display");
+            Log.d(TAG, "onBindViewHolder: "+mEvents.get(position).getMessage() );
+            holder.message.setText(mEvents.get(position).getMessage());
         }
 
     }

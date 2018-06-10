@@ -114,11 +114,15 @@ public class ActivityList extends AppCompatActivity {
         events.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                EventDbFormat event = dataSnapshot.getValue(EventDbFormat.class);
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    EventDbFormat event = snapshot.getValue(EventDbFormat.class);
+                    mEvents.add(event);
+                    Log.d(TAG, "onDataChange: event data"+ snapshot.getValue());
 
-                mEvents.add(event);
+                }
                 mEventAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

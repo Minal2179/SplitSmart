@@ -49,6 +49,8 @@ import android.widget.ArrayAdapter;
 import android .widget.TextView;
 import android.text.TextWatcher;
 import java.util.HashMap;
+import java.util.Objects;
+
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class ManualFragment extends Fragment {
@@ -94,7 +96,7 @@ public class ManualFragment extends Fragment {
 
 
        View view= inflater.inflate(R.layout.fragment_manual,container,false);
-
+        mAuth = FirebaseAuth.getInstance();
        inputItem = (EditText) view.findViewById(R.id.input_item);
         inputPrice = (EditText) view.findViewById(R.id.input_price);
         //searchQuery = (AutoCompleteTextView) view.findViewById(R.id.input_people);
@@ -240,7 +242,19 @@ public class ManualFragment extends Fragment {
 
             addItemToFrnds.child(currentUserIdWithoutDot).child(id).setValue(itemObj);
             addItemToFrnds.child(currentUserIdWithoutDot).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
-            addItemToFrnds.child(currentUserIdWithoutDot).child("category").setValue(dropVal);
+            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
+
+            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+            eventRef
+                    .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                    .child(Objects.requireNonNull(eventRef.push().getKey()))
+                    .child(getString(R.string.field_message))
+                    .setValue("You have added " +itemName+" of amount "+Double.toString(itemPrice));
+            eventRef
+                    .child(splitPeopleEmailWithoutDot)
+                    .child(Objects.requireNonNull(eventRef.push().getKey()))
+                    .child(getString(R.string.field_message))
+                    .setValue(mAuth.getCurrentUser().getDisplayName()+" added "+itemName+" of amount "+Double.toString(itemPrice));
 
 
         }

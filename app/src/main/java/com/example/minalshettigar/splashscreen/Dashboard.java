@@ -32,6 +32,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.Objects;
 
 
 public class Dashboard extends AppCompatActivity {
@@ -146,9 +147,11 @@ public class Dashboard extends AppCompatActivity {
         users.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
                 UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
                 //Set image
-                File file = new File(current_user.getPic());
+
+                File file = new File(Objects.requireNonNull(current_user).getPic());
                 Picasso.with(getBaseContext()).load(file)
                         .into(user_profile);
                 collapsingToolbarLayout.setTitle(current_user.getEmail());

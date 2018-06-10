@@ -253,7 +253,6 @@ public class newFriend_Adding extends AppCompatActivity
                     .child(getString(R.string.dbnode_messages))
                     .child(frnd_email.replace(".",""))
                     .child(Objects.requireNonNull(msgreference.push().getKey()))
-                    .child("message")
                     .setValue(message);
 
             Toast.makeText(this, "Friend Added Successfully", Toast.LENGTH_SHORT).show();
@@ -262,12 +261,14 @@ public class newFriend_Adding extends AppCompatActivity
         }
         DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
         eventRef
-                .child(mAuth.getCurrentUser().getEmail().replace(".",""))
-                .child(eventRef.push().getKey())
+                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                .child(Objects.requireNonNull(eventRef.push().getKey()))
+                .child(getString(R.string.field_message))
                 .setValue("You have successfully added "+frnd_name+" as your friend");
         eventRef
                 .child(frnd_email.replace(".",""))
-                .child(eventRef.push().getKey())
+                .child(Objects.requireNonNull(eventRef.push().getKey()))
+                .child(getString(R.string.field_message))
                 .setValue("You are now friends with "+mAuth.getCurrentUser().getDisplayName());
 
     }

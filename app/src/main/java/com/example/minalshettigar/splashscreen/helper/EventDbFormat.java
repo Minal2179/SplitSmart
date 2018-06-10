@@ -3,6 +3,9 @@ package com.example.minalshettigar.splashscreen.helper;
 public class EventDbFormat {
     String message;
 
+    public EventDbFormat(){
+
+    }
     public EventDbFormat(String message) {
         this.message = message;
     }
