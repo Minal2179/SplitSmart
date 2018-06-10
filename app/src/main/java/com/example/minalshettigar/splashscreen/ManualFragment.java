@@ -458,7 +458,7 @@ public class ManualFragment extends Fragment {
                     .child(getString(R.string.field_user_name))
                     .setValue(mAuth.getCurrentUser().getDisplayName());
         }catch (Exception e){
-            
+
         }
     }
 

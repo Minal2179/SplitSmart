@@ -153,26 +153,32 @@ public class Dashboard extends AppCompatActivity {
         users.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild("name")){
-                    Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
-                    UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
-                    //Set image
+                try{
+                    if(dataSnapshot.hasChild("name")){
+                        Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+                        UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
+                        //Set image
+                        if(current_user.getPic()!=null){
+                            File file = new File(Objects.requireNonNull(current_user).getPic());
+                            Picasso.with(getBaseContext()).load(file)
+                                    .into(user_profile);
+                        }
+                        collapsingToolbarLayout.setTitle(current_user.getName());
+                        Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
+                        System.out.println("name is : "+ current_user.getEmail());
+                        expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
+                        category1.setText("Shopping: "+shopping);
+                        category2.setText("Food: "+food);
+                        category3.setText("Grocery: "+grocery);
+                        category4.setText("Travel: "+travel);
+                        category5.setText("Miscellaneous: "+misc);
+                        category6.setText("Utility: "+utility);
+                        category7.setText("Rent: "+rent);
+                    }
+                }catch (Exception e){
 
-                    File file = new File(Objects.requireNonNull(current_user).getPic());
-                    Picasso.with(getBaseContext()).load(file)
-                            .into(user_profile);
-                    collapsingToolbarLayout.setTitle(current_user.getName());
-                    Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
-                    System.out.println("name is : "+ current_user.getEmail());
-                    expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
-                    category1.setText("Shopping: "+shopping);
-                    category2.setText("Food: "+food);
-                    category3.setText("Grocery: "+grocery);
-                    category4.setText("Travel: "+travel);
-                    category5.setText("Miscellaneous: "+misc);
-                    category6.setText("Utility: "+utility);
-                    category7.setText("Rent: "+rent);
                 }
+
 
             }
 
@@ -248,36 +254,40 @@ public class Dashboard extends AppCompatActivity {
         items.child(user.getEmail().replace(".","")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try{
+                    for (DataSnapshot itemsnap : dataSnapshot.getChildren()) {
+                        Log.d(TAG, "onDataChange: itemsnap"+itemsnap);
+                        Item item=itemsnap.getValue(Item.class);
+                        if(itemsnap.hasChild("category")){
+                            if(item.getCategory().equalsIgnoreCase("Shopping")){
+                                shopping = shopping + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Food")){
+                                food = food + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Rent")){
+                                rent = rent + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Grocery")){
+                                grocery = grocery + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Travel")){
+                                travel = travel + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Miscellaneous")){
+                                misc = misc + Double.parseDouble(item.getItem_price());
+                            }
+                            else if(item.getCategory().equalsIgnoreCase("Utility")){
+                                utility = utility + Double.parseDouble(item.getItem_price());
+                            }
+                        }
 
-                for (DataSnapshot itemsnap : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "onDataChange: itemsnap"+itemsnap);
-                    Item item=itemsnap.getValue(Item.class);
-                    if(itemsnap.hasChild("category")){
-                        if(item.getCategory().equalsIgnoreCase("Shopping")){
-                            shopping = shopping + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Food")){
-                            food = food + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Rent")){
-                            rent = rent + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Grocery")){
-                            grocery = grocery + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Travel")){
-                            travel = travel + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Miscellaneous")){
-                            misc = misc + Double.parseDouble(item.getItem_price());
-                        }
-                        else if(item.getCategory().equalsIgnoreCase("Utility")){
-                            utility = utility + Double.parseDouble(item.getItem_price());
-                        }
                     }
+                    Log.d(TAG, "onDataChange: lets check the value"+ food);
+                }catch (Exception e){
 
                 }
-                Log.d(TAG, "onDataChange: lets check the value"+ food);
+
 
             }
 
