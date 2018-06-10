@@ -72,8 +72,8 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         tabLayout.setupWithViewPager(mViewPager);
 
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_center_focus);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_autorenew);
+        tabLayout.getTabAt(0).setText("Login");
+        tabLayout.getTabAt(1).setText("Register");
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
