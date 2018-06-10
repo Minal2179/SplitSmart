@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.FriendsExpense;
 import com.example.minalshettigar.splashscreen.helper.Item;
+import com.example.minalshettigar.splashscreen.helper.MessageModel;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.widget.Spinner;
@@ -50,7 +52,9 @@ import android .widget.TextView;
 import android.text.TextWatcher;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.TimeZone;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class ManualFragment extends Fragment {
@@ -85,6 +89,7 @@ public class ManualFragment extends Fragment {
     View v;
     String dropdownValue;
     String myvalue;
+    private static final String TAG = "ManualFragment";
 
 
 
@@ -205,6 +210,7 @@ public class ManualFragment extends Fragment {
                 itemPrice = Double.parseDouble(inputPrice.getText().toString());
 
                 // dropdownValue = staticSpinner.getOnItemSelectedListener().;
+                initFCM();
 
                 addItemTofriends(dropdownValue);
                 addExpensessToUserFriends();
@@ -234,6 +240,7 @@ public class ManualFragment extends Fragment {
            String id = addItemToFrnds.push().getKey();
 
             String currentUserIdWithoutDot=currentUserId.replace(".","");
+            String username = mAuth.getCurrentUser().getDisplayName();
             //System.out.println("peopleEmail"+peopleEmail.getText().toString());
             String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
 
@@ -244,6 +251,28 @@ public class ManualFragment extends Fragment {
             addItemToFrnds.child(currentUserIdWithoutDot).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
             addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
 
+            DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
+
+            if(!itemName.isEmpty()){
+
+                //Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
+                //create the new message
+                MessageModel message = new MessageModel();
+                message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
+                message.setMessage(username+" added "+itemName+" of amount "+Double.toString(itemPrice));
+                message.setTimestamp(getTimestamp());
+
+                //insert the new message
+                msgreference
+                        .child(getString(R.string.dbnode_messages))
+                        .child(splitPeopleEmailWithoutDot)
+                        .child(Objects.requireNonNull(msgreference.push().getKey()))
+                        .setValue(message);
+
+                Toast.makeText(getContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getContext(), "enter a message", Toast.LENGTH_SHORT).show();
+            }
             DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
             eventRef
                     .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
@@ -371,6 +400,31 @@ public class ManualFragment extends Fragment {
             }
         });
     }
+    private void sendRegistrationToServer(String token) {
+        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(getString(R.string.field_messaging_token))
+                .setValue(token);
+    }
 
+
+    private void initFCM(){
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "initFCM: token: " + token);
+        sendRegistrationToServer(token);
+
+    }
+
+    /**
+     * Return the current timestamp in the form of a string
+     * @return
+     */
+    private String getTimestamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        return sdf.format(new Date());
+    }
 
 }

@@ -49,6 +49,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         else{
             Log.d(TAG, "onBindViewHolder: "+mEvents.get(position).getMessage() );
             holder.message.setText(mEvents.get(position).getMessage());
+            //add category image
         }
 
     }

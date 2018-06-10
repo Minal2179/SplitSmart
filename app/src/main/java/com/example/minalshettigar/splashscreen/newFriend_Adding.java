@@ -245,7 +245,7 @@ public class newFriend_Adding extends AppCompatActivity
             //create the new message
             MessageModel message = new MessageModel();
             message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
-            message.setMessage(frnd_email);
+            message.setMessage("You are now friends with "+mAuth.getCurrentUser().getDisplayName());
             message.setTimestamp(getTimestamp());
 
             //insert the new message
