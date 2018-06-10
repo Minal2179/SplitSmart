@@ -27,4 +27,42 @@
         android:layout_below="@id/itemPrice"
         android:hint="Friend A"/>
 
+    <!--
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayoutSearchFriends"
+        android:layout_below="@id/itemPrice">
+
+        <include layout="@layout/search_friend_list_layout"/>
+
+    </RelativeLayout>
+    -->
+
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemPerson"
+        android:iconifiedByDefault="false"
+        android:queryHint="Assign Friends" >
+
+        <requestFocus />
+
+    </SearchView>
+
+    <ListView
+        android:id="@+id/allFriendsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchView"
+        />
+
+    <ListView
+        android:id="@+id/selectedFriendsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/allFriendsListView"></ListView>
+
 </RelativeLayout>
