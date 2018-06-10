@@ -154,21 +154,15 @@ public class AddFriends extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(AddFriends.this, "on Start Method",
-                Toast.LENGTH_SHORT).show();
+
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         dbFriendsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(AddFriends.this, "inside Method.",
-                        Toast.LENGTH_SHORT).show();
-                //friendlist.clear();
+
+                friendlist.clear();
                 for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
-//                    DataSnapshot frndSnap = userSnap.child("friend");
-//                    System.out.println("MINAL SAYS"+userSnap.getKey().toLowerCase() + frndSnap.getValue());
-//                   if(frndSnap.hasChild("shailesh")){
-//                       System.out.println("MINAL SAYS WONT BE PRINTED"+userSnap.getKey().toLowerCase());
-//                   }
+
                     UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
 
                     if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))

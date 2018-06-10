@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature
         android:name="android.hardware.camera.any"
         android:required="true" />
@@ -47,10 +48,10 @@
         <activity android:name=".newFriend_Adding" />
         <activity android:name=".friends_detail" />
 
-
-        <activity android:name=".AddExpenseNext" />
+        <activity android:name=".AddExpenseNext" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Profile_edit_options"/>
         <activity android:name=".Invite_new_people"/>
+
 
     </application>
 

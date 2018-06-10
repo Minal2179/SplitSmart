@@ -105,7 +105,7 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/addFriend"
+                android:id="@+id/invite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
