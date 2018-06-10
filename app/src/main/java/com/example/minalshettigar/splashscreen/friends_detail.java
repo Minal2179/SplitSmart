@@ -179,7 +179,7 @@ public class friends_detail extends AppCompatActivity {
 
                }
 
-                amountToBeSettled.setText("null");
+                amountToBeSettled.setText(null);
             }
         });
 
