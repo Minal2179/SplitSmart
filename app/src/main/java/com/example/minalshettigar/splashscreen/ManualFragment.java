@@ -448,14 +448,18 @@ public class ManualFragment extends Fragment {
     private void sendRegistrationToServer(String token) {
         Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child(getString(R.string.dbnode_notification))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                .child(getString(R.string.field_messaging_token))
-                .setValue(token);
-        reference.child(getString(R.string.dbnode_notification))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                .child(getString(R.string.field_user_name))
-                .setValue(mAuth.getCurrentUser().getDisplayName());
+        try {
+            reference.child(getString(R.string.dbnode_notification))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""))
+                    .child(getString(R.string.field_messaging_token))
+                    .setValue(token);
+            reference.child(getString(R.string.dbnode_notification))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""))
+                    .child(getString(R.string.field_user_name))
+                    .setValue(mAuth.getCurrentUser().getDisplayName());
+        }catch (Exception e){
+            
+        }
     }
 
 
