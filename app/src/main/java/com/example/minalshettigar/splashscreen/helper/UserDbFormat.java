@@ -5,23 +5,26 @@ import android.net.Uri;
 import java.net.URI;
 
 public class UserDbFormat {
-//    private Uri pic;
+    private String pic;
     private String name;
     private String email;
     private String contact;
     private String uid;
 
-    public UserDbFormat(String uid, String name, String email, String contact) {
-//        this.pic = pic;
+    public UserDbFormat(String uid, String name, String email, String contact, String pic) {
+        this.pic = pic;
         this.name = name;
         this.email = email;
         this.contact = contact;
         this.uid = uid;
     }
 
-//    public void setPic(Uri pic) {
-//        this.pic = pic;
-//    }
+    public UserDbFormat() {
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
 
     public String getUid() {
         return uid;
@@ -31,13 +34,10 @@ public class UserDbFormat {
         this.uid = uid;
     }
 
-//    public Uri getPic() {
 
-    public UserDbFormat() {
+    public String getPic() {
+        return pic;
     }
-
-//        return pic;
-//    }
 
     public String getName() {
         return name;

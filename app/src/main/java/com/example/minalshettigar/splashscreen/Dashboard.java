@@ -3,6 +3,8 @@ package com.example.minalshettigar.splashscreen;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,22 +13,41 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 
 
 public class Dashboard extends AppCompatActivity {
 
     private static final String TAG = "DashboardActivity";
+
+    TextView category1,category2,category3,category4,category5,category6;
+    ImageView user_profile,cat1_img,cat2_img,cat3_img,cat4_img,cat5_img,cat6_img;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    FloatingActionButton addBtn;
+    //Firebase
     private FirebaseAuth mAuth;
-    
+    FirebaseUser user;
+
+    FirebaseDatabase database;
+
+    DatabaseReference users;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +55,39 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
+        mAuth=FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference(getString(R.string.dbnode_users));
         Intent myintent = getIntent();
-        mAuth= FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
 
 
+        //UI Components
+        category1 = findViewById(R.id.category1_val);
+        cat1_img = findViewById(R.id.category1_img);
+        category2 = findViewById(R.id.category2_val);
+        cat2_img = findViewById(R.id.category2_img);
+        category3 = findViewById(R.id.category3_val);
+        cat3_img = findViewById(R.id.category3_img);
+        category4 = findViewById(R.id.category4_val);
+        cat4_img = findViewById(R.id.category4_img);
+        category5 = findViewById(R.id.category5_val);
+        cat5_img = findViewById(R.id.category5_img);
+        category6 = findViewById(R.id.category6_val);
+        cat6_img = findViewById(R.id.category6_img);
+        user_profile = findViewById(R.id.user_profile);
+        addBtn = findViewById(R.id.btnAdd);
+
+        collapsingToolbarLayout = findViewById(R.id.collapsing);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance((R.style.ExpandedAppBar));
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance((R.style.CollapsedAppBar));
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Dashboard.this, AddExpenses.class);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -84,6 +132,33 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
+        getUserDetail(user.getUid());
+
+    }
+
+    private void getUserDetail(String userID) {
+
+        System.out.println(userID + users.child(userID).toString());
+
+        users.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
+                //Set image
+                Picasso.with(getBaseContext()).load(current_user.getPic())
+                        .into(user_profile);
+                collapsingToolbarLayout.setTitle(current_user.getName());
+                System.out.println("name is : "+ current_user.getName());
+                category1.setText(current_user.getContact());
+                category2.setText(current_user.getEmail());
+                category3.setText(current_user.getUid());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void sendRegistrationToServer(String token) {

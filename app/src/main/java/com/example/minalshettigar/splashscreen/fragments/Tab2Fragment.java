@@ -1,6 +1,7 @@
 package com.example.minalshettigar.splashscreen.fragments;
 
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -66,6 +70,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private View mEmailPassword;
     private View mEmailPasswordField;
     private View mSigningButtons;
+    private String picturePath;
     private Uri selectedImage;
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -80,8 +85,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private ImageView imageView;
     //Db Reference
     DatabaseReference userDb;
-    String userid;
-    String currentUserId;
+    private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Nullable
     @Override
@@ -103,41 +107,40 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         mEmailPassword=view.findViewById(R.id.email_password_buttons);
         mEmailPasswordField = view.findViewById(R.id.email_password_fields);
         mSigningButtons=view.findViewById(R.id.signed_in_buttons);
-//        imageView = view.findViewById(R.id.imgView);
+        imageView = view.findViewById(R.id.imgView);
 
 
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser().getUid()!=null) {
-            userid = mAuth.getCurrentUser().getUid();
-        }
+//        userid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         userDb= FirebaseDatabase.getInstance().getReference("users");
         // [END initialize_auth]
 
-//        Button buttonLoadImage = view.findViewById(R.id.buttonLoadPicture);
-//        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//
-//                Intent i = new Intent(
-//                        Intent.ACTION_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//                startActivityForResult(i, RESULT_LOAD_IMAGE);
-//            }
-//        });
+        Button buttonLoadImage = view.findViewById(R.id.buttonLoadPicture);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
         return view;
     }
 
-    private void setUserInDB()
+    private void setUserInDB(String picturePath)
     {
-
+        Log.d(TAG, "setUserInDB: Finally here "+ picturePath);
         String user_name=mNameField.getText().toString().trim();
         String user_email=mEmailField.getText().toString().trim();
         String user_contact=mContactField.getText().toString().trim();
-        String user_id= mAuth.getCurrentUser().getUid();
+        String user_id= Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        String user_profile = picturePath;
 
 
 
@@ -145,10 +148,10 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         if(!TextUtils.isEmpty(user_email))
         {
-            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact);
+            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact,user_profile);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
-            userDb.child(userid).setValue(udm);
+            userDb.child(user_id).setValue(udm);
         }
 
 
@@ -177,29 +180,39 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: In here !!!!!!!!!!!!");
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            ContentResolver resolver = getContext().getContentResolver();
-            Cursor cursor = resolver.query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+        if (EasyPermissions.hasPermissions(getActivity(), galleryPermissions)) {
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+                selectedImage = data.getData();
+                Log.d(TAG, "onActivityResult: After selecting a pic"+selectedImage);
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                ContentResolver resolver = getContext().getContentResolver();
+                Cursor cursor = resolver.query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
 
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
+                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+            }
+
+        } else {
+            EasyPermissions.requestPermissions(this, "Access for storage",
+                    101, galleryPermissions);
         }
+
 
 
     }
 
     //User Authentication Functions
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password, final String picturePath) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -216,13 +229,13 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            updateUI(user, picturePath);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI(null, null);
                         }
 
                         // [START_EXCLUDE]
@@ -235,7 +248,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
+        updateUI(null,null);
     }
 
     private void sendEmailVerification() {
@@ -294,12 +307,13 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         return valid;
     }
 
-    public void updateUI(FirebaseUser user) {
+    public void updateUI(FirebaseUser user, String picturePath) {
+        Log.d(TAG, "updateUI: Atleast here it should show up"+selectedImage);
         mBaseCallback.hideProgressDialog();
         if (user != null) {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                     .setDisplayName(mNameField.getText().toString())
-//                    .setPhotoUri(selectedImage)
+                    .setPhotoUri(selectedImage)
                     .build();
 
             user.updateProfile(profileUpdates)
@@ -311,7 +325,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     });
-            setUserInDB();
+            setUserInDB(picturePath);
             mCallback.changeStatusSuccess();
             mCallback.changeDetailText();
 
@@ -339,9 +353,10 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Log.d(TAG, "onClick: Hopefully selected image shows up here"+ picturePath);
         int i = v.getId();
         if (i == R.id.email_create_account_button) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(),picturePath);
         } else if (i == R.id.sign_out_button) {
             if(flag){
                 mCallback.googleSignOut();
@@ -359,10 +374,5 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
             mCallback.revokeAccess();
         }
     }
-    private void showProgress(boolean show) {
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-
 
 }
