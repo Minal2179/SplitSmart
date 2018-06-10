@@ -309,4 +309,8 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
         return false;
     }
 
+    public void removeItemFromData(int position) {
+        expenseDataModels.remove(position);
+        adapter.notifyDataSetChanged();
+    }
 }
