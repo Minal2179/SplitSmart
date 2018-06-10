@@ -4,13 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="16dp"
+    android:focusable="false">
 
     <TextView
         android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:textSize="20sp"
         android:hint="@string/string_item_name"/>
 
     <TextView
@@ -18,14 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/itemName"
+        android:layout_marginLeft="16dp"
+        android:textSize="20sp"
         android:hint="@string/string_0_00"/>
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/itemPrice"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="24dp"
-        android:text="Remove Item"/>
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:focusable="false"
+        android:text="Remove Item" />
+
 </RelativeLayout>

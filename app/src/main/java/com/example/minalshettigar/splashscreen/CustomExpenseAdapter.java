@@ -62,12 +62,12 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
         Object object = getItem(position);
         ExpenseDataModel expenseDataModel = (ExpenseDataModel) object;
 
+
         switch (v.getId()) {
             case R.id.buttonDelete:
-                Log.d("TEST", "delete item here" + position);
-                if (mContext instanceof AddExpenseNext) {
-                    ((AddExpenseNext) mContext).removeItemFromData(position);
-                }
+                Log.d("TEST", "delete item " + position);
+                //((AddExpenseNext) mContext).removeItemFromData(position);
+                
                 break;
         }
 

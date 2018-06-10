@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class AddExpenseNext extends AppCompatActivity {
 
     private static final String TAG = "AddExpenseNext Activity";
 
@@ -66,17 +68,6 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
     ListView itemListView;
     private static CustomExpenseAdapter adapter;
 
-    AutoCompleteTextView searchQuery;
-    SearchView editSearch;
-    ListView allFriendsListView;
-    String[] allFriendsNameList;
-    ArrayList<UsersDataModel> allFriendsArrayList = new ArrayList<UsersDataModel>();
-    FriendListViewAdapter allFriendsAdapter;
-
-    ListView selectedFriendsListView;
-    String[] selectedFriendsNameList;
-    ArrayList<UsersDataModel> selectedFriendsArrayList = new ArrayList<UsersDataModel>();
-    FriendListViewAdapter selectedFriendsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,14 +128,16 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
                 String s = amounts[i];
                 Log.d(TAG, "PARSED AMOUNTS: " + s);
                 // if the first character is $ or S (which should always be the case cause these are amounts
-                if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
-                    s = s.substring(1, s.length());
-                    Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
-                    Double amount = Double.parseDouble(s);
-                    parsedAmounts[i] = amount;
-                }
-                else {
-                    parsedAmounts[i] = Double.parseDouble(amounts[i]);
+                if (s.length() > 0) {
+                    if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
+                        s = s.substring(1, s.length());
+                        Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
+                        Double amount = Double.parseDouble(s);
+                        parsedAmounts[i] = amount;
+                    }
+                    else {
+                        parsedAmounts[i] = Double.parseDouble(amounts[i]);
+                    }
                 }
             }
 
@@ -152,29 +145,12 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
             for (int i = 0; i < names.length; i++) {
                 expenseDataModels.add(new ExpenseDataModel(names[i], parsedAmounts[i]));
             }
-/*
-        for(int i=0;i<expenseDataModels.size();i++){
-            Intent intent = new Intent(this,AfterImage_Click_add_Expence.class);
-            StringBuilder s = new StringBuilder();
-            s.append(expenseDataModels.get(i).getItemName());
-            s.append(',');
-            s.append(expenseDataModels.get(i).getItemPrice());
-            String sentData = s.toString();
-            intent.putExtra("a",sentData);
-            startActivity(intent);
         }
-*/
-        }
-
-        // add parsed text info to expenseDataModels
-        //expenseDataModels.add(new ExpenseDataModel("item1", 1.00));
-        //expenseDataModels.add(new ExpenseDataModel("item2", 4.00));
-
-
 
 
         adapter = new CustomExpenseAdapter(expenseDataModels, getApplicationContext());
         itemListView.setAdapter(adapter);
+        itemListView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -198,12 +174,6 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
             }
         });
-
-
-
-
-
-
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
@@ -296,21 +266,13 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
         return bitmap;
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        allFriendsAdapter.filter(text);
-        return false;
-    }
-
     public void removeItemFromData(int position) {
+        Log.d(TAG, "REMOVEITEM FROM DATA CALLED WHCBKJABCSKJBASKCBJKABSC");
         expenseDataModels.remove(position);
+        for (int i = 0; i < expenseDataModels.size(); i++) {
+            Log.d(TAG, "expenseDataModels item " + i + expenseDataModels.get(i).getItemName());
+        }
         adapter.notifyDataSetChanged();
+        itemListView.invalidateViews();
     }
 }
