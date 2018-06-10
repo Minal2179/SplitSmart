@@ -8,12 +8,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/relLayout1">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="CATEGORY"
-            android:id="@+id/input_category"/>
-
     </RelativeLayout>
 
     <LinearLayout
@@ -23,12 +17,6 @@
         android:orientation="vertical">
 
         <include layout="@layout/layout_manual_expense" />
-
-        <Button
-            android:id="@+id/button_new_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/string_save_and_add_another_item" />
 
         <Button
             android:id="@+id/button_finish"

@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AddExpenses extends AppCompatActivity {
@@ -57,17 +58,54 @@ public class AddExpenses extends AppCompatActivity {
     FirebaseAuth mAuth;
     Fragment fragment;
 
+    ArrayList<String>list=new ArrayList<String>();
+    HashMap<String,String>map=new HashMap<String,String>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_expenses_activity);
 
+        /*dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
+        dbFriendsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+
+                //selectedFriendList.clear();
+                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
+                {
+                    UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
+
+                    if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
+                    {
+                        UsersDataModel udm1=new UsersDataModel();
+                        udm1.setFriendId(udm.getFriendId());
+                        udm1.setUserId(udm.getUserId());
+                        udm1.setFrndName(udm.getFrndName());
+                        list.add(udm.getFrndName());
+                        udm1.setPic(udm.getPic());
+
+                        selectedFriendList.add(udm1);
+                        friendList.add(udm1);
+
+                    }
+                }
+
+                System.out.println("list"+list.size());
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+*/
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
-
-
 
         TextView title = (TextView) findViewById(R.id.activityTitle2);
         title.setText("This is Add Expenses");
@@ -87,38 +125,8 @@ public class AddExpenses extends AppCompatActivity {
         friendList = new ArrayList<>();
         selectedFriendList = new ArrayList<>();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        dbFriendsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                friendList.clear();
-                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
-                {
-                    UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
 
-                    if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
-                    {
-                        UsersDataModel udm1=new UsersDataModel();
-                        udm1.setFriendId(udm.getFriendId());
-                        udm1.setUserId(udm.getUserId());
-                        udm1.setFrndName(udm.getFrndName());
-                        udm1.setPic(udm.getPic());
 
-                        friendList.add(udm1);
-
-                    }
-                }
-
-                //addedFriendsList adapter = new addedFriendsList(AddExpenses.this, friendList);
-                //listViewFriends.setAdapter(adapter);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -209,9 +217,16 @@ public class AddExpenses extends AppCompatActivity {
     private void setupViewPager() {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("peopleName", list);
+        //System.out.println("list--=-=cvdhbhvbshdbfchdsb"+list.size());
+
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
-        adapter.addFragment(new ManualFragment());
+        ManualFragment manuals=new ManualFragment();
+         manuals.setArguments(bundle);
+        adapter.addFragment(manuals);
 
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager_container);
@@ -242,6 +257,57 @@ public class AddExpenses extends AppCompatActivity {
                 permissions,
                 VERIFY_PERMISSIONS_REQUEST
         );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
+        dbFriendsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+
+                //selectedFriendList.clear();
+                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
+                {
+                    UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
+
+                    if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
+                    {
+                        UsersDataModel udm1=new UsersDataModel();
+                        udm1.setFriendId(udm.getFriendId());
+                        udm1.setUserId(udm.getUserId());
+                        udm1.setFrndName(udm.getFrndName());
+                        udm1.setPic(udm.getPic());
+
+                        selectedFriendList.add(udm1);
+                        friendList.add(udm1);
+
+                    }
+                }
+
+                for(UsersDataModel udm:selectedFriendList)
+                {
+
+                    System.out.println("udm.getFrndName()"+udm.getFrndName());
+                    list.add(udm.getFrndName());
+                    map.put(udm.getFrndName(),udm.getFriendId());
+
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     /**
