@@ -267,6 +267,7 @@ public class newFriend_Adding extends AppCompatActivity
 
     }
 
+
     /*@Override
     protected void onActivityResult ( int requestCode, int resultCode, Intent intent){
         switch (requestCode) {
