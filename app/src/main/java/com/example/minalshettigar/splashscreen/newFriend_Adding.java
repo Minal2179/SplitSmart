@@ -374,9 +374,13 @@ public class newFriend_Adding extends AppCompatActivity
         Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference.child(getString(R.string.dbnode_notification))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
                 .child(getString(R.string.field_messaging_token))
                 .setValue(token);
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                .child(getString(R.string.field_user_name))
+                .setValue(mAuth.getCurrentUser().getDisplayName());
     }
 
 
