@@ -43,9 +43,8 @@
                 android:id="@+id/mailtext"
                 android:layout_width="85dp"
                 android:layout_height="45dp"
-                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/nametext"
-                android:layout_marginTop="229dp"
+                android:layout_centerVertical="true"
                 android:text="Email"
                 android:textSize="22sp" />
 
@@ -55,7 +54,7 @@
                 android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/mailtext"
-                android:layout_marginTop="165dp"
+                android:layout_marginTop="150dp"
                 android:text="ContactNo."
                 android:textSize="22sp" />
 
@@ -75,54 +74,60 @@
             <EditText
                 android:id="@+id/Email"
                 android:layout_width="240dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Email"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="8dp" />
 
             <EditText
                 android:id="@+id/ContactNo"
                 android:layout_width="240dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
 
                 android:layout_alignStart="@+id/Email"
-                android:layout_alignTop="@+id/contactNotext"
+                android:layout_below="@+id/nametext"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Contact No"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="8dp" />
 
             <EditText
                 android:id="@+id/Name"
                 android:layout_width="237dp"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/ContactNo"
-                android:layout_alignTop="@+id/nametext"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/Email"
+                android:layout_marginTop="96dp"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="8dp" />
 
             <Button
                 android:id="@+id/invite"
-                android:layout_width="wrap_content"
+                android:layout_width="348dp"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="110dp"
                 android:text="Invite" />
 
 
-
-
             <TextView
                 android:id="@+id/label"
-                android:layout_width="244dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="30dp"
                 android:text="Add Friend"
                 android:textSize="36sp" />
 
