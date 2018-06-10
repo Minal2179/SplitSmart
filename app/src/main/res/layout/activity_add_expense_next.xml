@@ -88,8 +88,6 @@
             </android.support.design.widget.BottomNavigationView>
         </RelativeLayout>
 
-
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
