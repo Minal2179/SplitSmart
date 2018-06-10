@@ -222,7 +222,7 @@ public class AddExpenses extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setText(getString(R.string.gallery));
         tabLayout.getTabAt(1).setText(getString(R.string.photo));
-        tabLayout.getTabAt(2).setText(getString(R.string.manual));
+        //tabLayout.getTabAt(2).setText(getString(R.string.manual));
 
     }
 

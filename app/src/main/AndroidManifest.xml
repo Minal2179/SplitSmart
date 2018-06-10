@@ -47,10 +47,10 @@
         <activity android:name=".newFriend_Adding" />
         <activity android:name=".friends_detail" />
 
-
-        <activity android:name=".AddExpenseNext" />
+        <activity android:name=".AddExpenseNext" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Profile_edit_options"/>
         <activity android:name=".Invite_new_people"/>
+
 
     </application>
 

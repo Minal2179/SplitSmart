@@ -104,7 +104,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         mEmailPasswordField = view.findViewById(R.id.email_password_fields);
         mSigningButtons=view.findViewById(R.id.signed_in_buttons);
 //        imageView = view.findViewById(R.id.imgView);
-        
+
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
 
