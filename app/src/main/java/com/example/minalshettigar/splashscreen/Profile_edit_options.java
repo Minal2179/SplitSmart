@@ -1,10 +1,16 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +27,7 @@ import org.w3c.dom.Text;
 public class Profile_edit_options extends AppCompatActivity {
     private static final String TAG = "Profile_edit_options";
 
-    TextView Name, Email, Conatct;
+    EditText Name, Email, Conatct;
     Button Edit;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -36,9 +42,9 @@ public class Profile_edit_options extends AppCompatActivity {
         setContentView(R.layout.activity_profile_edit_options);
 
         Edit = (Button) findViewById(R.id.Edit);
-        Name = (TextView) findViewById(R.id.Name);
-        Email = (TextView) findViewById(R.id.Email);
-        Conatct = (TextView) findViewById(R.id.Contact);
+        Name = (EditText) findViewById(R.id.Name);
+        Email = (EditText) findViewById(R.id.Email);
+        Conatct = (EditText) findViewById(R.id.Contact);
 
         mAuth = FirebaseAuth.getInstance();
         database  = FirebaseDatabase.getInstance();
@@ -84,12 +90,13 @@ public class Profile_edit_options extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String contact=dataSnapshot.child(userId).getValue().toString();
+
+                /*String contact=dataSnapshot.child(userId).getValue().toString();
                 String email = dataSnapshot.child(userId).getValue().toString();
                 String name = dataSnapshot.child(userId).getValue().toString();
                 Name.setText(name);
                 Email.setText(email);
-                Conatct.setText(contact);
+                Conatct.setText(contact);*/
 
             }
 
@@ -100,9 +107,9 @@ public class Profile_edit_options extends AppCompatActivity {
             }
         });
 
-        /*mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
@@ -115,7 +122,49 @@ public class Profile_edit_options extends AppCompatActivity {
                 }
                 // ...
             }
-        };*/
+        };
+
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+
+                    case R.id.action_dashboard:
+                        Intent intent0 = new Intent(Profile_edit_options.this, Dashboard.class);
+                        startActivity(intent0);
+                        break;
+
+                    case R.id.action_friends:
+                        Intent intent1 = new Intent(Profile_edit_options.this, AddFriends.class);
+                        startActivity(intent1);
+                        break;
+
+                    case R.id.action_addexpenses:
+                        Intent intent4 = new Intent(Profile_edit_options.this, AddExpenses.class);
+                        startActivity(intent4);
+                        break;
+
+                    case R.id.action_activity:
+                        Intent intent3 = new Intent(Profile_edit_options.this, ActivityList.class);
+                        startActivity(intent3);
+                        break;
+
+                    case R.id.action_settings:
+
+                        break;
+                }
+
+
+                return false;
+            }
+        });
 
 
     }
