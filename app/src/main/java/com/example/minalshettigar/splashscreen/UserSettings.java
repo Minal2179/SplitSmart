@@ -62,17 +62,11 @@ public class UserSettings extends AppCompatActivity {
                     Intent intent = new Intent(UserSettings.this,Invite_new_people.class);
                     startActivity(intent);
 
-                }else if(position==3){
-
-                    Intent intent = new Intent(UserSettings.this,Notification_settings.class);
-                    startActivity(intent);
                 }else{
 
                     mAuth.signOut();
                     Intent intent8 = new Intent(UserSettings.this, LoginActivity.class);
                     startActivity(intent8);
-
-
                 }
             }
         });
