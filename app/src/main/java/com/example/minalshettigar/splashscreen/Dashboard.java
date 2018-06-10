@@ -41,7 +41,7 @@ public class Dashboard extends AppCompatActivity {
 
     private static final String TAG = "DashboardActivity";
 
-    TextView category1,category2,category3,category4,category5,category6,category7;
+    TextView category1,category2,category3,category4,category5,category6,category7,expenses;
     ImageView user_profile,cat1_img,cat2_img,cat3_img,cat4_img,cat5_img,cat6_img,cat7_img;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton addBtn;
@@ -83,6 +83,7 @@ public class Dashboard extends AppCompatActivity {
         cat6_img = findViewById(R.id.category6_img);
         category7 = findViewById(R.id.category7_val);
         cat7_img = findViewById(R.id.category7_img);
+        expenses = findViewById(R.id.expenses);
         user_profile = findViewById(R.id.user_profile);
         addBtn = findViewById(R.id.btnAdd);
 
@@ -139,7 +140,7 @@ public class Dashboard extends AppCompatActivity {
                 return false;
             }
         });
-        
+
 
     }
 
@@ -161,6 +162,7 @@ public class Dashboard extends AppCompatActivity {
                 collapsingToolbarLayout.setTitle(current_user.getEmail());
                 Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
                 System.out.println("name is : "+ current_user.getEmail());
+                expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
                 category1.setText("Shopping: "+shopping);
                 category2.setText("Food: "+food);
                 category3.setText("Grocery: "+grocery);
