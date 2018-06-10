@@ -60,6 +60,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private View mEmailPassword;
     private View mEmailPasswordField;
     private View mSigningButtons;
+    private View mProfilePic;
     private String picturePath;
     private Uri selectedImage;
     private static int RESULT_LOAD_IMAGE = 1;
@@ -98,6 +99,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         mEmailPassword=view.findViewById(R.id.email_password_buttons);
         mEmailPasswordField = view.findViewById(R.id.email_password_fields);
         mSigningButtons=view.findViewById(R.id.signed_in_buttons);
+        mProfilePic=view.findViewById(R.id.profile_pic);
         imageView = view.findViewById(R.id.imgView);
 
 
@@ -150,7 +152,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         if(!TextUtils.isEmpty(user_email))
         {
-            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact,user_profile,shopping,rent,electricity,food,grocery,travel,miscellaneous);
+            UserDbFormat udm=new UserDbFormat(user_id ,user_profile,user_name,user_email,user_contact,shopping,rent,electricity,food,grocery,travel,miscellaneous);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
             userDb.child(user_id).setValue(udm);
@@ -250,6 +252,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         mEmailField.setText(null);
         mNameField.setText(null);
         mPasswordField.setText(null);
+
     }
 
     private void signOut() {
@@ -331,12 +334,14 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                             }
                         }
                     });
+            Log.d(TAG, "updateUI: set in DB");
             setUserInDB(picturePath);
             mCallback.changeStatusSuccess();
             mCallback.changeDetailText();
 
             mEmailPassword.setVisibility(View.GONE);
             mEmailPasswordField.setVisibility(View.GONE);
+            mProfilePic.setVisibility(View.GONE);
             mSigningButtons.setVisibility(View.VISIBLE);
             mCallback.googleSignInVisibility();
             //findViewById(R.id.disconnect_button).setVisibility(View.VISIBLE);

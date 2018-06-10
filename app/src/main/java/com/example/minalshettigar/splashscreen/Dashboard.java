@@ -140,6 +140,7 @@ public class Dashboard extends AppCompatActivity {
                 return false;
             }
         });
+        getUserDetail(user.getUid());
 
 
     }
@@ -152,24 +153,27 @@ public class Dashboard extends AppCompatActivity {
         users.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
-                UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
-                //Set image
+                if(dataSnapshot.hasChild("name")){
+                    Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+                    UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
+                    //Set image
 
-                File file = new File(Objects.requireNonNull(current_user).getPic());
-                Picasso.with(getBaseContext()).load(file)
-                        .into(user_profile);
-                collapsingToolbarLayout.setTitle(current_user.getEmail());
-                Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
-                System.out.println("name is : "+ current_user.getEmail());
-                expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
-                category1.setText("Shopping: "+shopping);
-                category2.setText("Food: "+food);
-                category3.setText("Grocery: "+grocery);
-                category4.setText("Travel: "+travel);
-                category5.setText("Miscellaneous: "+misc);
-                category6.setText("Utility: "+utility);
-                category7.setText("Rent: "+rent);
+                    File file = new File(Objects.requireNonNull(current_user).getPic());
+                    Picasso.with(getBaseContext()).load(file)
+                            .into(user_profile);
+                    collapsingToolbarLayout.setTitle(current_user.getEmail());
+                    Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
+                    System.out.println("name is : "+ current_user.getEmail());
+                    expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
+                    category1.setText("Shopping: "+shopping);
+                    category2.setText("Food: "+food);
+                    category3.setText("Grocery: "+grocery);
+                    category4.setText("Travel: "+travel);
+                    category5.setText("Miscellaneous: "+misc);
+                    category6.setText("Utility: "+utility);
+                    category7.setText("Rent: "+rent);
+                }
+
             }
 
             @Override

@@ -49,6 +49,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
     private SectionsPageAdapter mSectionsPageAdapter;
 
     private ViewPager mViewPager;
+    FirebaseUser user;
 
     // [END declare_auth]
 
@@ -97,7 +98,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -263,6 +264,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
     }
     @Override
     public void changeStatusSuccess(){
+        user = mAuth.getCurrentUser();
         mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
                 user.getEmail(), user.isEmailVerified()));
     }

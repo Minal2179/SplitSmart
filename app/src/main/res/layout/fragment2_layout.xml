@@ -42,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/prompt_contact"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="10"/>
         </LinearLayout>
 
         <LinearLayout
