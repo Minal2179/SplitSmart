@@ -236,7 +236,8 @@ public class newFriend_Adding extends AppCompatActivity
             adduserfrnddb.child(currentUserId.replace(".","")).child("myValue").setValue("0");
             // for showing current user as friends profile
             UsersDataModel udm1=new UsersDataModel(frnd_email,currentUserId,currentUserName,strDate,strDate);
-            addfrnddb.child(id).setValue(udm1);
+            String id1=addfrnddb.push().getKey();
+            addfrnddb.child(id1).setValue(udm1);
             adduserfrnddb.child(frnd_email.replace(".","")).child("friends").child(currentUserId.replace(".","")).setValue("0");
             adduserfrnddb.child(frnd_email.replace(".","")).child("myValue").setValue("0");
 
