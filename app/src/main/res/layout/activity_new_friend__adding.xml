@@ -43,8 +43,9 @@
                 android:id="@+id/mailtext"
                 android:layout_width="85dp"
                 android:layout_height="45dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/nametext"
-                android:layout_alignTop="@+id/Email"
+                android:layout_marginTop="244dp"
                 android:text="Email"
                 android:textSize="22sp" />
 
@@ -75,10 +76,8 @@
                 android:id="@+id/Email"
                 android:layout_width="240dp"
                 android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="182dp"
-                android:layout_marginEnd="29dp"
+                android:layout_alignStart="@+id/ContactNo"
+                android:layout_alignTop="@+id/mailtext"
                 android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Email"
@@ -91,7 +90,7 @@
                 android:layout_height="45dp"
 
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/Email"
+                android:layout_alignStart="@+id/Name"
                 android:layout_marginTop="175dp"
                 android:background="@drawable/border_xml"
                 android:ems="10"
@@ -103,7 +102,7 @@
                 android:id="@+id/Name"
                 android:layout_width="240dp"
                 android:layout_height="45dp"
-                android:layout_alignStart="@+id/Email"
+                android:layout_alignEnd="@+id/addFriend"
                 android:layout_alignTop="@+id/nametext"
                 android:background="@drawable/border_xml"
                 android:ems="10"
@@ -119,10 +118,10 @@
                 android:id="@+id/addFriend"
                 android:layout_width="348dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="114dp"
+                android:layout_marginBottom="191dp"
+                android:background="@color/colorPrimary"
                 android:text="Add Friend" />
 
 
