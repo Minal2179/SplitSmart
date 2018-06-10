@@ -22,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.FriendsExpense;
@@ -91,9 +92,10 @@ public class ExpenseItemFragment extends Fragment {
     @Override
     public View onCreateView( LayoutInflater inflater,  ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+        Log.d("EXPENSE ITEM FRAGMENT", "ExpenseItemFragment.java onCreateView");
 
 
-        View view= inflater.inflate(R.layout.fragment_manual,container,false);
+        View view= inflater.inflate(R.layout.fragment_expense_item,container,false);
 
         inputItem = (EditText) view.findViewById(R.id.input_item);
         inputPrice = (EditText) view.findViewById(R.id.input_price);
@@ -220,7 +222,7 @@ public class ExpenseItemFragment extends Fragment {
                 peopleEmail.setText(null);
 
                 // go back to list view
-                getActivity().getFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().popBackStack();
 
 
 
@@ -305,15 +307,17 @@ public class ExpenseItemFragment extends Fragment {
                         FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
 
                         myvalue=udm.getMyValue();
-                        //System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
+                        // System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
 
                         for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
                             if (entry.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot)) {
                                 // System.out.println("entry.getValue()******"+entry.getValue());
                                 amountFrmCurrUser = Double.parseDouble(entry.getValue());
+
                             }
                         }
                     }
+
                 }
             }
 

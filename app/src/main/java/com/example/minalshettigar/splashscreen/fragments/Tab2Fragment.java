@@ -109,8 +109,10 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser().getUid()!=null) {
-            userid = mAuth.getCurrentUser().getUid();
+        if (mAuth.getCurrentUser() != null) {
+            if(mAuth.getCurrentUser().getUid()!=null) {
+                userid = mAuth.getCurrentUser().getUid();
+            }
         }
         userDb= FirebaseDatabase.getInstance().getReference("users");
         // [END initialize_auth]
