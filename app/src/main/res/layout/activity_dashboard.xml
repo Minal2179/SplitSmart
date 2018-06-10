@@ -113,21 +113,28 @@
                         app:cardUseCompatPadding="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/category1_img"/>
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:src="@drawable/shopping_cart"
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:id="@+id/category1_img"/>
 
-                    <TextView
-                        android:id="@+id/category1_val"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:lineSpacingMultiplier="1.5"
-                        android:padding="12dp"
-                        android:text="Description"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/category1_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
 
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -135,21 +142,28 @@
                     app:cardUseCompatPadding="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/category2_img"/>
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:src="@drawable/fast_food"
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:id="@+id/category2_img"/>
 
-                    <TextView
-                        android:id="@+id/category2_val"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:lineSpacingMultiplier="1.5"
-                        android:padding="12dp"
-                        android:text="Description"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/category2_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
 
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -157,21 +171,28 @@
                         app:cardUseCompatPadding="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/category3_img"/>
-                        <TextView
-                            android:id="@+id/category3_val"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:lineSpacingMultiplier="1.5"
-                            android:padding="12dp"
-                            android:text="Description"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="14sp"/>
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:src="@drawable/groceries"
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:id="@+id/category3_img"/>
+                            <TextView
+                                android:id="@+id/category3_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
+
 
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -179,21 +200,27 @@
                         app:cardUseCompatPadding="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/category4_img"/>
-
-                        <TextView
-                            android:id="@+id/category4_val"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:lineSpacingMultiplier="1.5"
-                            android:padding="12dp"
-                            android:text="Description"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="14sp"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/destination"
+                                android:id="@+id/category4_img"/>
+
+                            <TextView
+                                android:id="@+id/category4_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
 
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -201,21 +228,27 @@
                         app:cardUseCompatPadding="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/category5_img"/>
-
-                        <TextView
-                            android:id="@+id/category5_val"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:lineSpacingMultiplier="1.5"
-                            android:padding="12dp"
-                            android:text="Description"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="14sp"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/bill"
+                                android:id="@+id/category5_img"/>
+
+                            <TextView
+                                android:id="@+id/category5_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
 
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -223,21 +256,53 @@
                         app:cardUseCompatPadding="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/category6_img"/>
-                        <TextView
-                            android:id="@+id/category6_val"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:lineSpacingMultiplier="1.5"
-                            android:padding="12dp"
-                            android:text="Description"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="14sp"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/thunder"
+                                android:id="@+id/category6_img"/>
+                            <TextView
+                                android:id="@+id/category6_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:src="@drawable/real_estate"
+                                android:id="@+id/category7_img"/>
+                            <TextView
+                                android:id="@+id/category7_val"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:lineSpacingMultiplier="1.5"
+                                android:padding="12dp"
+                                android:text="Description"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
 
                     </android.support.v7.widget.CardView>
                 </LinearLayout>

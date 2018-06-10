@@ -20,7 +20,9 @@ import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.example.minalshettigar.splashscreen.helper.Item;
 import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
+import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,17 +41,17 @@ public class Dashboard extends AppCompatActivity {
 
     private static final String TAG = "DashboardActivity";
 
-    TextView category1,category2,category3,category4,category5,category6;
-    ImageView user_profile,cat1_img,cat2_img,cat3_img,cat4_img,cat5_img,cat6_img;
+    TextView category1,category2,category3,category4,category5,category6,category7;
+    ImageView user_profile,cat1_img,cat2_img,cat3_img,cat4_img,cat5_img,cat6_img,cat7_img;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton addBtn;
     //Firebase
     private FirebaseAuth mAuth;
     FirebaseUser user;
-
     FirebaseDatabase database;
-
     DatabaseReference users;
+    DatabaseReference items;
+    Double food=0.0,rent=0.0,shopping=0.0,utility=0.0,misc=0.0,grocery=0.0,travel=0.0;
 
 
     @Override
@@ -62,6 +64,7 @@ public class Dashboard extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         users = database.getReference(getString(R.string.dbnode_users));
+        items = database.getReference(getString(R.string.dbnode_items));
         Intent myintent = getIntent();
 
 
@@ -78,6 +81,8 @@ public class Dashboard extends AppCompatActivity {
         cat5_img = findViewById(R.id.category5_img);
         category6 = findViewById(R.id.category6_val);
         cat6_img = findViewById(R.id.category6_img);
+        category7 = findViewById(R.id.category7_val);
+        cat7_img = findViewById(R.id.category7_img);
         user_profile = findViewById(R.id.user_profile);
         addBtn = findViewById(R.id.btnAdd);
 
@@ -134,8 +139,7 @@ public class Dashboard extends AppCompatActivity {
                 return false;
             }
         });
-
-        getUserDetail(user.getUid());
+        
 
     }
 
@@ -157,9 +161,13 @@ public class Dashboard extends AppCompatActivity {
                 collapsingToolbarLayout.setTitle(current_user.getEmail());
                 Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
                 System.out.println("name is : "+ current_user.getEmail());
-                category1.setText(current_user.getContact());
-                category2.setText(current_user.getEmail());
-                category3.setText(current_user.getUid());
+                category1.setText("Shopping: "+shopping);
+                category2.setText("Food: "+food);
+                category3.setText("Grocery: "+grocery);
+                category4.setText("Travel: "+travel);
+                category5.setText("Miscellaneous: "+misc);
+                category6.setText("Utility: "+utility);
+                category7.setText("Rent: "+rent);
             }
 
             @Override
@@ -223,5 +231,50 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        items.child(user.getEmail().replace(".","")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot itemsnap : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: itemsnap"+itemsnap);
+                    Item item=itemsnap.getValue(Item.class);
+                    if(itemsnap.hasChild("category")){
+                        if(item.getCategory().equalsIgnoreCase("Shopping")){
+                            shopping = shopping + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Food")){
+                            food = food + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Rent")){
+                            rent = rent + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Grocery")){
+                            grocery = grocery + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Travel")){
+                            travel = travel + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Miscellaneous")){
+                            misc = misc + Double.parseDouble(item.getItem_price());
+                        }
+                        else if(item.getCategory().equalsIgnoreCase("Utility")){
+                            utility = utility + Double.parseDouble(item.getItem_price());
+                        }
+                    }
+
+                }
+                Log.d(TAG, "onDataChange: lets check the value"+ food);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        getUserDetail(user.getUid());
+    }
 }

@@ -56,6 +56,7 @@
     <string name="dbnode_messages">messages</string>
     <string name="dbnode_users">users</string>
     <string name="dbnode_events">events</string>
+    <string name="dbnode_items">items</string>
 
     <!-- Firebase Database Fields -->
     <string name="field_message">message</string>
@@ -103,7 +104,8 @@
         <item>Food</item>
         <item>Rent</item>
         <item>Grocery</item>
-        <item>travel</item>
+        <item>Travel</item>
+        <item>Utility</item>
         <item>Miscellaneous</item>
     </string-array>
 

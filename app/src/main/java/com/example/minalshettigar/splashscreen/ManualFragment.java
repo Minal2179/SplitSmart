@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.minalshettigar.splashscreen.helper.FriendsExpense;
 import com.example.minalshettigar.splashscreen.helper.Item;
 import com.example.minalshettigar.splashscreen.helper.MessageModel;
+import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import android.widget.Spinner;
 import android.widget.AdapterView;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class ManualFragment extends Fragment {
@@ -81,6 +84,7 @@ public class ManualFragment extends Fragment {
     DatabaseReference addExpenseValueToFrnds;
     double amountFrmCurrUser;
     DatabaseReference dbFriendsRef;
+    DatabaseReference userDb;
     ArrayList<String>list1=new ArrayList<String>();
     ArrayList<String>list=new ArrayList<String>();
 
@@ -122,6 +126,7 @@ public class ManualFragment extends Fragment {
         staticSpinner.setAdapter(staticAdapter);
 
         addItemToFrnds=FirebaseDatabase.getInstance().getReference("items");
+        userDb = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_users));
         //dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
         //addExpenseValueToFrnds= FirebaseDatabase.getInstance().getReference("user_friends");
 
@@ -231,12 +236,12 @@ public class ManualFragment extends Fragment {
 
 
 
-    private void addItemTofriends(String dropVal)
+    private void addItemTofriends(final String dropVal)
     {
         if(!itemName.isEmpty() )
         {
-
-            Item itemObj = new Item(itemName,Double.toString(itemPrice));
+            final int numberOfSplits = 2;
+            Item itemObj = new Item(itemName,Double.toString(itemPrice/numberOfSplits),dropVal);
            String id = addItemToFrnds.push().getKey();
 
             String currentUserIdWithoutDot=currentUserId.replace(".","");
@@ -247,9 +252,49 @@ public class ManualFragment extends Fragment {
            // System.out.println("currentUserIdWithoutDot"+currentUserIdWithoutDot);
            // System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
 
+            //Handling only for bill split among 2 people
             addItemToFrnds.child(currentUserIdWithoutDot).child(id).setValue(itemObj);
-            addItemToFrnds.child(currentUserIdWithoutDot).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
             addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).setValue(itemObj);
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("category").setValue(dropVal);
+
+//            userDb.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+//                    UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
+//                    Double val=0.0;
+//                    if(dropVal.equals("Shopping")){
+//                        val = Double.parseDouble(current_user.getShopping()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Food")){
+//                         val = Double.parseDouble(current_user.getFood()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Rent")){
+//                         val = Double.parseDouble(current_user.getRent()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Grocery")){
+//                         val = Double.parseDouble(current_user.getGrocery()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Travel")){
+//                         val = Double.parseDouble(current_user.getTravel()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Miscellaneous")){
+//                         val = Double.parseDouble(current_user.getMiscellaneous()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Utility")){
+//                         val = Double.parseDouble(current_user.getElectricity()) + (itemPrice/numberOfSplits);
+//                    }
+//                    userDb.child(dropVal).setValue(val);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
 
             DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
 

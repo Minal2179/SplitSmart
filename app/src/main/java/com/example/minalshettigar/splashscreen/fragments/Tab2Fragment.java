@@ -13,15 +13,11 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,10 +26,8 @@ import android.widget.Toast;
 import com.example.minalshettigar.splashscreen.ActivityCallback;
 import com.example.minalshettigar.splashscreen.BaseActivityCallback;
 import com.example.minalshettigar.splashscreen.Dashboard;
-import com.example.minalshettigar.splashscreen.LoginActivity;
 import com.example.minalshettigar.splashscreen.R;
 import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
-import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -42,12 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -141,6 +130,13 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         String user_contact=mContactField.getText().toString().trim();
         String user_id= Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         String user_profile = picturePath;
+         String shopping="0";
+         String rent="0";
+         String electricity="0";
+         String food="0";
+         String grocery="0";
+         String travel="0";
+         String miscellaneous="0";
 
 
 
@@ -148,7 +144,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         if(!TextUtils.isEmpty(user_email))
         {
-            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact,user_profile);
+            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact,user_profile,shopping,rent,electricity,food,grocery,travel,miscellaneous);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
             userDb.child(user_id).setValue(udm);

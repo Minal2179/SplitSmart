@@ -107,8 +107,6 @@ public class AddExpenses extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        TextView title = (TextView) findViewById(R.id.activityTitle2);
-        title.setText("This is Add Expenses");
 
         // TODO: Check if camera/photo gallery permissions are granted
         if (checkPermissionsArray(PERMISSIONS)) {
