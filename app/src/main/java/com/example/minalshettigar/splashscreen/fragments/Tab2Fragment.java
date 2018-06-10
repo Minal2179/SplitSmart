@@ -132,33 +132,35 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
     private void setUserInDB(String picturePath)
     {
-        Log.d(TAG, "setUserInDB: Finally here "+ picturePath);
+
+        Log.d(TAG, "setUserInDB: Finally here "+ picturePath+Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         String user_name=mNameField.getText().toString().trim();
         String user_email=mEmailField.getText().toString().trim();
         String user_contact=mContactField.getText().toString().trim();
         String user_id= Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         String user_profile = picturePath;
-         String shopping="0";
-         String rent="0";
-         String electricity="0";
-         String food="0";
-         String grocery="0";
-         String travel="0";
-         String miscellaneous="0";
-
-
+//         String shopping="0";
+//         String rent="0";
+//         String electricity="0";
+//         String food="0";
+//         String grocery="0";
+//         String travel="0";
+//         String miscellaneous="0";
 
         //Log.d("inside db Method", "addfriendInDB: ");
 
-        if(!TextUtils.isEmpty(user_email))
+        if(!TextUtils.isEmpty(user_id))
         {
-            UserDbFormat udm=new UserDbFormat(user_id ,user_profile,user_name,user_email,user_contact,shopping,rent,electricity,food,grocery,travel,miscellaneous);
+            UserDbFormat udm=new UserDbFormat(user_id ,user_profile,user_name,user_email,user_contact);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
             userDb.child(user_id).setValue(udm);
         }
 
-
+        mContactField.setText(null);
+        mEmailField.setText(null);
+        mNameField.setText(null);
+        mPasswordField.setText(null);
 
 
     }
@@ -234,6 +236,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user, picturePath);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -248,10 +251,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                     }
                 });
         // [END create_user_with_email]
-        mContactField.setText(null);
-        mEmailField.setText(null);
-        mNameField.setText(null);
-        mPasswordField.setText(null);
+
 
     }
 
@@ -317,7 +317,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     }
 
     public void updateUI(FirebaseUser user, String picturePath) {
-        Log.d(TAG, "updateUI: Atleast here it should show up"+selectedImage);
+        Log.d(TAG, "updateUI: Atleast here it should show up");
         mBaseCallback.hideProgressDialog();
         if (user != null) {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()

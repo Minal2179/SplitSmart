@@ -112,18 +112,11 @@ public class UserDbFormat {
         this.uid = uid;
     }
 
-    public UserDbFormat(String uid, String pic, String name, String email, String contact, String shopping, String rent, String electricity, String food, String grocery, String travel, String miscellaneous) {
+    public UserDbFormat(String uid, String pic, String name, String email, String contact) {
         this.pic = pic;
         this.name = name;
         this.email = email;
         this.contact = contact;
-        this.shopping = shopping;
-        this.rent = rent;
-        this.electricity = electricity;
-        this.food = food;
-        this.grocery = grocery;
-        this.travel = travel;
-        this.miscellaneous = miscellaneous;
         this.uid = uid;
     }
 

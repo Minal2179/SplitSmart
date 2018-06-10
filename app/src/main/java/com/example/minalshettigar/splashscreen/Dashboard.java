@@ -161,7 +161,7 @@ public class Dashboard extends AppCompatActivity {
                     File file = new File(Objects.requireNonNull(current_user).getPic());
                     Picasso.with(getBaseContext()).load(file)
                             .into(user_profile);
-                    collapsingToolbarLayout.setTitle(current_user.getEmail());
+                    collapsingToolbarLayout.setTitle(current_user.getName());
                     Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
                     System.out.println("name is : "+ current_user.getEmail());
                     expenses.setText("My Total Expenditure: "+ (shopping+food+grocery+travel+misc+utility+rent));
