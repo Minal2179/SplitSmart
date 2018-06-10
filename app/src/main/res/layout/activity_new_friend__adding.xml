@@ -52,8 +52,9 @@
                 android:id="@+id/contactNotext"
                 android:layout_width="87dp"
                 android:layout_height="60dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/mailtext"
-                android:layout_alignTop="@+id/ContactNo"
+                android:layout_marginTop="168dp"
                 android:text="ContactNo."
                 android:textSize="22sp" />
 
@@ -73,57 +74,65 @@
             <EditText
                 android:id="@+id/Email"
                 android:layout_width="240dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="182dp"
+                android:layout_marginEnd="29dp"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Email"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="8dp" />
 
             <EditText
                 android:id="@+id/ContactNo"
                 android:layout_width="240dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
 
-                android:layout_above="@+id/mailtext"
+                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/Email"
+                android:layout_marginTop="175dp"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Contact No"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:paddingStart="8dp" />
 
             <AutoCompleteTextView
                 android:id="@+id/Name"
-                android:layout_width="235dp"
-                android:layout_height="wrap_content"
+                android:layout_width="240dp"
+                android:layout_height="45dp"
                 android:layout_alignStart="@+id/Email"
                 android:layout_alignTop="@+id/nametext"
+                android:background="@drawable/border_xml"
                 android:ems="10"
                 android:hint="Enter Name"
+                android:paddingStart="8dp"
                 android:text="">
 
                 <requestFocus />
             </AutoCompleteTextView>
 
 
-
             <Button
                 android:id="@+id/addFriend"
-                android:layout_width="wrap_content"
+                android:layout_width="348dp"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="110dp"
+                android:layout_marginBottom="114dp"
                 android:text="Add Friend" />
 
 
             <TextView
                 android:id="@+id/label"
-                android:layout_width="244dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="17dp"
                 android:text="Add Friend"
                 android:textSize="36sp" />
 
