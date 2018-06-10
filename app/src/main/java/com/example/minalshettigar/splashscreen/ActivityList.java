@@ -6,30 +6,55 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.minalshettigar.splashscreen.helper.EventAdapter;
+import com.example.minalshettigar.splashscreen.helper.EventDbFormat;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ActivityList extends AppCompatActivity {
-    private FirebaseAuth mAuth;
+
     private static final String TAG = "ActivityList";
+
+    private RecyclerView mRecyclerView;
+
+    //vars
+    private ArrayList<EventDbFormat> mEvents;
+    private EventAdapter mEventAdapter;
+    //Firebase
+    private FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    DatabaseReference events;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_activity);
 
+
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         mAuth= FirebaseAuth.getInstance();
-        TextView title = (TextView) findViewById(R.id.activityTitle3);
-        title.setText("This is Activity List");
+        database = FirebaseDatabase.getInstance();
+        events = database.getReference(getString(R.string.dbnode_events));
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        setupEventList();
+        getEventList(mAuth.getCurrentUser().getEmail().replace(".",""));
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -73,6 +98,33 @@ public class ActivityList extends AppCompatActivity {
         });
     }
 
+    private void setupEventList(){
+        mEvents = new ArrayList<>();
+        mEventAdapter = new EventAdapter(ActivityList.this, mEvents);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mEventAdapter);
+    }
+
+
+    private void getEventList(String userID) throws NullPointerException{
+        Log.d(TAG, "getEventList: getting a list of all events");
+        System.out.println(userID + events.child(userID).toString());
+
+        events.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                EventDbFormat event = dataSnapshot.getValue(EventDbFormat.class);
+
+                mEvents.add(event);
+                mEventAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

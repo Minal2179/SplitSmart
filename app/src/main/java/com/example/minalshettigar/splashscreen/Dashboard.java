@@ -31,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 
 public class Dashboard extends AppCompatActivity {
 
@@ -138,6 +140,7 @@ public class Dashboard extends AppCompatActivity {
 
     private void getUserDetail(String userID) {
 
+        Log.d(TAG, "getUserDetail:userID "+ users.child(userID).toString());
         System.out.println(userID + users.child(userID).toString());
 
         users.child(userID).addValueEventListener(new ValueEventListener() {
@@ -145,10 +148,12 @@ public class Dashboard extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
                 //Set image
-                Picasso.with(getBaseContext()).load(current_user.getPic())
+                File file = new File(current_user.getPic());
+                Picasso.with(getBaseContext()).load(file)
                         .into(user_profile);
-                collapsingToolbarLayout.setTitle(current_user.getName());
-                System.out.println("name is : "+ current_user.getName());
+                collapsingToolbarLayout.setTitle(current_user.getEmail());
+                Log.d(TAG, "onDataChange: Name is "+ current_user.getEmail() +" "+ current_user.getPic());
+                System.out.println("name is : "+ current_user.getEmail());
                 category1.setText(current_user.getContact());
                 category2.setText(current_user.getEmail());
                 category3.setText(current_user.getUid());

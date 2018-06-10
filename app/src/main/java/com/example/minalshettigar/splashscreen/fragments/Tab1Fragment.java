@@ -266,9 +266,6 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void showProgress(boolean show) {
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
 
     public boolean servicesOK(){
         Log.d(TAG, "servicesOK: Checking Google Services.");

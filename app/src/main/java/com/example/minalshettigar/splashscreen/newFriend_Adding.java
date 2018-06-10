@@ -253,6 +253,7 @@ public class newFriend_Adding extends AppCompatActivity
                     .child(getString(R.string.dbnode_messages))
                     .child(frnd_email.replace(".",""))
                     .child(Objects.requireNonNull(msgreference.push().getKey()))
+                    .child("message")
                     .setValue(message);
 
             Toast.makeText(this, "Friend Added Successfully", Toast.LENGTH_SHORT).show();

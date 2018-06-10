@@ -244,6 +244,10 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                     }
                 });
         // [END create_user_with_email]
+        mContactField.setText(null);
+        mEmailField.setText(null);
+        mNameField.setText(null);
+        mPasswordField.setText(null);
     }
 
     private void signOut() {
