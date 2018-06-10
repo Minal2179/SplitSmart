@@ -26,10 +26,7 @@ public class Dashboard extends AppCompatActivity {
 
     private static final String TAG = "DashboardActivity";
     private FirebaseAuth mAuth;
-
-//    private SectionsPageAdapter mSectionsPageAdapter;
-//
-//    private ViewPager mViewPager;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
