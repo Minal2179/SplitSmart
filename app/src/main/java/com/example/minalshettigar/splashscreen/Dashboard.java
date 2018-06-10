@@ -38,26 +38,11 @@ public class Dashboard extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-//        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-//
-//        // Set up the ViewPager with the sections adapter.
-//        mViewPager = (ViewPager) findViewById(R.id.container);
-//        setupViewPager(mViewPager);
-//
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//
-//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_notification);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_autorenew);
-
         Intent myintent = getIntent();
         mAuth= FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
 
-        TextView title = (TextView) findViewById(R.id.activityTitlemain);
-        title.setText(user.getEmail());
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -158,11 +143,5 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
-//    private void setupViewPager(ViewPager viewPager) {
-//        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-//        adapter.addFragment(new Tab1Fragment());
-//        adapter.addFragment(new Tab2Fragment());
-//        viewPager.setAdapter(adapter);
-//    }
 
 }
