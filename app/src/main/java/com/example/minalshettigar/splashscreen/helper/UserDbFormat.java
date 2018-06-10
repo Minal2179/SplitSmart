@@ -16,6 +16,7 @@ public class UserDbFormat {
         this.name = name;
         this.email = email;
         this.contact = contact;
+        this.uid = uid;
     }
 
 //    public void setPic(Uri pic) {
@@ -31,10 +32,14 @@ public class UserDbFormat {
     }
 
 //    public Uri getPic() {
+
+    public UserDbFormat() {
+    }
+
 //        return pic;
 //    }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 

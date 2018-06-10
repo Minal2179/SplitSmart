@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +55,7 @@ public class AddExpenses extends AppCompatActivity {
     String currentUserId;
     DatabaseReference dbFriendsRef;
     FirebaseAuth mAuth;
+    Fragment fragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +64,10 @@ public class AddExpenses extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
+
+
 
         TextView title = (TextView) findViewById(R.id.activityTitle2);
         title.setText("This is Add Expenses");
@@ -204,7 +211,7 @@ public class AddExpenses extends AppCompatActivity {
 
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
-        //adapter.addFragment(new ManualFragment());
+        adapter.addFragment(new ManualFragment());
 
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager_container);

@@ -49,7 +49,7 @@ import android .widget.TextView;
 import android.text.TextWatcher;
 import java.util.HashMap;
 
-public class ManualFragment extends AppCompatActivity {
+public class ManualFragment extends Fragment {
 
     EditText inputCategory;
     EditText inputItem;
@@ -77,23 +77,23 @@ public class ManualFragment extends AppCompatActivity {
     //String personName;
     HashMap<String,String>map;
     private FirebaseAuth mAuth;
-
+    View v;
 
 
     @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_manual);
+    public View onCreateView( LayoutInflater inflater,  ViewGroup container, @Nullable Bundle savedInstanceState) {
+       View view= inflater.inflate(R.layout.fragment_manual,container,false);
 
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+
+        /*Toolbar myToolbar = view.findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         //TextView title = (TextView) findViewById(R.id.activityTitle1);
         //title.setText("This is Add Friends Activity");
 
         mAuth = FirebaseAuth.getInstance();
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
@@ -131,22 +131,22 @@ public class ManualFragment extends AppCompatActivity {
 
                 return false;
             }
-        });
+        });*/
 
-        inputCategory = (EditText) findViewById(R.id.input_category);
-        inputItem = (EditText) findViewById(R.id.input_item);
-        inputPrice = (EditText) findViewById(R.id.input_price);
-        searchQuery = (AutoCompleteTextView) findViewById(R.id.input_people);
-        peopleEmail=(TextView) findViewById(R.id.input_email);
+        inputCategory = (EditText) view.findViewById(R.id.input_category);
+        inputItem = (EditText) view.findViewById(R.id.input_item);
+        inputPrice = (EditText) view.findViewById(R.id.input_price);
+        searchQuery = (AutoCompleteTextView) view.findViewById(R.id.input_people);
+        peopleEmail=(TextView) view.findViewById(R.id.input_email);
         splitPeopleEmail=peopleEmail.toString();
 
-        buttonNewItem = (Button) findViewById(R.id.button_new_item);
-        buttonFinish = (Button) findViewById(R.id.button_finish);
+        buttonNewItem = (Button) view.findViewById(R.id.button_new_item);
+        buttonFinish = (Button) view.findViewById(R.id.button_finish);
         //buttonRemoveFriend = (Button) view.findViewById(R.id.button_remove_friend);
 
-         staticSpinner = (Spinner) findViewById(R.id.category_manual);
+        staticSpinner = (Spinner) view.findViewById(R.id.category_manual);
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
-                .createFromResource(this, R.array.category_array,
+                .createFromResource(getContext(), R.array.category_array,
                         android.R.layout.simple_spinner_item);
 
         staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -155,6 +155,7 @@ public class ManualFragment extends AppCompatActivity {
 
         addItemToFrnds=FirebaseDatabase.getInstance().getReference("items");
         dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
+        addExpenseValueToFrnds= FirebaseDatabase.getInstance().getReference("user_friends");
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
@@ -162,8 +163,8 @@ public class ManualFragment extends AppCompatActivity {
         map=new HashMap<String,String>();
 
 
-        ArrayAdapter<String> name_adapter=new ArrayAdapter<String>(this, android.R.layout.select_dialog_item,list);
-        searchQuery = (AutoCompleteTextView) findViewById(R.id.input_people);
+        ArrayAdapter<String> name_adapter=new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item,list);
+        searchQuery = (AutoCompleteTextView) view.findViewById(R.id.input_people);
         searchQuery.setThreshold(1);
         searchQuery.setAdapter(name_adapter);
 
@@ -176,7 +177,7 @@ public class ManualFragment extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -237,8 +238,20 @@ public class ManualFragment extends AppCompatActivity {
             }
         });
 
-
+       return view;
     }
+
+    /*@Nullable
+    @Override
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_manual);
+
+
+
+
+    }*/
 
     private void addItemTofriends(String dropVal)
     {
@@ -272,8 +285,18 @@ public class ManualFragment extends AppCompatActivity {
         }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onViewCreated( View view,  Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.v=view;
+       // init();
+
+        loadData();
+
+    }
+
+
+    protected void loadData() {
+
 
 
         addExpenseValueToFrnds.addValueEventListener(new ValueEventListener() {
@@ -309,9 +332,8 @@ public class ManualFragment extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                Toast.makeText(ManualFragment.this, "inside Method.",
-                        Toast.LENGTH_SHORT).show();
-                //friendlist.clear();
+
+                selectedFriendList.clear();
                 for(DataSnapshot frndSnap:dataSnapshot.getChildren())
                 {
                     UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
@@ -348,7 +370,7 @@ public class ManualFragment extends AppCompatActivity {
     }*/
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -376,5 +398,5 @@ public class ManualFragment extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-    }
+    }*/
 }

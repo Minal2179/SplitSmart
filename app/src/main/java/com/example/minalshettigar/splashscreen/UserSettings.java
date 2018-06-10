@@ -68,6 +68,9 @@ public class UserSettings extends AppCompatActivity {
                     startActivity(intent);
                 }else{
 
+                    mAuth.signOut();
+                    Intent intent8 = new Intent(UserSettings.this, LoginActivity.class);
+                    startActivity(intent8);
 
 
                 }

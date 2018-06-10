@@ -18,6 +18,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -107,7 +111,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         if (mAuth.getCurrentUser() != null) {
             userid = mAuth.getCurrentUser().getUid();
         }
-
+        
         userDb= FirebaseDatabase.getInstance().getReference("users");
         // [END initialize_auth]
 
@@ -130,17 +134,18 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private void setUserInDB()
     {
 
-        String username=mNameField.getText().toString().trim();
-        String useremail=mEmailField.getText().toString().trim();
-        String usercontact=mContactField.getText().toString().trim();
+        String user_name=mNameField.getText().toString().trim();
+        String user_email=mEmailField.getText().toString().trim();
+        String user_contact=mContactField.getText().toString().trim();
+        String user_id= mAuth.getCurrentUser().getUid();
 
 
 
         //Log.d("inside db Method", "addfriendInDB: ");
 
-        if(!TextUtils.isEmpty(useremail))
+        if(!TextUtils.isEmpty(user_email))
         {
-            UserDbFormat udm=new UserDbFormat(useremail ,useremail,username,usercontact);
+            UserDbFormat udm=new UserDbFormat(user_id ,user_email,user_name,user_contact);
             String id=userDb.push().getKey();
             Log.d(TAG, "setUserInDB: "+id);
             userDb.child(userid).setValue(udm);
@@ -252,7 +257,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
                             Toast.makeText(getContext(),
                                     "Verification email sent to " + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
-                            mCallback.logout();
+                            signOut();
 
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
@@ -357,6 +362,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private void showProgress(boolean show) {
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
 
 
 }
