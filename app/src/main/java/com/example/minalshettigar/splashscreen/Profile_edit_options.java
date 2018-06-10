@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.minalshettigar.splashscreen.helper.users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class Profile_edit_options extends AppCompatActivity {
     private static final String TAG = "Profile_edit_options";
@@ -34,6 +37,7 @@ public class Profile_edit_options extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private String userId;
+    List<users> registeredUserList;
 
 
     @Override
@@ -43,10 +47,10 @@ public class Profile_edit_options extends AppCompatActivity {
 
         Log.d("Hello","Hello");
 
-        Edit = (Button) findViewById(R.id.Edit);
-        Name = (EditText) findViewById(R.id.Name);
-        Email = (EditText) findViewById(R.id.Email);
-        Conatct = (EditText) findViewById(R.id.Contact);
+        Edit = (Button) findViewById(R.id.EditInfo);
+        Name = (EditText) findViewById(R.id.Name1);
+        Email = (EditText) findViewById(R.id.Email1);
+        Conatct = (EditText) findViewById(R.id.Contact1);
 
         mAuth = FirebaseAuth.getInstance();
         database  = FirebaseDatabase.getInstance();
@@ -94,12 +98,26 @@ public class Profile_edit_options extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                /*String contact=dataSnapshot.child(userId).getValue().toString();
-                String email = dataSnapshot.child(userId).getValue().toString();
-                String name = dataSnapshot.child(userId).getValue().toString();
-                Name.setText(name);
-                Email.setText(email);
-                Conatct.setText(contact);*/
+//                String contact=dataSnapshot.child(userId).getValue().toString();
+//                String email = dataSnapshot.child(userId).getValue().toString();
+//                String name = dataSnapshot.child(userId).getValue().toString();
+//                Name.setText(name);
+//                Email.setText(email);
+//                Conatct.setText(contact);
+//                for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
+//                    users udm = frndSnap.getValue(users.class);
+//
+//                    if (udm.getEmail() != null && !udm.getEmail().equalsIgnoreCase(currentUserId))
+//                    {
+//                        users udm1 = new users();
+//                        udm1.setContact(udm.getContact());
+//                        udm1.setEmail(udm.getEmail());
+//                        udm1.setName(udm.getName());
+//
+//
+//                        registeredUserList.add(udm1);
+//                    }
+//                }
 
             }
 
@@ -148,7 +166,7 @@ public class Profile_edit_options extends AppCompatActivity {
                         break;
 
                     case R.id.action_addexpenses:
-                        Intent intent4 = new Intent(Profile_edit_options.this, UserSettings.class);
+                        Intent intent4 = new Intent(Profile_edit_options.this, AddExpenses.class);
                         startActivity(intent4);
                         break;
 
