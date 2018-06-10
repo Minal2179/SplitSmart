@@ -35,7 +35,7 @@ public class Invite_new_people extends AppCompatActivity {
             public void onClick(View v) {
                 String email;
 
-                if(Name.getText().equals("") || Email.getText().equals("")||Contact.getText().equals("")){
+                if(Name.getText().equals(null) || Email.getText().equals(null)||Contact.getText().equals(null)){
                     showToast("Enter all 3 fields");
                 }else{
                      email = Email.getText().toString();
@@ -82,7 +82,8 @@ public class Invite_new_people extends AppCompatActivity {
                         break;
 
                     case R.id.action_settings:
-
+                        Intent intent5 = new Intent(Invite_new_people.this, UserSettings.class);
+                        startActivity(intent5);
                         break;
                 }
 

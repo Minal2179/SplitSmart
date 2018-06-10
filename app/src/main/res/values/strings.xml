@@ -71,7 +71,7 @@
 
     <string-array name="settings">
         <item>Home</item>
-        <item>My Profile</item>
+        <item>Edit Profile</item>
         <item>Invite Friends</item>
         <item>Settings</item>
         <item>Logout</item>
