@@ -202,6 +202,10 @@ public class newFriend_Adding extends AppCompatActivity
 
                 initFCM();
 
+                name.setText(null);
+                contactNo.setText(null);
+                Email.setText(null);
+
             }
         });
 
@@ -237,7 +241,7 @@ public class newFriend_Adding extends AppCompatActivity
 
         if(!name.getText().toString().equals("")){
 
-            Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
+            //Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
             //create the new message
             MessageModel message = new MessageModel();
             message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
@@ -251,7 +255,7 @@ public class newFriend_Adding extends AppCompatActivity
                     .child(Objects.requireNonNull(msgreference.push().getKey()))
                     .setValue(message);
 
-            Toast.makeText(this, "message sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Friend Added Successfully", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "enter a message", Toast.LENGTH_SHORT).show();
         }
@@ -284,8 +288,7 @@ public class newFriend_Adding extends AppCompatActivity
         dbusersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Toast.makeText(newFriend_Adding.this, "inside Method.",
-                        Toast.LENGTH_SHORT).show();
+                
                 //friendlist.clear();
                 for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
                     users udm = frndSnap.getValue(users.class);

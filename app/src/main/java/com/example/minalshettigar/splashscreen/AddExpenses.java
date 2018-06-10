@@ -220,7 +220,7 @@ public class AddExpenses extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("peopleName", list);
-        //System.out.println("list--=-=cvdhbhvbshdbfchdsb"+list.size());
+
 
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
@@ -237,7 +237,7 @@ public class AddExpenses extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setText(getString(R.string.gallery));
         tabLayout.getTabAt(1).setText(getString(R.string.photo));
-        //tabLayout.getTabAt(2).setText(getString(R.string.manual));
+        tabLayout.getTabAt(2).setText(getString(R.string.manual));
 
     }
 

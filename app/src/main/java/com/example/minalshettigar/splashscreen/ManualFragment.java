@@ -257,11 +257,11 @@ public class ManualFragment extends Fragment {
             //System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
 
             DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
-                    child(currentUserIdWithoutDot).child("friends");
+                    child(currentUserIdWithoutDot);
 
+            updateExpenseValue.child("myValue").setValue(myvalue) ;
+            updateExpenseValue.child("friends").child(splitPeopleEmailWithoutDot).setValue(amtToBeUpdated);
 
-            updateExpenseValue.child(splitPeopleEmailWithoutDot).setValue(amtToBeUpdated);
-            updateExpenseValue.child("myvalue").setValue(myvalue) ;
 
         }
 

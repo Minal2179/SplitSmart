@@ -154,8 +154,7 @@ public class AddFriends extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(AddFriends.this, "on Start Method",
-                Toast.LENGTH_SHORT).show();
+
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         dbFriendsRef.addValueEventListener(new ValueEventListener() {
             @Override
