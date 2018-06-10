@@ -154,6 +154,7 @@ public class ManualFragment extends Fragment {
                     {
                         peopleEmail.setText(entry.getValue());
                         splitPeopleEmail=new String(entry.getValue());
+                        loadData();
 
                     }
                 }
@@ -202,7 +203,7 @@ public class ManualFragment extends Fragment {
                 itemPrice = Double.parseDouble(inputPrice.getText().toString());
 
                 // dropdownValue = staticSpinner.getOnItemSelectedListener().;
-               // loadData();
+
                 addItemTofriends(dropdownValue);
                 addExpensessToUserFriends();
 
@@ -249,12 +250,12 @@ public class ManualFragment extends Fragment {
 
         private void addExpensessToUserFriends()
         {
-
-            String amtToBeUpdated=Double.toString(amountFrmCurrUser+itemPrice);
+            double addamt=amountFrmCurrUser+itemPrice;
+            String amtToBeUpdated=Double.toString(addamt);
             String currentUserIdWithoutDot=currentUserId.replace(".","");
             String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
 
-            //System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
+            //System.out.println("amountFrmCurrUser"+amountFrmCurrUser+")_)_____--"+itemPrice);
 
             DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
                     child(currentUserIdWithoutDot);
@@ -273,7 +274,7 @@ public class ManualFragment extends Fragment {
        // init();
 
     loadData1();
-    loadData();
+    //loadData();
 
     }
 
@@ -285,6 +286,7 @@ public class ManualFragment extends Fragment {
 
         //System.out.println("peopleEmail"+peopleEmail.getText().toString());
         final String splitPeopleEmailWithoutDot = peopleEmail.getText().toString().replace(".", "");
+        //System.out.println("splitPeopleEmailWithoutDot"+peopleEmail.getText().toString().replace(".", ""));
         addExpenseValueToFrnds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -295,12 +297,13 @@ public class ManualFragment extends Fragment {
                         FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
 
                             myvalue=udm.getMyValue();
-                        //System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
+                       // System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
 
                         for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
                             if (entry.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot)) {
                                 // System.out.println("entry.getValue()******"+entry.getValue());
                                 amountFrmCurrUser = Double.parseDouble(entry.getValue());
+
                             }
                         }
                     }

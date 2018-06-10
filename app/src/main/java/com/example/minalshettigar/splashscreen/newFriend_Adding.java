@@ -288,7 +288,7 @@ public class newFriend_Adding extends AppCompatActivity
         dbusersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                
+
                 //friendlist.clear();
                 for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
                     users udm = frndSnap.getValue(users.class);

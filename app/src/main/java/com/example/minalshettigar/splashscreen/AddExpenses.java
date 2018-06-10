@@ -290,7 +290,7 @@ public class AddExpenses extends AppCompatActivity {
                 for(UsersDataModel udm:selectedFriendList)
                 {
 
-                    System.out.println("udm.getFrndName()"+udm.getFrndName());
+                    //System.out.println("udm.getFrndName()"+udm.getFrndName());
                     list.add(udm.getFrndName());
                     map.put(udm.getFrndName(),udm.getFriendId());
 
