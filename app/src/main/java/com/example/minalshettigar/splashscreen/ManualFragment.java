@@ -369,94 +369,106 @@ public class ManualFragment extends Fragment {
 
     public void loadData() {
 
+try {
+    addExpenseValueToFrnds = FirebaseDatabase.getInstance().getReference("user_friends");
 
-        addExpenseValueToFrnds = FirebaseDatabase.getInstance().getReference("user_friends");
+    //System.out.println("peopleEmail"+peopleEmail.getText().toString());
+    final String splitPeopleEmailWithoutDot = peopleEmail.getText().toString().replace(".", "");
+    //System.out.println("splitPeopleEmailWithoutDot"+peopleEmail.getText().toString().replace(".", ""));
+    addExpenseValueToFrnds.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        //System.out.println("peopleEmail"+peopleEmail.getText().toString());
-        final String splitPeopleEmailWithoutDot = peopleEmail.getText().toString().replace(".", "");
-        //System.out.println("splitPeopleEmailWithoutDot"+peopleEmail.getText().toString().replace(".", ""));
-        addExpenseValueToFrnds.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
 
-                for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
+                if (frndSnap.getKey().equalsIgnoreCase(currentUserId.replace(".", ""))) {
+                    FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
 
-                    if (frndSnap.getKey().equalsIgnoreCase(currentUserId.replace(".", ""))) {
-                        FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
+                    myvalue = udm.getMyValue();
+                    // System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
 
-                            myvalue=udm.getMyValue();
-                       // System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
+                    for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
+                        if (entry.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot)) {
+                            // System.out.println("entry.getValue()******"+entry.getValue());
+                            amountFrmCurrUser = Double.parseDouble(entry.getValue());
 
-                        for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
-                            if (entry.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot)) {
-                                // System.out.println("entry.getValue()******"+entry.getValue());
-                                amountFrmCurrUser = Double.parseDouble(entry.getValue());
-
-                            }
                         }
                     }
                 }
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+        }
+    });
+}
+catch(Exception e)
+{}
     }
 
     public void loadData1() {
-        dbFriendsRef = FirebaseDatabase.getInstance().getReference("friendships");
-        dbFriendsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
+        try {
 
-                //selectedFriendList.clear();
-                for(DataSnapshot frndSnap:dataSnapshot.getChildren())
-                {
-                    UsersDataModel udm=frndSnap.getValue(UsersDataModel.class);
 
-                    if(udm.getUserId()!=null && udm.getUserId().equalsIgnoreCase(currentUserId))
-                    {
-                        UsersDataModel udm1=new UsersDataModel();
-                        udm1.setFriendId(udm.getFriendId());
-                        udm1.setUserId(udm.getUserId());
-                        udm1.setFrndName(udm.getFrndName());
-                        udm1.setPic(udm.getPic());
+            dbFriendsRef = FirebaseDatabase.getInstance().getReference("friendships");
+            dbFriendsRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        selectedFriendList.add(udm1);
+                    //selectedFriendList.clear();
+                    for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
+                        UsersDataModel udm = frndSnap.getValue(UsersDataModel.class);
 
+                        if (udm.getUserId() != null && udm.getUserId().equalsIgnoreCase(currentUserId)) {
+                            UsersDataModel udm1 = new UsersDataModel();
+                            udm1.setFriendId(udm.getFriendId());
+                            udm1.setUserId(udm.getUserId());
+                            udm1.setFrndName(udm.getFrndName());
+                            udm1.setPic(udm.getPic());
+
+                            selectedFriendList.add(udm1);
+
+                        }
+                    }
+
+                    for (UsersDataModel udm : selectedFriendList) {
+
+                        list.add(udm.getFrndName());
+                        map.put(udm.getFrndName(), udm.getFriendId());
                     }
                 }
 
-                for(UsersDataModel udm:selectedFriendList)
-                {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    list.add(udm.getFrndName());
-                    map.put(udm.getFrndName(),udm.getFriendId());
                 }
-            }
+            });
+        }
+        catch (Exception e)
+        {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        }
     }
     private void sendRegistrationToServer(String token) {
-        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child(getString(R.string.dbnode_notification))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                .child(getString(R.string.field_messaging_token))
-                .setValue(token);
-        reference.child(getString(R.string.dbnode_notification))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                .child(getString(R.string.field_user_name))
-                .setValue(mAuth.getCurrentUser().getDisplayName());
-    }
+        try {
+            Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            reference.child(getString(R.string.dbnode_notification))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""))
+                    .child(getString(R.string.field_messaging_token))
+                    .setValue(token);
+            reference.child(getString(R.string.dbnode_notification))
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".", ""))
+                    .child(getString(R.string.field_user_name))
+                    .setValue(mAuth.getCurrentUser().getDisplayName());
+        }
+        catch(Exception e)
+        {
+
+        }
+        }
 
 
     private void initFCM(){
