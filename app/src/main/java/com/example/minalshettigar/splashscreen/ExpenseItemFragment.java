@@ -54,6 +54,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class ExpenseItemFragment extends Fragment {
@@ -89,7 +90,7 @@ public class ExpenseItemFragment extends Fragment {
     String dropdownValue;
     String myvalue;
 
-
+    private static final String TAG = "ExpenseItemFragment";
 
 
     @Nullable
@@ -214,6 +215,7 @@ public class ExpenseItemFragment extends Fragment {
 
                 addItemTofriends(dropdownValue);
                 addExpensessToUserFriends();
+                initFCM();
 
                 // clear form fields
                 inputItem.setText(null);
@@ -291,7 +293,7 @@ public class ExpenseItemFragment extends Fragment {
 
 
         }
-        
+
     }
 
 
@@ -406,6 +408,26 @@ public class ExpenseItemFragment extends Fragment {
         });
     }
 
+    private void sendRegistrationToServer(String token) {
+        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                .child(getString(R.string.field_messaging_token))
+                .setValue(token);
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                .child(getString(R.string.field_user_name))
+                .setValue(mAuth.getCurrentUser().getDisplayName());
+    }
+
+
+    private void initFCM(){
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "initFCM: token: " + token);
+        sendRegistrationToServer(token);
+
+    }
 
     private String getTimestamp(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
