@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +75,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
     private ImageView imageView;
     //Db Reference
     DatabaseReference userDb;
+    String userid;
     private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Nullable
@@ -102,7 +104,11 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-//        userid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        if (mAuth.getCurrentUser() != null) {
+            if(mAuth.getCurrentUser().getUid()!=null) {
+                userid = mAuth.getCurrentUser().getUid();
+            }
+        }
         userDb= FirebaseDatabase.getInstance().getReference("users");
         // [END initialize_auth]
 

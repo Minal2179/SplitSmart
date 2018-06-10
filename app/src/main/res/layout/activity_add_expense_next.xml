@@ -37,6 +37,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/relLayoutForListView"
             android:layout_below="@+id/topBar"
             android:layout_above="@+id/bottomBar"
             android:layout_width="match_parent"
@@ -66,9 +67,6 @@
             </ListView>
 
         </RelativeLayout>
-
-
-
 
 
         <RelativeLayout

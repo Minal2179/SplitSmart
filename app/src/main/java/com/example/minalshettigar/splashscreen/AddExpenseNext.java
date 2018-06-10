@@ -1,5 +1,7 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,12 +11,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.util.Log;
@@ -23,6 +32,7 @@ import com.example.minalshettigar.splashscreen.helper.ExpenseDataModel;
 import com.example.minalshettigar.splashscreen.helper.FriendListViewAdapter;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +44,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -55,6 +66,7 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
     ListView itemListView;
     private static CustomExpenseAdapter adapter;
 
+    AutoCompleteTextView searchQuery;
     SearchView editSearch;
     ListView allFriendsListView;
     String[] allFriendsNameList;
@@ -76,70 +88,9 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
         mAuth= FirebaseAuth.getInstance();
         TextView textView = (TextView) findViewById(R.id.textDetected);
-        textView.setText("TESTING: DETECTED TEXT SHOULD BE SHOWN HERE");
 
         itemListView = (ListView) findViewById(R.id.list);
         expenseDataModels = new ArrayList<>();
-
-        // add parsed text info to expenseDataModels
-        expenseDataModels.add(new ExpenseDataModel("item1", 1.00));
-        expenseDataModels.add(new ExpenseDataModel("item2", 4.00));
-
-        adapter = new CustomExpenseAdapter(expenseDataModels, getApplicationContext());
-        itemListView.setAdapter(adapter);
-        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ExpenseDataModel expenseDataModel = expenseDataModels.get(position);
-                // assign friends
-
-                // Search view for assigning friends
-                editSearch = (SearchView) findViewById(R.id.searchView);
-                allFriendsListView = (ListView) findViewById(R.id.allFriendsListView);
-
-                // generate sample data for all friends
-                allFriendsNameList = new String[] {"ALL FRIENDS: A", "ALL FRIENDS: B", "ALL FRIENDS: C" };
-                for (int i = 0; i < allFriendsNameList.length; i++) {
-                    UsersDataModel usersDataModel = new UsersDataModel();
-                    allFriendsArrayList.add(usersDataModel);
-                }
-                // pass results to FriendListViewAdapter class
-                allFriendsAdapter = new FriendListViewAdapter(getApplicationContext(), allFriendsArrayList);
-                // bind the allFriendsAdapter to the listview
-                allFriendsListView.setAdapter(allFriendsAdapter);
-
-
-            }
-        });
-
-
-
-
-
-        // test - add friend names to friendArrayList
-        selectedFriendsNameList = new String[] { "Friend A", "Friend B", "Friend C" };
-        selectedFriendsListView = findViewById(R.id.selectedFriendsListView);
-        for (int i = 0; i < selectedFriendsNameList.length; i++) {
-            UsersDataModel usersDataModel = new UsersDataModel();
-            selectedFriendsArrayList.add(usersDataModel);
-        }
-
-        if (selectedFriendsArrayList.size() > 0) {
-            Log.d(TAG, "SELECTEDFRIENDARRAYLIST SIZE IS " + selectedFriendsArrayList.size());
-        }
-        else {
-            Log.d(TAG, "SELECTEDFRIENDARRAYLIST SIZE IS NOT MORE THAN 0");
-        }
-
-        for (int i = 0; i < selectedFriendsArrayList.size(); i++) {
-            Log.d(TAG, "SELECTEDfriendArrayList: " + selectedFriendsArrayList.get(i).getFrndName());
-        }
-        /*
-        selectedFriendsAdapter = new FriendListViewAdapter(this, selectedFriendsArrayList);
-        selectedFriendsListView.setAdapter(selectedFriendsAdapter);
-
-        editSearch.setOnQueryTextListener(this);
-        */
 
         // get img info from AddExpenses Activity
         intent = getIntent();
@@ -151,7 +102,7 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
             bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
         }
 
-
+        // parse text
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 
         if (!textRecognizer.isOperational()) {
@@ -169,10 +120,7 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
             }
 
-            if (sb.length() > 0) {
-                textView.setText(sb.toString());
-            }
-            else {
+            if (sb.length() <= 0) {
                 textView.setText("Could not detect any text");
             }
 
@@ -181,37 +129,28 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
             String[] listOfItems = sb.toString().split("\n");
 
-            String[] names = Arrays.copyOfRange(listOfItems, 0, listOfItems.length/2);
-            String[] amounts = Arrays.copyOfRange(listOfItems, listOfItems.length/2, listOfItems.length);
+            String[] names = Arrays.copyOfRange(listOfItems, 0, listOfItems.length / 2);
+            String[] amounts = Arrays.copyOfRange(listOfItems, listOfItems.length / 2, listOfItems.length);
             double[] parsedAmounts = new double[amounts.length];
 
-            for (int i = 0; i < names.length; i++) {
-                Log.d(TAG, "ARRAY OF ITEM  NAMES " + i + ": " + names[i]);
-            }
             for (int i = 0; i < amounts.length; i++) {
-                Log.d(TAG, "ARRAY OF ITEM  AMOUNTS " + i + ": " + amounts[i]);
-            }
-
-            for(int i=0; i<amounts.length; i++){
                 String s = amounts[i];
                 Log.d(TAG, "PARSED AMOUNTS: " + s);
                 // if the first character is $ or S (which should always be the case cause these are amounts
-                if (s.substring(0, 1).equals("$")|| s.substring(0, 1).equals("S")) {
+                if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
                     s = s.substring(1, s.length());
                     Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
                     Double amount = Double.parseDouble(s);
                     parsedAmounts[i] = amount;
                 }
+                else {
+                    parsedAmounts[i] = Double.parseDouble(amounts[i]);
+                }
+            }
 
-                /*
-                String[] itemdetails = s.split(" ");
-                String itemname = itemdetails[0];
-                Double amount = Double.parseDouble(itemdetails[1]);
-                expense = new ExpenseDataModel(itemname, amount);
-                Log.d(TAG, "ITEM NAME: " + itemname);
-                Log.d(TAG, "ITEM PRICE: " + amount);
-                expenseDataModels.add(expense);
-                */
+            // add parsed item name and price to expenseDataModels
+            for (int i = 0; i < names.length; i++) {
+                expenseDataModels.add(new ExpenseDataModel(names[i], parsedAmounts[i]));
             }
 /*
         for(int i=0;i<expenseDataModels.size();i++){
@@ -226,6 +165,44 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
         }
 */
         }
+
+        // add parsed text info to expenseDataModels
+        //expenseDataModels.add(new ExpenseDataModel("item1", 1.00));
+        //expenseDataModels.add(new ExpenseDataModel("item2", 4.00));
+
+
+
+
+        adapter = new CustomExpenseAdapter(expenseDataModels, getApplicationContext());
+        itemListView.setAdapter(adapter);
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "ADDEXPENSENEXT onITEMCLICK");
+                ExpenseDataModel expenseDataModel = expenseDataModels.get(position);
+                // open fragment (same as manual fragment)
+                StringBuilder s = new StringBuilder();
+                s.append(expenseDataModel.getItemName());
+                s.append(",");
+                s.append(expenseDataModel.getItemPrice());
+                Bundle bundle = new Bundle();
+                bundle.putString("a",s.toString());
+                ExpenseItemFragment expenseItemFragment = new ExpenseItemFragment();
+                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                expenseItemFragment.setArguments(bundle);
+                transaction.replace(R.id.relLayoutForListView, expenseItemFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+
+
+            }
+        });
+
+
+
+
+
 
 
 
@@ -330,5 +307,10 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
         String text = newText;
         allFriendsAdapter.filter(text);
         return false;
+    }
+
+    public void removeItemFromData(int position) {
+        expenseDataModels.remove(position);
+        adapter.notifyDataSetChanged();
     }
 }

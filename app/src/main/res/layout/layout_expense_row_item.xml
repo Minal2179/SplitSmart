@@ -6,63 +6,26 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <EditText
+    <TextView
         android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:hint="@string/string_item_name"/>
 
-    <EditText
+    <TextView
         android:id="@+id/itemPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/itemName"
         android:hint="@string/string_0_00"/>
 
-    <EditText
-        android:id="@+id/itemPerson"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/itemPrice"
-        android:hint="Friend A"/>
-
-    <!--
-    <RelativeLayout
+    <Button
+        android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/relLayoutSearchFriends"
-        android:layout_below="@id/itemPrice">
-
-        <include layout="@layout/search_friend_list_layout"/>
-
-    </RelativeLayout>
-    -->
-
-
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/itemPerson"
-        android:iconifiedByDefault="false"
-        android:queryHint="Assign Friends" >
-
-        <requestFocus />
-
-    </SearchView>
-
-    <ListView
-        android:id="@+id/allFriendsListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchView"
-        />
-
-    <ListView
-        android:id="@+id/selectedFriendsListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/allFriendsListView"></ListView>
-
+        android:layout_alignBaseline="@+id/itemPrice"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp"
+        android:text="Remove Item"/>
 </RelativeLayout>
