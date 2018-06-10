@@ -42,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/prompt_contact"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="10"/>
         </LinearLayout>
 
         <LinearLayout
@@ -71,36 +72,36 @@
                 android:inputType="textPassword" />
         </LinearLayout>
 
-        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:id="@+id/profile_pic"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/email_password_fields"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:weightSum="2">-->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/profile_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_password_fields"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <!--<ImageView-->
-                <!--android:id="@+id/imgView"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:contentDescription="profile picture"-->
-                <!--android:src="@drawable/ic_friends"/>-->
+            <ImageView
+                android:id="@+id/imgView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:contentDescription="profile picture"
+                android:src="@drawable/ic_friends"/>
 
-            <!--<Button-->
-                <!--android:id="@+id/buttonLoadPicture"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_weight="1"-->
-                <!--android:text="Load Picture" />-->
-        <!--</LinearLayout>-->
+            <Button
+                android:id="@+id/buttonLoadPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Load Picture" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/email_password_buttons"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/email_password_fields"
+            android:layout_below="@+id/profile_pic"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">

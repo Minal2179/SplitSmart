@@ -92,22 +92,18 @@ public class ExpenseItemFragment extends Fragment {
     public View onCreateView( LayoutInflater inflater,  ViewGroup container, @Nullable Bundle savedInstanceState)
     {
 
-
-        View view= inflater.inflate(R.layout.fragment_manual,container,false);
+        View view= inflater.inflate(R.layout.fragment_expense_item,container,false);
 
         inputItem = (EditText) view.findViewById(R.id.input_item);
         inputPrice = (EditText) view.findViewById(R.id.input_price);
         //searchQuery = (AutoCompleteTextView) view.findViewById(R.id.input_people);
         peopleEmail=(EditText) view.findViewById(R.id.input_email);
 
-
         String data = getArguments().getString("a");
         String[] itemdetail = data.split(",");
 
         inputItem.setText(itemdetail[0]);
         inputPrice.setText(itemdetail[1]);
-
-
 
         buttonFinish = (Button) view.findViewById(R.id.button_finish);
         //buttonRemoveFriend = (Button) view.findViewById(R.id.button_remove_friend);
@@ -161,6 +157,7 @@ public class ExpenseItemFragment extends Fragment {
                     {
                         peopleEmail.setText(entry.getValue());
                         splitPeopleEmail=new String(entry.getValue());
+                        loadData();
 
                     }
                 }
@@ -209,7 +206,7 @@ public class ExpenseItemFragment extends Fragment {
                 itemPrice = Double.parseDouble(inputPrice.getText().toString());
 
                 // dropdownValue = staticSpinner.getOnItemSelectedListener().;
-                // loadData();
+
                 addItemTofriends(dropdownValue);
                 addExpensessToUserFriends();
 
@@ -220,10 +217,7 @@ public class ExpenseItemFragment extends Fragment {
                 peopleEmail.setText(null);
 
                 // go back to list view
-                getActivity().getFragmentManager().popBackStack();
-
-
-
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -259,12 +253,12 @@ public class ExpenseItemFragment extends Fragment {
 
     private void addExpensessToUserFriends()
     {
-
-        String amtToBeUpdated=Double.toString(amountFrmCurrUser+itemPrice);
+        double addamt=amountFrmCurrUser+itemPrice;
+        String amtToBeUpdated=Double.toString(addamt);
         String currentUserIdWithoutDot=currentUserId.replace(".","");
         String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
 
-        //System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
+        //System.out.println("amountFrmCurrUser"+amountFrmCurrUser+")_)_____--"+itemPrice);
 
         DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
                 child(currentUserIdWithoutDot);
@@ -283,7 +277,7 @@ public class ExpenseItemFragment extends Fragment {
         // init();
 
         loadData1();
-        loadData();
+        //loadData();
 
     }
 
@@ -295,6 +289,7 @@ public class ExpenseItemFragment extends Fragment {
 
         //System.out.println("peopleEmail"+peopleEmail.getText().toString());
         final String splitPeopleEmailWithoutDot = peopleEmail.getText().toString().replace(".", "");
+        //System.out.println("splitPeopleEmailWithoutDot"+peopleEmail.getText().toString().replace(".", ""));
         addExpenseValueToFrnds.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -305,12 +300,13 @@ public class ExpenseItemFragment extends Fragment {
                         FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
 
                         myvalue=udm.getMyValue();
-                        //System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
+                        // System.out.println("gugigigigigi "+udm.getFriends().entrySet().size());
 
                         for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
                             if (entry.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot)) {
                                 // System.out.println("entry.getValue()******"+entry.getValue());
                                 amountFrmCurrUser = Double.parseDouble(entry.getValue());
+
                             }
                         }
                     }

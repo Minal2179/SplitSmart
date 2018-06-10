@@ -1,5 +1,7 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +17,13 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.util.Log;
@@ -28,6 +32,7 @@ import com.example.minalshettigar.splashscreen.helper.ExpenseDataModel;
 import com.example.minalshettigar.splashscreen.helper.FriendListViewAdapter;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,7 +88,6 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
         mAuth= FirebaseAuth.getInstance();
         TextView textView = (TextView) findViewById(R.id.textDetected);
-        textView.setText("TESTING: DETECTED TEXT SHOULD BE SHOWN HERE");
 
         itemListView = (ListView) findViewById(R.id.list);
         expenseDataModels = new ArrayList<>();
@@ -116,9 +120,7 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
 
             }
 
-            if (sb.length() > 0) {
-                textView.setText(sb.toString());
-            } else {
+            if (sb.length() <= 0) {
                 textView.setText("Could not detect any text");
             }
 
@@ -140,6 +142,9 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
                     Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
                     Double amount = Double.parseDouble(s);
                     parsedAmounts[i] = amount;
+                }
+                else {
+                    parsedAmounts[i] = Double.parseDouble(amounts[i]);
                 }
             }
 
@@ -176,16 +181,16 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
                 Log.d(TAG, "ADDEXPENSENEXT onITEMCLICK");
                 ExpenseDataModel expenseDataModel = expenseDataModels.get(position);
                 // open fragment (same as manual fragment)
-                android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                ExpenseItemFragment itemFragment = new ExpenseItemFragment();
-
                 StringBuilder s = new StringBuilder();
                 s.append(expenseDataModel.getItemName());
                 s.append(",");
                 s.append(expenseDataModel.getItemPrice());
                 Bundle bundle = new Bundle();
                 bundle.putString("a",s.toString());
-                itemFragment.setArguments(bundle);
+                ExpenseItemFragment expenseItemFragment = new ExpenseItemFragment();
+                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                expenseItemFragment.setArguments(bundle);
+                transaction.replace(R.id.relLayoutForListView, expenseItemFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
 
@@ -302,5 +307,10 @@ public class AddExpenseNext extends AppCompatActivity implements SearchView.OnQu
         String text = newText;
         allFriendsAdapter.filter(text);
         return false;
+    }
+
+    public void removeItemFromData(int position) {
+        expenseDataModels.remove(position);
+        adapter.notifyDataSetChanged();
     }
 }

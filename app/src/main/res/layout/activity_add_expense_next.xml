@@ -37,6 +37,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/relLayoutForListView"
             android:layout_below="@+id/topBar"
             android:layout_above="@+id/bottomBar"
             android:layout_width="match_parent"
@@ -65,17 +66,7 @@
                 android:layout_height="wrap_content">
             </ListView>
 
-            <Button
-                android:id="@+id/buttonSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/list"
-                android:text="@string/string_next"/>
-
         </RelativeLayout>
-
-
-
 
 
         <RelativeLayout

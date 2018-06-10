@@ -245,7 +245,7 @@ public class newFriend_Adding extends AppCompatActivity
             //create the new message
             MessageModel message = new MessageModel();
             message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
-            message.setMessage(frnd_email);
+            message.setMessage("You are now friends with "+mAuth.getCurrentUser().getDisplayName());
             message.setTimestamp(getTimestamp());
 
             //insert the new message
@@ -259,6 +259,17 @@ public class newFriend_Adding extends AppCompatActivity
         }else{
             Toast.makeText(this, "enter a message", Toast.LENGTH_SHORT).show();
         }
+        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+        eventRef
+                .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                .child(Objects.requireNonNull(eventRef.push().getKey()))
+                .child(getString(R.string.field_message))
+                .setValue("You have successfully added "+frnd_name+" as your friend");
+        eventRef
+                .child(frnd_email.replace(".",""))
+                .child(Objects.requireNonNull(eventRef.push().getKey()))
+                .child(getString(R.string.field_message))
+                .setValue("You are now friends with "+mAuth.getCurrentUser().getDisplayName());
 
     }
 

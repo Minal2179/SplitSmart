@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.example.minalshettigar.splashscreen.AddExpenseNext;
 
 import org.w3c.dom.Text;
 
@@ -39,25 +40,13 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
 
     private ArrayList<ExpenseDataModel> expenseDataSet;
     Context mContext;
-    HashMap<String,String> map=new HashMap<String,String>();
-    String splitPeopleEmail;
-    ArrayList<String>list1=new ArrayList<String>();
-    DatabaseReference addfrnddb;
-    DatabaseReference adduserfrnddb;
-    DatabaseReference userDb;
-    private FirebaseAuth mAuth;
-    DatabaseReference dbusersRef;
-    private String currentUserId;
-    List<users>registeredUserList;
-    List<String>list;
-
-
 
 
     // View lookup cache
     private static class ViewHolder {
         TextView txtItemName;
         TextView txtItemPrice;
+        Button btnRemoveItem;
     }
 
     public CustomExpenseAdapter(ArrayList<ExpenseDataModel> data, Context context) {
@@ -73,6 +62,15 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
         Object object = getItem(position);
         ExpenseDataModel expenseDataModel = (ExpenseDataModel) object;
 
+        switch (v.getId()) {
+            case R.id.buttonDelete:
+                Log.d("TEST", "delete item here" + position);
+                if (mContext instanceof AddExpenseNext) {
+                    ((AddExpenseNext) mContext).removeItemFromData(position);
+                }
+                break;
+        }
+
     }
 
     private int lastPosition = -1;
@@ -82,14 +80,6 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
         ExpenseDataModel expenseDataModel = getItem(position);
         final ViewHolder viewHolder;
         final View result;
-        mAuth = FirebaseAuth.getInstance();
-        list=new ArrayList<String>();
-        map=new HashMap<String,String>();
-        registeredUserList=new ArrayList<users>();
-        dbusersRef= FirebaseDatabase.getInstance().getReference("users");
-
-        loadData();
-        ArrayAdapter<String> name_adapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item, list);
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -97,7 +87,9 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
             convertView = inflater.inflate(R.layout.layout_expense_row_item, parent, false);
             viewHolder.txtItemName = (TextView) convertView.findViewById(R.id.itemName);
             viewHolder.txtItemPrice = (TextView) convertView.findViewById(R.id.itemPrice);
-
+            viewHolder.btnRemoveItem = (Button) convertView.findViewById(R.id.buttonDelete);
+            viewHolder.btnRemoveItem.setOnClickListener(this);
+            viewHolder.btnRemoveItem.setTag(position);
 
             result = convertView;
             convertView.setTag(viewHolder);
@@ -111,43 +103,6 @@ public class CustomExpenseAdapter extends ArrayAdapter<ExpenseDataModel> impleme
         viewHolder.txtItemPrice.setText(Double.toString(expenseDataModel.getItemPrice()));
 
         return convertView;
-    }
-
-    public void loadData() {
-        dbusersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                //friendlist.clear();
-                for (DataSnapshot frndSnap : dataSnapshot.getChildren()) {
-                    users udm = frndSnap.getValue(users.class);
-
-                    if (udm.getEmail() != null && !udm.getEmail().equalsIgnoreCase(currentUserId))
-                    {
-                        users udm1 = new users();
-                        udm1.setContact(udm.getContact());
-                        udm1.setEmail(udm.getEmail());
-                        udm1.setName(udm.getName());
-
-                        registeredUserList.add(udm1);
-
-                    }
-                }
-
-                for(users udm:registeredUserList)
-                {
-                    list.add(udm.getName());
-                    map.put(udm.getName(),udm.getEmail());
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
 }

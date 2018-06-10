@@ -39,13 +39,6 @@
             android:layout_height="match_parent"
             >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
-                android:textSize="30sp"
-                android:id="@+id/activityTitle2"
-                android:textAlignment="center"/>
 
             <include layout="@layout/layout_center_viewpager" />
 

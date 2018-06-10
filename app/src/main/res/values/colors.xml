@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#3D5955</color>
     <color name="colorAccent">#618D84</color>
     <color name="iron">#CCCCCC</color>
+    <color name="loginreg">#9AB1A5</color>
+    <color name="bottom_tabs">#F6F6F6</color>
     <color name="splittrBlue">#2196F3</color>
     <color name="splittrTopGreen">#3b873b</color>
     <color name="splittrGreen">#4EAA3B</color>
@@ -13,7 +15,7 @@
     <color name="accent">#FFBB0F</color>
     <color name="owes">#F24646</color>
     <color name="white">#FFFFFF</color>
-    <color name="bottom_navigation">#3A3F48</color>
+    <color name="bottom_navigation">#F6F6F6</color>
     <color name="bottom_text">#DFE1DF</color>
     <color name="colorDarkGrey">#3A3F48</color>
     <color name="colorGrey">#c3c3c3 </color>

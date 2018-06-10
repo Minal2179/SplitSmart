@@ -4,12 +4,29 @@ public class Item {
 
     private String item_name;
     private String item_price;
+    private String category;
 
+    public String getCategory() {
+        return category;
+    }
 
-   public Item(String name,String price)
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Item() {
+    }
+
+    public Item(String name, String price, String category)
     {
        this.item_name=name;
+       this.category=category;
        this.item_price=price;
+    }
+    public Item(String name, String price)
+    {
+        this.item_name=name;
+        this.item_price=price;
     }
     public String getItem_name() {
         return item_name;

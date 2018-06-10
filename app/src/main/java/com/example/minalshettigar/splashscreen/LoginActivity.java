@@ -49,6 +49,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
     private SectionsPageAdapter mSectionsPageAdapter;
 
     private ViewPager mViewPager;
+    FirebaseUser user;
 
     // [END declare_auth]
 
@@ -72,8 +73,8 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         tabLayout.setupWithViewPager(mViewPager);
 
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_center_focus);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_autorenew);
+        tabLayout.getTabAt(0).setText("Login");
+        tabLayout.getTabAt(1).setText("Register");
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -97,7 +98,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
 
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -263,6 +264,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
     }
     @Override
     public void changeStatusSuccess(){
+        user = mAuth.getCurrentUser();
         mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
                 user.getEmail(), user.isEmailVerified()));
     }

@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.FriendsExpense;
 import com.example.minalshettigar.splashscreen.helper.Item;
+import com.example.minalshettigar.splashscreen.helper.MessageModel;
+import com.example.minalshettigar.splashscreen.helper.UserDbFormat;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,12 +38,14 @@ import com.google.firebase.database.ValueEventListener;
 import android.widget.Spinner;
 import android.widget.AdapterView;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.widget.Spinner;
@@ -49,6 +53,11 @@ import android.widget.ArrayAdapter;
 import android .widget.TextView;
 import android.text.TextWatcher;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.TimeZone;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class ManualFragment extends Fragment {
@@ -75,6 +84,7 @@ public class ManualFragment extends Fragment {
     DatabaseReference addExpenseValueToFrnds;
     double amountFrmCurrUser;
     DatabaseReference dbFriendsRef;
+    DatabaseReference userDb;
     ArrayList<String>list1=new ArrayList<String>();
     ArrayList<String>list=new ArrayList<String>();
 
@@ -83,6 +93,7 @@ public class ManualFragment extends Fragment {
     View v;
     String dropdownValue;
     String myvalue;
+    private static final String TAG = "ManualFragment";
 
 
 
@@ -94,7 +105,7 @@ public class ManualFragment extends Fragment {
 
 
        View view= inflater.inflate(R.layout.fragment_manual,container,false);
-
+        mAuth = FirebaseAuth.getInstance();
        inputItem = (EditText) view.findViewById(R.id.input_item);
         inputPrice = (EditText) view.findViewById(R.id.input_price);
         //searchQuery = (AutoCompleteTextView) view.findViewById(R.id.input_people);
@@ -115,6 +126,7 @@ public class ManualFragment extends Fragment {
         staticSpinner.setAdapter(staticAdapter);
 
         addItemToFrnds=FirebaseDatabase.getInstance().getReference("items");
+        userDb = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_users));
         //dbFriendsRef= FirebaseDatabase.getInstance().getReference("friendships");
         //addExpenseValueToFrnds= FirebaseDatabase.getInstance().getReference("user_friends");
 
@@ -203,6 +215,7 @@ public class ManualFragment extends Fragment {
                 itemPrice = Double.parseDouble(inputPrice.getText().toString());
 
                 // dropdownValue = staticSpinner.getOnItemSelectedListener().;
+                initFCM();
 
                 addItemTofriends(dropdownValue);
                 addExpensessToUserFriends();
@@ -223,24 +236,99 @@ public class ManualFragment extends Fragment {
 
 
 
-    private void addItemTofriends(String dropVal)
+    private void addItemTofriends(final String dropVal)
     {
         if(!itemName.isEmpty() )
         {
-
-            Item itemObj = new Item(itemName,Double.toString(itemPrice));
+            final int numberOfSplits = 2;
+            Item itemObj = new Item(itemName,Double.toString(itemPrice/numberOfSplits),dropVal);
            String id = addItemToFrnds.push().getKey();
 
             String currentUserIdWithoutDot=currentUserId.replace(".","");
+            String username = mAuth.getCurrentUser().getDisplayName();
             //System.out.println("peopleEmail"+peopleEmail.getText().toString());
             String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
 
            // System.out.println("currentUserIdWithoutDot"+currentUserIdWithoutDot);
            // System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
 
+            //Handling only for bill split among 2 people
             addItemToFrnds.child(currentUserIdWithoutDot).child(id).setValue(itemObj);
-            addItemToFrnds.child(currentUserIdWithoutDot).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
-            addItemToFrnds.child(currentUserIdWithoutDot).child("category").setValue(dropVal);
+            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).setValue(itemObj);
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("category").setValue(dropVal);
+
+//            userDb.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+//                    UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
+//                    Double val=0.0;
+//                    if(dropVal.equals("Shopping")){
+//                        val = Double.parseDouble(current_user.getShopping()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Food")){
+//                         val = Double.parseDouble(current_user.getFood()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Rent")){
+//                         val = Double.parseDouble(current_user.getRent()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Grocery")){
+//                         val = Double.parseDouble(current_user.getGrocery()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Travel")){
+//                         val = Double.parseDouble(current_user.getTravel()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Miscellaneous")){
+//                         val = Double.parseDouble(current_user.getMiscellaneous()) + (itemPrice/numberOfSplits);
+//                    }
+//                    else if(dropVal.equals("Utility")){
+//                         val = Double.parseDouble(current_user.getElectricity()) + (itemPrice/numberOfSplits);
+//                    }
+//                    userDb.child(dropVal).setValue(val);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+
+            DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
+
+            if(!itemName.isEmpty()){
+
+                //Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
+                //create the new message
+                MessageModel message = new MessageModel();
+                message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
+                message.setMessage(username+" added "+itemName+" of amount "+Double.toString(itemPrice));
+                message.setTimestamp(getTimestamp());
+
+                //insert the new message
+                msgreference
+                        .child(getString(R.string.dbnode_messages))
+                        .child(splitPeopleEmailWithoutDot)
+                        .child(Objects.requireNonNull(msgreference.push().getKey()))
+                        .setValue(message);
+
+                Toast.makeText(getContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getContext(), "enter a message", Toast.LENGTH_SHORT).show();
+            }
+            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+            eventRef
+                    .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                    .child(Objects.requireNonNull(eventRef.push().getKey()))
+                    .child(getString(R.string.field_message))
+                    .setValue("You have added " +itemName+" of amount "+Double.toString(itemPrice));
+            eventRef
+                    .child(splitPeopleEmailWithoutDot)
+                    .child(Objects.requireNonNull(eventRef.push().getKey()))
+                    .child(getString(R.string.field_message))
+                    .setValue(mAuth.getCurrentUser().getDisplayName()+" added "+itemName+" of amount "+Double.toString(itemPrice));
 
 
         }
@@ -357,6 +445,31 @@ public class ManualFragment extends Fragment {
             }
         });
     }
+    private void sendRegistrationToServer(String token) {
+        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child(getString(R.string.dbnode_notification))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(getString(R.string.field_messaging_token))
+                .setValue(token);
+    }
 
+
+    private void initFCM(){
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "initFCM: token: " + token);
+        sendRegistrationToServer(token);
+
+    }
+
+    /**
+     * Return the current timestamp in the form of a string
+     * @return
+     */
+    private String getTimestamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        return sdf.format(new Date());
+    }
 
 }
