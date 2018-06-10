@@ -76,6 +76,7 @@ public class newFriend_Adding extends AppCompatActivity
     //vars
     private String mUserId;
     private ArrayList<UserDbFormat> mUsers;
+    String currentUserName;
 
 
 
@@ -139,6 +140,8 @@ public class newFriend_Adding extends AppCompatActivity
         userDb = FirebaseDatabase.getInstance().getReference("users");
        adduserfrnddb=FirebaseDatabase.getInstance().getReference("user_friends");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        currentUserName= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         dbusersRef= FirebaseDatabase.getInstance().getReference("users");
@@ -232,6 +235,11 @@ public class newFriend_Adding extends AppCompatActivity
             addfrnddb.child(id).setValue(udm);
             adduserfrnddb.child(currentUserId.replace(".","")).child("friends").child(frnd_email.replace(".","")).setValue("0");
             adduserfrnddb.child(currentUserId.replace(".","")).child("myValue").setValue("0");
+            // for showing current user as friends profile
+            UsersDataModel udm1=new UsersDataModel(frnd_email,currentUserId,currentUserName,strDate,strDate);
+            addfrnddb.child(id).setValue(udm1);
+            adduserfrnddb.child(frnd_email.replace(".","")).child("friends").child(currentUserId.replace(".","")).setValue("0");
+            adduserfrnddb.child(frnd_email.replace(".","")).child("myValue").setValue("0");
 
 
 
