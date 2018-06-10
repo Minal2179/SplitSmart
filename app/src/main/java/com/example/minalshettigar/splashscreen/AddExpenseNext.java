@@ -1,10 +1,13 @@
 package com.example.minalshettigar.splashscreen;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,6 +70,8 @@ public class AddExpenseNext extends AppCompatActivity {
     ArrayList<ExpenseDataModel> expenseDataModels;
     ListView itemListView;
     private static CustomExpenseAdapter adapter;
+
+    AlertDialog.Builder builder;
 
 
     @Override
@@ -148,7 +153,7 @@ public class AddExpenseNext extends AppCompatActivity {
         }
 
 
-        adapter = new CustomExpenseAdapter(expenseDataModels, getApplicationContext());
+        adapter = new CustomExpenseAdapter(expenseDataModels, AddExpenseNext.this);
         itemListView.setAdapter(adapter);
         itemListView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,6 +168,7 @@ public class AddExpenseNext extends AppCompatActivity {
                 s.append(expenseDataModel.getItemPrice());
                 Bundle bundle = new Bundle();
                 bundle.putString("a",s.toString());
+                bundle.putInt("itemIndex", position);
                 ExpenseItemFragment expenseItemFragment = new ExpenseItemFragment();
                 android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 expenseItemFragment.setArguments(bundle);
@@ -215,6 +221,14 @@ public class AddExpenseNext extends AppCompatActivity {
                 return false;
             }
         });
+
+        // Create dialog builder to pop up message when trying to delete items from listview
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        }
+        else {
+            builder = new AlertDialog.Builder(this);
+        }
     }
 
     @Override
@@ -266,12 +280,33 @@ public class AddExpenseNext extends AppCompatActivity {
         return bitmap;
     }
 
-    public void removeItemFromData(int position) {
+    public void checkRemoveItemFromData(final int position) {
         Log.d(TAG, "REMOVEITEM FROM DATA CALLED WHCBKJABCSKJBASKCBJKABSC");
-        expenseDataModels.remove(position);
+        builder.setTitle("Delete Item")
+                .setMessage("Delete this item?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //continue with delete
+                        removeItemFromData(position);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // do nothing
+                        dialogInterface.cancel();
+                    }
+                })
+                .show();
+
         for (int i = 0; i < expenseDataModels.size(); i++) {
             Log.d(TAG, "expenseDataModels item " + i + expenseDataModels.get(i).getItemName());
         }
+    }
+
+    public void removeItemFromData(final int position) {
+        expenseDataModels.remove(position);
         adapter.notifyDataSetChanged();
         itemListView.invalidateViews();
     }
