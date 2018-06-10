@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class UserSettings extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ListView settingList;
-    Button back;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class UserSettings extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         settingList = (ListView)findViewById(R.id.settingList);
-        back = (Button) findViewById(R.id.back);
+
 
 
         mAuth = FirebaseAuth.getInstance();

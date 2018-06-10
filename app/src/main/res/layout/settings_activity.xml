@@ -62,18 +62,7 @@
                 tools:layout_editor_absoluteY="57dp"
                 android:layout_alignParentLeft="true" />
 
-            <Button
-                android:id="@+id/back"
-                android:layout_width="47dp"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/settingList"
-                android:layout_alignEnd="@+id/textView"
-                android:layout_marginBottom="-56dp"
-                android:src="@drawable/cross"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="340dp"
-                tools:layout_editor_absoluteY="5dp"
-                android:layout_alignRight="@+id/textView" />
+
 
         </RelativeLayout>
 

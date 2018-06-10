@@ -41,6 +41,8 @@ public class Profile_edit_options extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit_options);
 
+        Log.d("Hello","Hello");
+
         Edit = (Button) findViewById(R.id.Edit);
         Name = (EditText) findViewById(R.id.Name);
         Email = (EditText) findViewById(R.id.Email);
@@ -85,6 +87,7 @@ public class Profile_edit_options extends AppCompatActivity {
 
             }
         });
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,8 +126,6 @@ public class Profile_edit_options extends AppCompatActivity {
                 // ...
             }
         };
-
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
@@ -147,7 +148,7 @@ public class Profile_edit_options extends AppCompatActivity {
                         break;
 
                     case R.id.action_addexpenses:
-                        Intent intent4 = new Intent(Profile_edit_options.this, AddExpenses.class);
+                        Intent intent4 = new Intent(Profile_edit_options.this, UserSettings.class);
                         startActivity(intent4);
                         break;
 
@@ -157,7 +158,8 @@ public class Profile_edit_options extends AppCompatActivity {
                         break;
 
                     case R.id.action_settings:
-
+                        Intent intent5 = new Intent(Profile_edit_options.this, UserSettings.class);
+                        startActivity(intent5);
                         break;
                 }
 
