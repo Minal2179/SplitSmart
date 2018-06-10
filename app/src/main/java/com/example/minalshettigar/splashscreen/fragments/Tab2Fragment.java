@@ -357,6 +357,7 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
 
             mEmailPassword.setVisibility(View.VISIBLE);
             mEmailPasswordField.setVisibility(View.VISIBLE);
+            mProfilePic.setVisibility(View.VISIBLE);
             mSigningButtons.setVisibility(View.GONE);
         }
     }

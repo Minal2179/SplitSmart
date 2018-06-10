@@ -81,9 +81,9 @@ public class Profile_edit_options extends AppCompatActivity {
                     toastMessage("Enter Contact");
 
                 }else {
-                    myRef.child(userId).setValue(newContact);
-                    myRef.child(userId).setValue(newEmail);
-                    myRef.child(userId).setValue(newName);
+                    myRef.child(userId).child("contact").setValue(newContact);
+                    myRef.child(userId).child("email").setValue(newEmail);
+                    myRef.child(userId).child("name").setValue(newName);
                     toastMessage("Data Updated");
                 }
 
