@@ -64,13 +64,26 @@
             android:id="@+id/category_manual"
             android:layout_width="300dp"
             android:layout_height="45dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="201dp"
             android:background="@android:drawable/btn_dropdown"
             android:hint="Select Category"
             android:paddingStart="8dp"
             android:spinnerMode="dropdown" />
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/splitBetweenPeople"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/category_manual"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-184dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:hint="Select Amount Should be Splitted Or Not"
+            android:paddingStart="8dp"
+            android:spinnerMode="dropdown" />
+
 
         <TextView
             android:id="@+id/textView6"
@@ -87,10 +100,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="225dp"
+            android:layout_marginBottom="80dp"
             android:background="@color/colorPrimary"
-            android:textSize="18sp"
-            android:text="Save" />
+            android:text="Save"
+            android:textSize="18sp" />
 
 
     </RelativeLayout>

@@ -94,6 +94,8 @@ public class ManualFragment extends Fragment {
     String dropdownValue;
     String myvalue;
     private static final String TAG = "ManualFragment";
+    MaterialBetterSpinner dynamicSpinner;
+    String SplitdropdownValue;
 
 
 
@@ -124,6 +126,16 @@ public class ManualFragment extends Fragment {
         staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         staticSpinner.setAdapter(staticAdapter);
+
+        dynamicSpinner = (MaterialBetterSpinner) view.findViewById(R.id.splitBetweenPeople);
+        ArrayAdapter<CharSequence> dynamicAdapter = ArrayAdapter
+                .createFromResource(getContext(), R.array.splitAmount_EquallyOrNot,
+                        android.R.layout.simple_spinner_item);
+
+        dynamicAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        dynamicSpinner.setAdapter(dynamicAdapter);
+
 
         addItemToFrnds=FirebaseDatabase.getInstance().getReference("items");
         userDb = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_users));
@@ -177,6 +189,16 @@ public class ManualFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 dropdownValue = adapterView.getItemAtPosition(position).toString();
+                //System.out.println("dropdownValue"+dropdownValue);
+                int mSelectedId = position;
+
+            }
+        });
+
+        dynamicSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                SplitdropdownValue = adapterView.getItemAtPosition(position).toString();
                 //System.out.println("dropdownValue"+dropdownValue);
                 int mSelectedId = position;
 
@@ -338,18 +360,55 @@ public class ManualFragment extends Fragment {
 
         private void addExpensessToUserFriends()
         {
-            double addamt=amountFrmCurrUser+itemPrice;
-            String amtToBeUpdated=Double.toString(addamt);
-            String currentUserIdWithoutDot=currentUserId.replace(".","");
-            String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
+            double splitItemPrice=0;
+            if(SplitdropdownValue.equalsIgnoreCase("Paid By You And He Owes"))
+            {
+                splitItemPrice=itemPrice;
 
-            //System.out.println("amountFrmCurrUser"+amountFrmCurrUser+")_)_____--"+itemPrice);
+                double addamt=amountFrmCurrUser+splitItemPrice;
+                String amtToBeUpdated=Double.toString(addamt);
+                String currentUserIdWithoutDot=currentUserId.replace(".","");
+                String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
 
-            DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
-                    child(currentUserIdWithoutDot);
+                //System.out.println("amountFrmCurrUser"+amountFrmCurrUser+")_)_____--"+itemPrice);
 
-            updateExpenseValue.child("myValue").setValue(myvalue) ;
-            updateExpenseValue.child("friends").child(splitPeopleEmailWithoutDot).setValue(amtToBeUpdated);
+                DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
+                        child(currentUserIdWithoutDot);
+
+                updateExpenseValue.child("myValue").setValue(myvalue) ;
+                updateExpenseValue.child("friends").child(splitPeopleEmailWithoutDot).setValue(amtToBeUpdated);
+
+            }
+            else
+            {
+                splitItemPrice=itemPrice/2;
+
+                double addamt=amountFrmCurrUser+splitItemPrice;
+                String amtToBeUpdated=Double.toString(addamt);
+                String currentUserIdWithoutDot=currentUserId.replace(".","");
+                String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
+
+                //System.out.println("amountFrmCurrUser"+amountFrmCurrUser+")_)_____--"+itemPrice);
+
+                DatabaseReference updateExpenseValue = FirebaseDatabase.getInstance().getReference("user_friends").
+                        child(currentUserIdWithoutDot);
+
+                updateExpenseValue.child("myValue").setValue(myvalue) ;
+                updateExpenseValue.child("friends").child(splitPeopleEmailWithoutDot).setValue(amtToBeUpdated);
+
+
+                //For your Expense Account
+
+                DatabaseReference updateExpenseValueforYourself = FirebaseDatabase.getInstance().getReference("user_friends").
+                        child(splitPeopleEmailWithoutDot);
+
+                updateExpenseValueforYourself.child("myValue").setValue(myvalue) ;
+                updateExpenseValueforYourself.child("friends").child(currentUserIdWithoutDot).setValue(amtToBeUpdated);
+
+
+            }
+
+
 
 
         }
