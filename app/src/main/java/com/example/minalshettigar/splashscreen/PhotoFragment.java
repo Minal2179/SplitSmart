@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.Manifest;
+import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.PermissionUtils;
 
@@ -28,6 +29,11 @@ public class PhotoFragment extends Fragment {
     private static final int MANUAL_FRAGMENT_NUM = 2;
     private static final int CAMERA_REQUEST_CODE = 5;
 
+    public static final String[] PERMISSIONS = {
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
 
     @Nullable
     @Override
@@ -39,14 +45,18 @@ public class PhotoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (((AddExpenses)getActivity()).getCurrentTabNumber() == PHOTO_FRAGMENT_NUM) {
-                    // TODO: CHECK CAMERA PERMISSIONS
+                    if (((AddExpenses)getActivity()).checkPermissions(Manifest.permission.CAMERA)) {
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+                    }
+                    else {
+                        // need to ask for camera permission again
+                        Intent intent = new Intent(getActivity(), AddExpenses.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                }
 
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
-                }
-                else {
-                    // need to ask for camera permission again
-                }
             }
         });
 
@@ -66,16 +76,21 @@ public class PhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            Bitmap bitmap;
-            bitmap = (Bitmap) data.getExtras().get("data");
+        try {
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                Bitmap bitmap;
+                bitmap = (Bitmap) data.getExtras().get("data");
 
-            if (isRootTask()) {
-                Intent intent = new Intent(getActivity(), AddExpenseNext.class);
-                intent.putExtra(getString(R.string.selected_bitmap), bitmap);
-                startActivity(intent);
+                if (isRootTask()) {
+                    Intent intent = new Intent(getActivity(), AddExpenseNext.class);
+                    intent.putExtra(getString(R.string.selected_bitmap), bitmap);
+                    startActivity(intent);
+                }
             }
+        } catch(NullPointerException e) {
+            Toast.makeText(getContext(), "No Image Taken", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void requestCameraPermission() {
