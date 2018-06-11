@@ -368,7 +368,7 @@ public class ExpenseItemFragment extends Fragment {
     private void addExpensessToUserFriends()
     {
         double splitItemPrice=0;
-        if(SplitdropdownValue.equalsIgnoreCase("Paid By You And He Owes"))
+        if(SplitdropdownValue.equalsIgnoreCase("Charge Full Amount to Friend"))
         {
             splitItemPrice=itemPrice;
 
@@ -412,12 +412,12 @@ public class ExpenseItemFragment extends Fragment {
             double addamtfrndAmt=amountFrmFrnd+splitItemPrice;
             String amtforFriendTobeUpdated=Double.toString(addamtfrndAmt);
 
-            DatabaseReference updateExpenseValueforYourself = FirebaseDatabase.getInstance().getReference("user_friends").
+            /*DatabaseReference updateExpenseValueforYourself = FirebaseDatabase.getInstance().getReference("user_friends").
                     child(splitPeopleEmailWithoutDot);
 
             updateExpenseValueforYourself.child("myValue").setValue(myvalue) ;
             updateExpenseValueforYourself.child("friends").child(currentUserIdWithoutDot).setValue(amtforFriendTobeUpdated);
-
+*/
 
         }
 
