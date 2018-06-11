@@ -89,6 +89,7 @@ public class ExpenseItemFragment extends Fragment {
     View v;
     String dropdownValue;
     String myvalue;
+    int itemIndex;
 
     private static final String TAG = "ExpenseItemFragment";
 
@@ -110,6 +111,7 @@ public class ExpenseItemFragment extends Fragment {
 
         inputItem.setText(itemdetail[0]);
         inputPrice.setText(itemdetail[1]);
+        itemIndex = getArguments().getInt("itemIndex");
 
         buttonFinish = (Button) view.findViewById(R.id.button_finish);
         //buttonRemoveFriend = (Button) view.findViewById(R.id.button_remove_friend);
@@ -224,6 +226,7 @@ public class ExpenseItemFragment extends Fragment {
                 peopleEmail.setText(null);
 
                 // go back to list view
+                ((AddExpenseNext)getActivity()).removeItemFromData(itemIndex);
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
