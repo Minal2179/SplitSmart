@@ -18,11 +18,7 @@
 
         <include layout="@layout/layout_manual_expense" />
 
-        <Button
-            android:id="@+id/button_finish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/string_save_and_finish" />
+
 
     </LinearLayout>
 
