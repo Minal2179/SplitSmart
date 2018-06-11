@@ -1,6 +1,7 @@
 package com.example.minalshettigar.splashscreen;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -26,25 +27,32 @@ public class Invite_new_people extends AppCompatActivity {
         setContentView(R.layout.activity_invite_new_people);
 
         Name = (EditText) findViewById(R.id.Name);
-        Email = (EditText) findViewById(R.id.Email);
-        Contact = (EditText) findViewById(R.id.ContactNo);
+        Email = (EditText) findViewById(R.id.Email2);
+        Contact = (EditText) findViewById(R.id.ContactNo2);
         invite = (Button) findViewById(R.id.invite);
 
         invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email;
+                String email, contactNo;
 
                 if(Name.getText().equals(null) || Email.getText().equals(null)||Contact.getText().equals(null)){
                     showToast("Enter all 3 fields");
                 }else{
-                     email = Email.getText().toString();
+                    email = Email.getText().toString();
                     Intent intent =new Intent(ACTION_SEND);
+                    intent.setData(Uri.parse("mailto:"));
                     intent.putExtra(Intent.EXTRA_EMAIL,email);
+                    //intent.putExtra(Intent.EXTRA_EMAIL,email);
                     intent.putExtra(Intent.EXTRA_SUBJECT,"App Invitation");
                     intent.putExtra(Intent.EXTRA_TEXT,"Enjoy the new world of splitting bills, just by clicking a picture");
                     intent.setType("message/rfc822");
                     startActivity(Intent.createChooser(intent,"choose an email client"));
+
+                    contactNo = Contact.getText().toString();
+                    Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms",contactNo,null));
+                    intent1.putExtra("sms_body", "Hey there we have develop an amazing app, want to use it ?");
+                    startActivity(intent1);
                 }
             }
         });
