@@ -55,7 +55,9 @@
         <activity android:name=".Profile_edit_options" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".Invite_new_people" android:windowSoftInputMode="adjustPan"/>
 
-
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
     </application>
 
 </manifest>

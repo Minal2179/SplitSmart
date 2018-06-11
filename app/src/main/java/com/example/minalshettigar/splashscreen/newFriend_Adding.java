@@ -1,8 +1,5 @@
 package com.example.minalshettigar.splashscreen;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,18 +9,14 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.provider.ContactsContract;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.MessageModel;
@@ -38,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 import com.example.minalshettigar.splashscreen.helper.UsersDataModel;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -132,8 +124,8 @@ public class newFriend_Adding extends AppCompatActivity
         });
 
        // name=(EditText)findViewById(R.id.Name);
-        contactNo=(EditText)findViewById(R.id.ContactNo);
-        Email   =(EditText)findViewById(R.id.Email);
+        contactNo=(EditText)findViewById(R.id.ContactNo2);
+        Email   =(EditText)findViewById(R.id.Email2);
         btnAddFriend=(Button)findViewById(R.id.addFriend);
 
         addfrnddb=FirebaseDatabase.getInstance().getReference("friendships");

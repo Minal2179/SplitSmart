@@ -501,18 +501,20 @@ public class ExpenseItemFragment extends Fragment {
     private void sendRegistrationToServer(String token) {
         Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        if(mAuth.getCurrentUser().getEmail()!=null){
-            reference.child(getString(R.string.dbnode_notification))
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                    .child(getString(R.string.field_messaging_token))
-                    .setValue(token);
-            reference.child(getString(R.string.dbnode_notification))
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
-                    .child(getString(R.string.field_user_name))
-                    .setValue(mAuth.getCurrentUser().getDisplayName());
-        }
-        else{
-            Toast.makeText(getContext(), "Event didnt get added", Toast.LENGTH_SHORT).show();
+        try {
+            if(mAuth.getCurrentUser().getEmail()!=null){
+                reference.child(getString(R.string.dbnode_notification))
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                        .child(getString(R.string.field_messaging_token))
+                        .setValue(token);
+                reference.child(getString(R.string.dbnode_notification))
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().replace(".",""))
+                        .child(getString(R.string.field_user_name))
+                        .setValue(mAuth.getCurrentUser().getDisplayName()); } else {
+                Toast.makeText(getContext(), "Event didnt get added", Toast.LENGTH_SHORT).show();
+            }
+        } catch(NullPointerException e) {
+            Toast.makeText(getContext(), "User object is null", Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -29,10 +29,13 @@
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
         android:focusable="false"
+        android:background="@color/colorPrimary"
         android:text="Remove Item" />
 
 </RelativeLayout>

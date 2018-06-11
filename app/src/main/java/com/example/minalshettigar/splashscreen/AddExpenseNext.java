@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.minalshettigar.splashscreen.helper.ExpenseDataModel;
 import com.example.minalshettigar.splashscreen.helper.FriendListViewAdapter;
@@ -93,9 +94,13 @@ public class AddExpenseNext extends AppCompatActivity {
         if (intent.hasExtra(getString(R.string.selected_image))) {
             imgUrl = intent.getStringExtra(getString(R.string.selected_image));
             bitmap = getBitmap(imgUrl);
+            Log.d("IMG INFO", "IMG URL IS " + imgUrl);
         }
         else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
             bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
+            if (bitmap != null) {
+                Log.d("IMG INFO", "BITMAP IS NOT NULLASHCKAHJSKHA");
+            }
         }
 
         // parse text
@@ -129,21 +134,26 @@ public class AddExpenseNext extends AppCompatActivity {
             String[] amounts = Arrays.copyOfRange(listOfItems, listOfItems.length / 2, listOfItems.length);
             double[] parsedAmounts = new double[amounts.length];
 
-            for (int i = 0; i < amounts.length; i++) {
-                String s = amounts[i];
-                Log.d(TAG, "PARSED AMOUNTS: " + s);
-                // if the first character is $ or S (which should always be the case cause these are amounts
-                if (s.length() > 0) {
-                    if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
-                        s = s.substring(1, s.length());
-                        Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
-                        Double amount = Double.parseDouble(s);
-                        parsedAmounts[i] = amount;
-                    }
-                    else {
-                        parsedAmounts[i] = Double.parseDouble(amounts[i]);
+            try {
+                for (int i = 0; i < amounts.length; i++) {
+                    String s = amounts[i];
+                    Log.d(TAG, "PARSED AMOUNTS: " + s);
+                    // if the first character is $ or S (which should always be the case cause these are amounts
+                    if (s.length() > 0) {
+                        if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
+                            s = s.substring(1, s.length());
+                            Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
+                            Double amount = Double.parseDouble(s);
+                            parsedAmounts[i] = amount;
+                        }
+                        else {
+                            parsedAmounts[i] = Double.parseDouble(amounts[i]);
+                        }
                     }
                 }
+
+            } catch(NumberFormatException e) {
+                Toast.makeText(this.getApplicationContext(), "Image could not be parsed, please try again.", Toast.LENGTH_SHORT).show();
             }
 
             // add parsed item name and price to expenseDataModels
@@ -175,9 +185,6 @@ public class AddExpenseNext extends AppCompatActivity {
                 transaction.replace(R.id.relLayoutForListView, expenseItemFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-
-
             }
         });
 
