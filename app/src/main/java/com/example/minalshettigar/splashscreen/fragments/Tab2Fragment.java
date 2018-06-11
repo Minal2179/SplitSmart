@@ -139,15 +139,6 @@ public class Tab2Fragment extends Fragment implements View.OnClickListener {
         String user_contact=mContactField.getText().toString().trim();
         String user_id= Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         String user_profile = picturePath;
-//         String shopping="0";
-//         String rent="0";
-//         String electricity="0";
-//         String food="0";
-//         String grocery="0";
-//         String travel="0";
-//         String miscellaneous="0";
-
-        //Log.d("inside db Method", "addfriendInDB: ");
 
         if(!TextUtils.isEmpty(user_id))
         {
