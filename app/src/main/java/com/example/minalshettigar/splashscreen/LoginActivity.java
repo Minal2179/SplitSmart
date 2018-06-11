@@ -34,7 +34,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import static android.content.Intent.getIntent;
 
-public class LoginActivity extends BaseActivity implements ActivityCallback {
+public class LoginActivity extends BaseActivity implements ActivityCallback,View.OnClickListener {
     private static final String TAG = "EmailPassword";
     private static final int RC_SIGN_IN = 9001;
 
@@ -72,9 +72,11 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
         tabLayout.getTabAt(0).setText("Login");
         tabLayout.getTabAt(1).setText("Register");
+
+        // Button listeners
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,7 +106,7 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, newFriend_Adding.class);
+                    Intent intent = new Intent(LoginActivity.this, Dashboard.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     //check for extras from FCM
@@ -291,7 +293,9 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             //findViewById(R.id.disconnect_button).setVisibility(View.VISIBLE);
 
+            Log.d(TAG, "updateUI: Time to go na!!!!");
             if(user.isEmailVerified() || flag){
+                Log.d(TAG, "updateUI: I should go to Dashboard na!!!!");
                 final Intent intent = new Intent(this,Dashboard.class);
                 startActivity(intent);
             }
@@ -308,6 +312,11 @@ public class LoginActivity extends BaseActivity implements ActivityCallback {
         adapter.addFragment(new Tab1Fragment());
         adapter.addFragment(new Tab2Fragment());
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        googleSignIn();
     }
 }
 
