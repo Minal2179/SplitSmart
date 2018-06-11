@@ -50,7 +50,7 @@
                 android:layout_marginTop="12dp"
                 android:text="Email"
                 android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/Email"
+                app:layout_constraintEnd_toStartOf="@+id/Email2"
                 app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nametext" />
@@ -66,7 +66,7 @@
                 android:layout_marginTop="12dp"
                 android:text="Contact"
                 android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/ContactNo"
+                app:layout_constraintEnd_toStartOf="@+id/ContactNo2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mailtext" />
 
@@ -88,10 +88,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/label" />
 
             <EditText
-                android:id="@+id/Email"
+                android:id="@+id/Email2"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
-                android:layout_alignStart="@+id/ContactNo"
+                android:layout_alignStart="@+id/ContactNo2"
                 android:layout_alignTop="@+id/mailtext"
                 android:layout_marginEnd="64dp"
                 android:layout_marginTop="12dp"
@@ -104,7 +104,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/Name" />
 
             <EditText
-                android:id="@+id/ContactNo"
+                android:id="@+id/ContactNo2"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
 
@@ -118,7 +118,7 @@
                 android:inputType="textPersonName"
                 android:paddingStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Email" />
+                app:layout_constraintTop_toBottomOf="@+id/Email2" />
 
             <AutoCompleteTextView
                 android:id="@+id/Name"
