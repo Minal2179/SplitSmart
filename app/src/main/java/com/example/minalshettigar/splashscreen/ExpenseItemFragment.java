@@ -74,6 +74,7 @@ public class ExpenseItemFragment extends Fragment {
     String currentUserId;
     String itemName;
     double itemPrice;
+    double amountFrmFrnd;
     MaterialBetterSpinner staticSpinner;
     DatabaseReference addItemToFrnds;
     EditText peopleEmail;
@@ -379,11 +380,15 @@ public class ExpenseItemFragment extends Fragment {
 
             //For your Expense Account
 
+            double addamtfrndAmt=amountFrmFrnd+splitItemPrice;
+            String amtforFriendTobeUpdated=Double.toString(addamtfrndAmt);
+
             DatabaseReference updateExpenseValueforYourself = FirebaseDatabase.getInstance().getReference("user_friends").
                     child(splitPeopleEmailWithoutDot);
 
             updateExpenseValueforYourself.child("myValue").setValue(myvalue) ;
-            updateExpenseValueforYourself.child("friends").child(currentUserIdWithoutDot).setValue(amtToBeUpdated);
+            updateExpenseValueforYourself.child("friends").child(currentUserIdWithoutDot).setValue(amtforFriendTobeUpdated);
+
 
 
         }
@@ -428,6 +433,17 @@ public class ExpenseItemFragment extends Fragment {
                                 // System.out.println("entry.getValue()******"+entry.getValue());
                                 amountFrmCurrUser = Double.parseDouble(entry.getValue());
 
+                            }
+                        }
+                    }
+
+                    else if (frndSnap.getKey().equalsIgnoreCase(splitPeopleEmailWithoutDot.toString().replace(".", ""))) {
+                        FriendsExpense udm = frndSnap.getValue(FriendsExpense.class);
+
+                        for (Map.Entry<String, String> entry : udm.getFriends().entrySet()) {
+                            if (entry.getKey().equalsIgnoreCase(currentUserId.replace(".", ""))) {
+                                //System.out.println("entry.getValue()******"+entry.getValue());
+                                amountFrmFrnd = Double.parseDouble(entry.getValue());
                             }
                         }
                     }
