@@ -67,6 +67,9 @@ public class AddExpenseNext extends AppCompatActivity {
     private String imgUrl;
     private Bitmap bitmap;
     private Intent intent;
+    String[] names;
+    String[] amounts;
+
 
     ArrayList<ExpenseDataModel> expenseDataModels;
     ListView itemListView;
@@ -122,7 +125,8 @@ public class AddExpenseNext extends AppCompatActivity {
             }
 
             if (sb.length() <= 0) {
-                textView.setText("Could not detect any text");
+                Toast.makeText(this.getApplicationContext(), "Could not detect any text", Toast.LENGTH_SHORT).show();
+
             }
 
             ExpenseDataModel expense;
@@ -139,21 +143,25 @@ public class AddExpenseNext extends AppCompatActivity {
                     String s = amounts[i];
                     Log.d(TAG, "PARSED AMOUNTS: " + s);
                     // if the first character is $ or S (which should always be the case cause these are amounts
-                    if (s.length() > 0) {
-                        if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
-                            s = s.substring(1, s.length());
-                            Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
-                            Double amount = Double.parseDouble(s);
-                            parsedAmounts[i] = amount;
+                    try {
+                        if (s.length() > 0) {
+                            if (s.substring(0, 1).equals("$") || s.substring(0, 1).equals("S")) {
+                                s = s.substring(1, s.length());
+                                Log.d(TAG, "AFTER REMOVING S OR $ AMOUNT IS " + s);
+                                Double amount = Double.parseDouble(s);
+                                parsedAmounts[i] = amount;
+                            }
+                            else {
+                                parsedAmounts[i] = Double.parseDouble(amounts[i]);
+                            }
                         }
-                        else {
-                            parsedAmounts[i] = Double.parseDouble(amounts[i]);
-                        }
+                    } catch(NullPointerException e) {
+                        Toast.makeText(this.getApplicationContext(), "Image could not be parsed correctly, please try again.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             } catch(NumberFormatException e) {
-                Toast.makeText(this.getApplicationContext(), "Image could not be parsed, please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getApplicationContext(), "Image could not be parsed correctly, please try again.", Toast.LENGTH_SHORT).show();
             }
 
             // add parsed item name and price to expenseDataModels

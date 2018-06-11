@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -108,13 +109,13 @@ public class AddExpenses extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
 
-        // TODO: Check if camera/photo gallery permissions are granted
         if (checkPermissionsArray(PERMISSIONS)) {
             Log.d(TAG, "permission granted, set up view pager");
             setupViewPager();
         }
         else {
             verifyPermissions(PERMISSIONS);
+            recreate();
         }
 
         mAuth = FirebaseAuth.getInstance();
