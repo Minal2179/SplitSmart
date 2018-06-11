@@ -261,75 +261,68 @@ public class ManualFragment extends Fragment {
 
     private void addItemTofriends(final String dropVal)
     {
-        if(!itemName.isEmpty() )
-        {
-            final int numberOfSplits = 2;
-            Item itemObj = new Item(itemName,Double.toString(itemPrice/numberOfSplits),dropVal);
-            String id = addItemToFrnds.push().getKey();
+        try{
+            if(!itemName.isEmpty() )
+            {
+                final int numberOfSplits = 2;
+                Item itemObj;
+                String id = addItemToFrnds.push().getKey();
 
-            String currentUserIdWithoutDot=currentUserId.replace(".","");
-            String username = mAuth.getCurrentUser().getDisplayName();
-            //System.out.println("peopleEmail"+peopleEmail.getText().toString());
-            String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
-
-            // System.out.println("currentUserIdWithoutDot"+currentUserIdWithoutDot);
-            // System.out.println("splitPeopleEmailWithoutDot"+splitPeopleEmailWithoutDot);
-
-            //Handling only for bill split among 2 people
-            addItemToFrnds.child(currentUserIdWithoutDot).child(id).setValue(itemObj);
-            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
-            addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
-            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).setValue(itemObj);
-            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
-            addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("category").setValue(dropVal);
-
-//            userDb.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
-//                    UserDbFormat current_user = dataSnapshot.getValue(UserDbFormat.class);
-//                    Double val=0.0;
-//                    if(dropVal.equals("Shopping")){
-//                        val = Double.parseDouble(current_user.getShopping()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Food")){
-//                         val = Double.parseDouble(current_user.getFood()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Rent")){
-//                         val = Double.parseDouble(current_user.getRent()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Grocery")){
-//                         val = Double.parseDouble(current_user.getGrocery()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Travel")){
-//                         val = Double.parseDouble(current_user.getTravel()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Miscellaneous")){
-//                         val = Double.parseDouble(current_user.getMiscellaneous()) + (itemPrice/numberOfSplits);
-//                    }
-//                    else if(dropVal.equals("Utility")){
-//                         val = Double.parseDouble(current_user.getElectricity()) + (itemPrice/numberOfSplits);
-//                    }
-//                    userDb.child(dropVal).setValue(val);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-
-            DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
-
-            if(!itemName.isEmpty()){
-
-                //Log.d(TAG, "addfriendInDB: get value of friend id"+mUserId);
-                //create the new message
+                String currentUserIdWithoutDot=currentUserId.replace(".","");
+                String username = mAuth.getCurrentUser().getDisplayName();
+                //System.out.println("peopleEmail"+peopleEmail.getText().toString());
+                String splitPeopleEmailWithoutDot=peopleEmail.getText().toString().replace(".","");
+                DatabaseReference msgreference = FirebaseDatabase.getInstance().getReference();
                 MessageModel message = new MessageModel();
                 message.setUser_id(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail().replace(".",""));
-                message.setMessage(username+" added "+itemName+" of amount "+Double.toString(itemPrice));
-                message.setTimestamp(getTimestamp());
 
+
+                if(SplitdropdownValue.equalsIgnoreCase("Paid By You And He Owes"))
+                {
+                    itemObj = new Item(itemName,Double.toString(itemPrice),dropVal);
+                    //Handling only for bill split among 2 people
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).setValue(itemObj);
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("category").setValue(dropVal);
+                    message.setMessage(username + " added " + itemName + " of amount " + Double.toString(itemPrice)+" you owe");
+                    DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+                    eventRef
+                            .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                            .child(Objects.requireNonNull(eventRef.push().getKey()))
+                            .child(getString(R.string.field_message))
+                            .setValue("You have added " +itemName+" of amount "+Double.toString(itemPrice)+" owed by your friend");
+                    eventRef
+                            .child(splitPeopleEmailWithoutDot)
+                            .child(Objects.requireNonNull(eventRef.push().getKey()))
+                            .child(getString(R.string.field_message))
+                            .setValue("You owe "+mAuth.getCurrentUser().getDisplayName()+" added "+itemName+" of amount "+Double.toString(itemPrice));
+
+
+                }else{
+                    itemObj = new Item(itemName,Double.toString(itemPrice/numberOfSplits),dropVal);
+                    //Handling only for bill split among 2 people
+                    addItemToFrnds.child(currentUserIdWithoutDot).child(id).setValue(itemObj);
+                    addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+                    addItemToFrnds.child(currentUserIdWithoutDot).child(id).child("category").setValue(dropVal);
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).setValue(itemObj);
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("people").child(splitPeopleEmailWithoutDot).setValue("true");
+                    addItemToFrnds.child(splitPeopleEmailWithoutDot).child(id).child("category").setValue(dropVal);
+                    message.setMessage(username + " added " + itemName + " of amount " + Double.toString(itemPrice)+" split equally");
+                    DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
+                    eventRef
+                            .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
+                            .child(Objects.requireNonNull(eventRef.push().getKey()))
+                            .child(getString(R.string.field_message))
+                            .setValue("You have added " +itemName+" of amount "+Double.toString(itemPrice)+" split equally");
+                    eventRef
+                            .child(splitPeopleEmailWithoutDot)
+                            .child(Objects.requireNonNull(eventRef.push().getKey()))
+                            .child(getString(R.string.field_message))
+                            .setValue(mAuth.getCurrentUser().getDisplayName()+" added "+itemName+" of amount "+Double.toString(itemPrice)+" split equally");
+
+
+                }
+                message.setTimestamp(getTimestamp());
                 //insert the new message
                 msgreference
                         .child(getString(R.string.dbnode_messages))
@@ -341,19 +334,9 @@ public class ManualFragment extends Fragment {
             }else{
                 Toast.makeText(getContext(), "enter a message", Toast.LENGTH_SHORT).show();
             }
-            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference(getString(R.string.dbnode_events));
-            eventRef
-                    .child(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail().replace(".",""))
-                    .child(Objects.requireNonNull(eventRef.push().getKey()))
-                    .child(getString(R.string.field_message))
-                    .setValue("You have added " +itemName+" of amount "+Double.toString(itemPrice));
-            eventRef
-                    .child(splitPeopleEmailWithoutDot)
-                    .child(Objects.requireNonNull(eventRef.push().getKey()))
-                    .child(getString(R.string.field_message))
-                    .setValue(mAuth.getCurrentUser().getDisplayName()+" added "+itemName+" of amount "+Double.toString(itemPrice));
-
-
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
