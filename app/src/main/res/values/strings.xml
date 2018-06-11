@@ -109,7 +109,7 @@
     </string-array>
 
     <string-array name="splitAmount_EquallyOrNot">
-        <item>Paid By You And He Owes</item>
+        <item>Charge Full Amount to Friend</item>
         <item>Split Equally</item>
 
     </string-array>
