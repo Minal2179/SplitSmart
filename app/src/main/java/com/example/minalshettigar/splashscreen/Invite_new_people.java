@@ -39,15 +39,15 @@ public class Invite_new_people extends AppCompatActivity {
                 if(Name.getText().equals(null) || Email.getText().equals(null)||Contact.getText().equals(null)){
                     showToast("Enter all 3 fields");
                 }else{
-//                    email = Email.getText().toString();
-//                    Intent intent =new Intent(ACTION_SEND);
-//                    intent.setData(Uri.parse("mailto:"));
-//                    intent.putExtra(Intent.EXTRA_EMAIL,email);
-//                    //intent.putExtra(Intent.EXTRA_EMAIL,email);
-//                    intent.putExtra(Intent.EXTRA_SUBJECT,"App Invitation");
-//                    intent.putExtra(Intent.EXTRA_TEXT,"Enjoy the new world of splitting bills, just by clicking a picture");
-//                    intent.setType("message/rfc822");
-//                    startActivity(Intent.createChooser(intent,"choose an email client"));
+                    email = Email.getText().toString();
+                    Intent intent =new Intent(ACTION_SEND);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.putExtra(Intent.EXTRA_EMAIL,email);
+                    //intent.putExtra(Intent.EXTRA_EMAIL,email);
+                    intent.putExtra(Intent.EXTRA_SUBJECT,"App Invitation");
+                    intent.putExtra(Intent.EXTRA_TEXT,"Enjoy the new world of splitting bills, just by clicking a picture");
+                    intent.setType("message/rfc822");
+                    startActivity(Intent.createChooser(intent,"choose an email client"));
 
                     contactNo = Contact.getText().toString();
                     Intent intent1 = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms",contactNo,null));
